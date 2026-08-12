@@ -14,6 +14,17 @@ export const copy = {
     loadingMessage: "Loading questions…",
     genericErrorMessage: "Something went wrong",
     retryButton: "Try again",
+    questionLabel: "Question",
+    ofLabel: "of",
+    timeLeftSuffix: "s",
+    nextButton: "Next question",
+    seeResultsButton: "See results",
+  },
+  results: {
+    heading: "Round complete!",
+    scoreLabel: "You scored",
+    playAgainButton: "Play again",
+    leaderboardButton: "Leaderboard",
   },
   leaderboard: {
     heading: "Leaderboard",

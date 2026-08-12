@@ -1,0 +1,2 @@
+export const QUESTION_COUNT = 10;
+export const QUESTION_DURATION_SECONDS = 15;

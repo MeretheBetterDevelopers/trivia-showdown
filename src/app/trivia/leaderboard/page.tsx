@@ -4,7 +4,7 @@ import { copy } from "@/src/lib/constants/copy";
 
 export default function Page() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-4 text-center">
+    <>
       <h1 className="font-heading text-3xl font-bold">
         {copy.leaderboard.heading}
       </h1>
@@ -18,6 +18,6 @@ export default function Page() {
       >
         {copy.leaderboard.backButton}
       </Button>
-    </div>
+    </>
   );
 }

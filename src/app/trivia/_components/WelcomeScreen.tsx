@@ -6,7 +6,7 @@ import { Button } from "@/src/components/ui/button";
 import { GameLogo } from "@/src/components/GameLogo";
 import { copy } from "@/src/lib/constants/copy";
 
-export function WelcomeScreen({ onStart }: { onStart: () => void }) {
+export function WelcomeScreen() {
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-12 text-center">
       <div className="absolute top-4 right-4">
@@ -24,11 +24,16 @@ export function WelcomeScreen({ onStart }: { onStart: () => void }) {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button onClick={onStart} size="lg" className="px-8 text-base">
+          <Button
+            render={<Link href="/trivia/play" />}
+            nativeButton={false}
+            size="lg"
+            className="px-8 text-base"
+          >
             {copy.welcome.startButton}
           </Button>
           <Button
-            render={<Link href="/leaderboard" />}
+            render={<Link href="/trivia/leaderboard" />}
             nativeButton={false}
             variant="outline"
             size="lg"
