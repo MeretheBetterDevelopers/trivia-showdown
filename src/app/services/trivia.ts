@@ -21,6 +21,12 @@ export const fetchTriviaQuestions = async (
   let data: TriviaApiResponse;
   try {
     const response = await fetch(url, { cache: "no-store" });
+    if (response.status === 429) {
+      throw new Error("Trivia API rate limit reached — please wait a moment and try again.");
+    }
+    if (!response.ok) {
+      throw new Error(`Trivia API request failed (${response.status})`);
+    }
     data = triviaApiResponseSchema.parse(await response.json());
   } catch (error) {
     console.error("Error fetching trivia questions:", error);

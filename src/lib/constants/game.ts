@@ -1,2 +1,3 @@
 export const QUESTION_COUNT = 10;
 export const QUESTION_DURATION_SECONDS = 15;
+export const LOW_TIME_THRESHOLD_SECONDS = 5;

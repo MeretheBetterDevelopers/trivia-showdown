@@ -1,7 +1,7 @@
 "use client";
 
 import { Questions } from "@/src/types/game/Question";
-import { useTriviaGame } from "../_hooks/useTriviaGame";
+import { useTriviaGame } from "../../_hooks/useTriviaGame";
 import { QuestionCard } from "./QuestionCard";
 import { ResultsScreen } from "./ResultsScreen";
 

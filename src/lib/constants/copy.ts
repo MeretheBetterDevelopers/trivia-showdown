@@ -25,6 +25,10 @@ export const copy = {
     scoreLabel: "You scored",
     playAgainButton: "Play again",
     leaderboardButton: "Leaderboard",
+    reactionGreat: "Nailed it! 🎉",
+    reactionGood: "Nice round! 🙌",
+    reactionOkay: "Not bad — go again? 🤔",
+    reactionTryAgain: "Rough one — try again! 😅",
   },
   leaderboard: {
     heading: "Leaderboard",

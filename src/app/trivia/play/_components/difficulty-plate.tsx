@@ -1,0 +1,17 @@
+import { Questions } from "@/src/types/game/Question";
+
+const DIFFICULTY_STYLES: Record<Questions["difficulty"], string> = {
+  easy: "bg-success/10 text-success",
+  medium: "bg-primary/10 text-primary",
+  hard: "bg-destructive/10 text-destructive",
+};
+
+export default function DifficultyPlate({ question }: { question: Questions }) {
+  return (
+    <span
+      className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${DIFFICULTY_STYLES[question.difficulty]}`}
+    >
+      {question.difficulty}
+    </span>
+  );
+}
