@@ -1,3 +1,5 @@
+//makes a copy of the array and shuffles it using the Fisher-Yates algorithm. Returns the shuffled array.
+
 export function shuffle<T>(items: T[]): T[] {
   const result = [...items];
   for (let i = result.length - 1; i > 0; i--) {
