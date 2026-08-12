@@ -3,8 +3,8 @@
 export const themeInitScript = `(function () {
   try {
     var stored = localStorage.getItem("theme");
-    if (stored === "light" || stored === "dark") {
-      document.documentElement.setAttribute("data-theme", stored);
-    }
+    var systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var isDark = stored === "dark" || (stored !== "light" && systemPrefersDark);
+    document.documentElement.classList.toggle("dark", isDark);
   } catch (e) {}
 })();`;

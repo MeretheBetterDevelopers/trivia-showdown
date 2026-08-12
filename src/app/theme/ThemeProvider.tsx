@@ -19,37 +19,39 @@ type ThemeContextValue = {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-function getSystemTheme(): Theme {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
+// The .dark class on <html> is the single source of truth: the blocking
+// init script sets it before hydration, and toggleTheme keeps it in sync.
+function readTheme(): Theme {
+  return document.documentElement.classList.contains("dark")
     ? "dark"
     : "light";
 }
 
-function readTheme(): Theme {
-  const attr = document.documentElement.getAttribute("data-theme");
-  return attr === "dark" || attr === "light" ? attr : getSystemTheme();
-}
-
-// Subscribe to changes in the theme, either from the system or from localStorage. Called when the component mounts and whenever the theme changes. Returns a function to unsubscribe.
 function subscribeToTheme(callback: () => void) {
-  const attributeObserver = new MutationObserver(callback);
-  attributeObserver.observe(document.documentElement, {
-    attributeFilter: ["data-theme"],
+  const classObserver = new MutationObserver(callback);
+  classObserver.observe(document.documentElement, {
+    attributeFilter: ["class"],
   });
 
   const systemThemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
-  systemThemeQuery.addEventListener("change", callback);
+  const handleSystemChange = () => {
+    // An explicit user choice always wins over a system change.
+    if (localStorage.getItem(STORAGE_KEY)) return;
+    document.documentElement.classList.toggle(
+      "dark",
+      systemThemeQuery.matches,
+    );
+  };
+  systemThemeQuery.addEventListener("change", handleSystemChange);
 
   return () => {
-    attributeObserver.disconnect();
-    systemThemeQuery.removeEventListener("change", callback);
+    classObserver.disconnect();
+    systemThemeQuery.removeEventListener("change", handleSystemChange);
   };
 }
 
-// A no-op subscribe function for useSyncExternalStore that does nothing. This is used for the mounted state, which doesn't need to subscribe to any external store.
 const noopSubscribe = () => () => {};
 
-// ThemeProvider component that provides the current theme and a function to toggle the theme to its children. It uses useSyncExternalStore to subscribe to changes in the theme and to read the current theme from the document's data-theme attribute.
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const theme = useSyncExternalStore<Theme>(
     subscribeToTheme,
@@ -67,7 +69,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const toggleTheme = useCallback(() => {
     const next: Theme = readTheme() === "dark" ? "light" : "dark";
     localStorage.setItem(STORAGE_KEY, next);
-    document.documentElement.setAttribute("data-theme", next);
+    document.documentElement.classList.toggle("dark", next === "dark");
   }, []);
 
   return (

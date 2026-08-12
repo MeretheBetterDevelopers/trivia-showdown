@@ -1,7 +1,10 @@
 import { TRIVIA_API_URL } from "@/src/lib/constants/urls";
 import { TRIVIA_RESPOND_CODES } from "@/src/lib/constants/triviaRespondCodes";
 import { mapTriviaApiQuestions } from "@/src/lib/helpers/mapTriviaQuestion";
-import { TriviaApiResponse } from "@/src/types/api/TriviaApiResponse";
+import {
+  TriviaApiResponse,
+  triviaApiResponseSchema,
+} from "@/src/lib/schemas/trivia";
 import { Questions } from "@/src/types/game/Question";
 
 //fetch and queries for trivia questions
@@ -18,7 +21,7 @@ export const fetchTriviaQuestions = async (
   let data: TriviaApiResponse;
   try {
     const response = await fetch(url, { cache: "no-store" });
-    data = await response.json();
+    data = triviaApiResponseSchema.parse(await response.json());
   } catch (error) {
     console.error("Error fetching trivia questions:", error);
     throw error;

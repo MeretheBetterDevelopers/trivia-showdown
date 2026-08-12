@@ -1,4 +1,4 @@
-import { TriviaApiQuestion } from "../api/TriviaApiQuestion";
+import { TriviaApiQuestion } from "@/src/lib/schemas/trivia";
 
 export interface Questions {
   id: number;
