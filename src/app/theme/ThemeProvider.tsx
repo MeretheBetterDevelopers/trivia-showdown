@@ -30,6 +30,7 @@ function readTheme(): Theme {
   return attr === "dark" || attr === "light" ? attr : getSystemTheme();
 }
 
+// Subscribe to changes in the theme, either from the system or from localStorage. Called when the component mounts and whenever the theme changes. Returns a function to unsubscribe.
 function subscribeToTheme(callback: () => void) {
   const attributeObserver = new MutationObserver(callback);
   attributeObserver.observe(document.documentElement, {
@@ -45,10 +46,12 @@ function subscribeToTheme(callback: () => void) {
   };
 }
 
+// A no-op subscribe function for useSyncExternalStore that does nothing. This is used for the mounted state, which doesn't need to subscribe to any external store.
 const noopSubscribe = () => () => {};
 
+// ThemeProvider component that provides the current theme and a function to toggle the theme to its children. It uses useSyncExternalStore to subscribe to changes in the theme and to read the current theme from the document's data-theme attribute.
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const theme = useSyncExternalStore(
+  const theme = useSyncExternalStore<Theme>(
     subscribeToTheme,
     readTheme,
     () => "light",
