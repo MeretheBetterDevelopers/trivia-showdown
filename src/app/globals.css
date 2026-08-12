@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./colors.css";
+@import "./effects.css";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
@@ -57,16 +58,6 @@
   body {
     @apply text-foreground;
     background-color: var(--background);
-    background-image: linear-gradient(
-      135deg,
-      var(--background-gradient-from),
-      var(--background-gradient-via) 45%,
-      var(--background-gradient-to)
-    );
-    background-attachment: fixed;
-  }
-  .dark body {
-    background-image: none;
   }
   html {
     @apply font-sans;

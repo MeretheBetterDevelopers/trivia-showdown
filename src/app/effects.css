@@ -1,0 +1,92 @@
+/* Ambient background effects: a very slow, subtle "lava lamp" drift of
+   brand-colored blobs behind the app, plus a faint grain overlay. Light
+   mode only — dark mode stays flat (see globals.css). */
+
+body {
+  background-image:
+    radial-gradient(circle at 20% 20%, var(--lava-1), transparent 45%),
+    radial-gradient(circle at 80% 25%, var(--lava-2), transparent 45%),
+    radial-gradient(circle at 25% 80%, var(--lava-3), transparent 45%),
+    radial-gradient(circle at 80% 85%, var(--lava-4), transparent 45%),
+    linear-gradient(
+      135deg,
+      var(--background-gradient-from),
+      var(--background-gradient-via) 45%,
+      var(--background-gradient-to)
+    );
+  background-size:
+    200% 200%,
+    200% 200%,
+    200% 200%,
+    200% 200%,
+    100% 100%;
+  animation: lava-drift 40s ease-in-out infinite;
+}
+
+@keyframes lava-drift {
+  0%,
+  100% {
+    background-position:
+      20% 20%,
+      80% 25%,
+      25% 80%,
+      80% 85%,
+      0% 0%;
+  }
+  50% {
+    background-position:
+      30% 35%,
+      65% 40%,
+      40% 65%,
+      65% 70%,
+      0% 0%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+  }
+}
+
+.dark body {
+  background-image: none;
+  animation: none;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.dark body::after {
+  display: none;
+}
+
+/* The organic "blob" card behind the welcome screen's content. */
+.welcome-blob {
+  border-radius: 40% 60% 65% 35% / 45% 40% 60% 55%;
+  animation: blob-morph 16s ease-in-out infinite;
+}
+
+@keyframes blob-morph {
+  0%,
+  100% {
+    border-radius: 40% 60% 65% 35% / 45% 40% 60% 55%;
+  }
+  50% {
+    border-radius: 58% 42% 40% 60% / 55% 60% 40% 45%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-blob {
+    animation: none;
+  }
+}

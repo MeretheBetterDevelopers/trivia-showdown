@@ -1,31 +1,45 @@
 "use client";
 
+import Link from "next/link";
 import { ThemeToggle } from "@/src/app/theme/ThemeToggle";
 import { Button } from "@/src/components/ui/button";
 
 export function WelcomeScreen({ onStart }: { onStart: () => void }) {
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center gap-8 px-4 text-center">
+    <div className="relative flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-12 text-center">
       <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
 
-      <span className="rounded-full bg-accent px-4 py-1 text-sm font-medium text-accent-foreground">
-        10 questions · multiple choice
-      </span>
+      <div className="welcome-blob flex w-full max-w-2xl flex-col items-center gap-6 bg-muted px-10 py-16 text-center shadow-xl sm:px-16 sm:py-20">
+        <span className="rounded-full bg-accent px-4 py-1 text-sm font-medium text-accent-foreground">
+          10 questions · multiple choice
+        </span>
 
-      <div className="flex flex-col gap-3">
-        <h1 className="font-heading text-5xl font-bold tracking-tight sm:text-6xl">
-          Trivia <span className="text-primary">Showdown</span>
-        </h1>
-        <p className="max-w-md text-balance text-muted-foreground">
-          Test your knowledge against the clock and your friends.
-        </p>
+        <div className="flex flex-col gap-3">
+          <h1 className="font-heading text-5xl font-bold tracking-tight uppercase sm:text-6xl">
+            Trivia <span className="text-primary">Showdown</span>
+          </h1>
+          <p className="max-w-md text-balance text-muted-foreground">
+            Test your knowledge against the clock and your friends.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <Button onClick={onStart} size="lg" className="px-8 text-base">
+            Start
+          </Button>
+          <Button
+            render={<Link href="/leaderboard" />}
+            nativeButton={false}
+            variant="outline"
+            size="lg"
+            className="px-8 text-base"
+          >
+            Leaderboard
+          </Button>
+        </div>
       </div>
-
-      <Button onClick={onStart} size="lg" className="px-8 text-base">
-        Start
-      </Button>
 
       <div className="flex gap-2" aria-hidden>
         <span className="size-2 rounded-full bg-chart-1" />

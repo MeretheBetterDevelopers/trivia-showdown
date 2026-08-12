@@ -10,6 +10,10 @@
   --background-gradient-from: #fef5ee; /* tan-hide-lightest */
   --background-gradient-via: #fdecdd; /* tan-hide-lighter */
   --background-gradient-to: #fabe8a; /* tan-hide-light */
+  --lava-1: #fabe8a; /* tan-hide-light */
+  --lava-2: #73ece7; /* turquoise-light */
+  --lava-3: #f6a09a; /* froly-light */
+  --lava-4: #c0a5cf; /* purple */
   --foreground: #000000;
   --card: #ffffff;
   --card-foreground: #000000;
