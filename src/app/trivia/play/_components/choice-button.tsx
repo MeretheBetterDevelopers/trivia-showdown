@@ -1,5 +1,5 @@
 import { Check, X } from "lucide-react";
-import { cn } from "@/src/lib/utils";
+import { clsx } from "clsx";
 
 const CHOICE_BADGE_COLORS = [
   "bg-chart-1",
@@ -40,7 +40,7 @@ export default function ChoiceButton({
       type="button"
       onClick={() => onSelectChoice(choice)}
       disabled={isAnswered}
-      className={cn(
+      className={clsx(
         "flex w-full items-center gap-3 rounded-2xl border-2 px-4 py-3 text-left font-medium backdrop-blur-xl backdrop-saturate-150 transition-all hover:scale-[1.02] hover:shadow-md active:scale-[0.98]",
         isRevealedCorrect && "border-success bg-success/20 text-success",
         isRevealedWrong &&
@@ -51,7 +51,7 @@ export default function ChoiceButton({
       )}
     >
       <span
-        className={cn(
+        className={clsx(
           "flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white",
           isRevealedCorrect && "bg-success",
           isRevealedWrong && "bg-destructive",

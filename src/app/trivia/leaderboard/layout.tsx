@@ -6,7 +6,7 @@ export default function Layout({
   return (
     <div className="flex min-h-screen flex-col items-center gap-6 px-4 py-10">
       <AppHeader />
-      <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
+      <div className="flex w-full flex-1 flex-col items-center gap-6 text-center">
         {children}
       </div>
     </div>
