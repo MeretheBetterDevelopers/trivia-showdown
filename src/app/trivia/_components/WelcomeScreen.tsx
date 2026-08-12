@@ -6,14 +6,14 @@ import { Button } from "@/src/components/ui/button";
 import { GameLogo } from "@/src/components/GameLogo";
 import { copy } from "@/src/lib/constants/copy";
 
-export function WelcomeScreen({ onStart }: { onStart: () => void }) {
+export function WelcomeScreen() {
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-12 text-center">
       <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
 
-      <div className="welcome-blob flex w-full max-w-2xl flex-col items-center gap-6 bg-muted px-10 py-16 text-center shadow-xl sm:px-16 sm:py-20">
+      <div className="welcome-blob flex w-full max-w-2xl flex-col items-center gap-6 border border-white/30 bg-muted/60 px-10 py-16 text-center shadow-xl backdrop-blur-2xl backdrop-saturate-150 sm:px-16 sm:py-20 dark:border-white/10">
         <GameLogo className=" w-16" />
         <div className="flex flex-col gap-3">
           <h1 className="font-heading text-5xl font-bold tracking-tight uppercase sm:text-6xl">
@@ -24,11 +24,16 @@ export function WelcomeScreen({ onStart }: { onStart: () => void }) {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button onClick={onStart} size="lg" className="px-8 text-base">
+          <Button
+            render={<Link href="/trivia/play" />}
+            nativeButton={false}
+            size="lg"
+            className="px-8 text-base"
+          >
             {copy.welcome.startButton}
           </Button>
           <Button
-            render={<Link href="/leaderboard" />}
+            render={<Link href="/trivia/leaderboard" />}
             nativeButton={false}
             variant="outline"
             size="lg"

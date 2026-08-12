@@ -52,7 +52,9 @@ function subscribeToTheme(callback: () => void) {
 
 const noopSubscribe = () => () => {};
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   const theme = useSyncExternalStore<Theme>(
     subscribeToTheme,
     readTheme,

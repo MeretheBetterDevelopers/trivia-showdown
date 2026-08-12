@@ -6,6 +6,14 @@ import { useTheme } from "./ThemeProvider";
 export function ThemeToggle() {
   const { theme, toggleTheme, mounted } = useTheme();
 
+  let label = " ";
+  if (mounted) {
+    label =
+      theme === "dark"
+        ? copy.themeToggle.lightLabel
+        : copy.themeToggle.darkLabel;
+  }
+
   return (
     <button
       type="button"
@@ -13,11 +21,7 @@ export function ThemeToggle() {
       aria-label={copy.themeToggle.ariaLabel}
       className="border border-border rounded-lg px-3 py-2 text-sm font-medium"
     >
-      {mounted
-        ? theme === "dark"
-          ? copy.themeToggle.lightLabel
-          : copy.themeToggle.darkLabel
-        : " "}
+      {label}
     </button>
   );
 }

@@ -3,7 +3,7 @@ import { ThemeProvider } from "./theme/ThemeProvider";
 import { themeInitScript } from "./theme/themeInitScript";
 import { QueryProvider } from "./query/QueryProvider";
 import { Barlow, DM_Sans } from "next/font/google";
-import { cn } from "@/src/lib/utils";
+import { clsx } from "clsx";
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -25,7 +25,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("font-sans", barlow.variable, dmSans.variable)}
+      className={clsx("font-sans", barlow.variable, dmSans.variable)}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />

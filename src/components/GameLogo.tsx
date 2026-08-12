@@ -1,4 +1,6 @@
-export function GameLogo({ className }: { className?: string }) {
+export function GameLogo({
+  className,
+}: Readonly<{ className?: string }>) {
   return (
     <svg
       viewBox="0 0 100 60"
