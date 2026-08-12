@@ -31,19 +31,16 @@ export function QuestionCard({
   const isLastQuestion = questionNumber === total;
 
   return (
-    <Card className="w-full max-w-2xl rounded-3xl">
-      <CardContent className="flex flex-col gap-5">
+    <Card className="w-full max-w-2xl rounded-3xl border border-white/30 bg-card/60 shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
+      <CardContent className="flex flex-col gap-4">
         <div className="flex items-center justify-between gap-4">
           <ProgressIndicator questionNumber={questionNumber} total={total} />
           <DifficultyPlate question={question} />
         </div>
-
         <TimeLeft timeLeft={timeLeft} />
-
         <h2 className="font-heading text-2xl font-bold text-balance">
           {question.text}
         </h2>
-
         <ul className="flex flex-col gap-3">
           {question.choices.map((choice, index) => {
             const isCorrectChoice = choice === question.correctAnswer;
@@ -66,6 +63,7 @@ export function QuestionCard({
           })}
         </ul>
       </CardContent>
+
       {isAnswered && (
         <CardFooter className="justify-end">
           <Button onClick={onNext} size="lg">

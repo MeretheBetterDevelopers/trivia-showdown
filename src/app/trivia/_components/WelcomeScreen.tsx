@@ -13,7 +13,7 @@ export function WelcomeScreen() {
         <ThemeToggle />
       </div>
 
-      <div className="welcome-blob flex w-full max-w-2xl flex-col items-center gap-6 bg-muted px-10 py-16 text-center shadow-xl sm:px-16 sm:py-20">
+      <div className="welcome-blob flex w-full max-w-2xl flex-col items-center gap-6 border border-white/30 bg-muted/60 px-10 py-16 text-center shadow-xl backdrop-blur-2xl backdrop-saturate-150 sm:px-16 sm:py-20 dark:border-white/10">
         <GameLogo className=" w-16" />
         <div className="flex flex-col gap-3">
           <h1 className="font-heading text-5xl font-bold tracking-tight uppercase sm:text-6xl">
