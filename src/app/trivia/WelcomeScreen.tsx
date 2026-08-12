@@ -1,0 +1,39 @@
+"use client";
+
+import { ThemeToggle } from "@/src/app/theme/ThemeToggle";
+import { Button } from "@/src/components/ui/button";
+
+export function WelcomeScreen({ onStart }: { onStart: () => void }) {
+  return (
+    <div className="relative flex min-h-screen flex-col items-center justify-center gap-8 px-4 text-center">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
+
+      <span className="rounded-full bg-accent px-4 py-1 text-sm font-medium text-accent-foreground">
+        10 questions · multiple choice
+      </span>
+
+      <div className="flex flex-col gap-3">
+        <h1 className="font-heading text-5xl font-bold tracking-tight sm:text-6xl">
+          Trivia <span className="text-primary">Showdown</span>
+        </h1>
+        <p className="max-w-md text-balance text-muted-foreground">
+          Test your knowledge against the clock and your friends.
+        </p>
+      </div>
+
+      <Button onClick={onStart} size="lg" className="px-8 text-base">
+        Start
+      </Button>
+
+      <div className="flex gap-2" aria-hidden>
+        <span className="size-2 rounded-full bg-chart-1" />
+        <span className="size-2 rounded-full bg-chart-2" />
+        <span className="size-2 rounded-full bg-chart-3" />
+        <span className="size-2 rounded-full bg-chart-4" />
+        <span className="size-2 rounded-full bg-chart-5" />
+      </div>
+    </div>
+  );
+}

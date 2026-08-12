@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/src/components/ui/card";
+import { WelcomeScreen } from "./WelcomeScreen";
 
 export default function Page() {
   const [started, setStarted] = useState(false);
@@ -27,29 +28,24 @@ export default function Page() {
     enabled: started,
   });
 
+  if (!started) {
+    return <WelcomeScreen onStart={() => setStarted(true)} />;
+  }
+
   const firstQuestion = questions?.[0];
 
   return (
-    <div className="flex flex-col items-center min-h-screen py-10 px-4 gap-6">
-      <div className="flex items-center justify-between w-full max-w-2xl">
-        <h1 className="text-4xl font-bold">Trivia Showdown</h1>
+    <div className="flex min-h-screen flex-col items-center gap-6 px-4 py-10">
+      <div className="flex w-full max-w-2xl items-center justify-between">
+        <h1 className="font-heading text-2xl font-semibold">
+          Trivia Showdown
+        </h1>
         <ThemeToggle />
       </div>
 
-      {!started && (
-        <div className="flex flex-col items-center gap-4 text-center max-w-md">
-          <p className="text-muted-foreground">
-            Test your knowledge against the clock and your friends.
-          </p>
-          <Button onClick={() => setStarted(true)} size="lg">
-            Start
-          </Button>
-        </div>
-      )}
+      {status === "pending" && <p>Loading questions…</p>}
 
-      {started && status === "pending" && <p>Loading questions…</p>}
-
-      {started && status === "error" && (
+      {status === "error" && (
         <div className="flex flex-col items-center gap-3">
           <p className="text-destructive">
             {error instanceof Error ? error.message : "Something went wrong"}
@@ -60,7 +56,7 @@ export default function Page() {
         </div>
       )}
 
-      {started && status === "success" && firstQuestion && (
+      {status === "success" && firstQuestion && (
         <Card className="w-full max-w-2xl">
           <CardHeader>
             <CardDescription className="flex justify-between">

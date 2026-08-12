@@ -2,10 +2,19 @@ import "./globals.css";
 import { ThemeProvider } from "./theme/ThemeProvider";
 import { themeInitScript } from "./theme/themeInitScript";
 import { QueryProvider } from "./query/QueryProvider";
-import { Geist } from "next/font/google";
+import { Barlow, DM_Sans } from "next/font/google";
 import { cn } from "@/src/lib/utils";
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const barlow = Barlow({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-sans",
+});
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["500", "700"],
+  variable: "--font-heading",
+});
 
 export default function RootLayout({
   children,
@@ -13,7 +22,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={cn("font-sans", barlow.variable, dmSans.variable)}
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
