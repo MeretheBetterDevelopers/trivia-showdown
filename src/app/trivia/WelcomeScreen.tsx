@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ThemeToggle } from "@/src/app/theme/ThemeToggle";
 import { Button } from "@/src/components/ui/button";
+import { GameLogo } from "@/src/components/GameLogo";
 import { copy } from "@/src/lib/constants/copy";
 
 export function WelcomeScreen({ onStart }: { onStart: () => void }) {
@@ -13,18 +14,13 @@ export function WelcomeScreen({ onStart }: { onStart: () => void }) {
       </div>
 
       <div className="welcome-blob flex w-full max-w-2xl flex-col items-center gap-6 bg-muted px-10 py-16 text-center shadow-xl sm:px-16 sm:py-20">
-        <span className="rounded-full bg-accent px-4 py-1 text-sm font-medium text-accent-foreground">
-          {copy.welcome.badge}
-        </span>
-
+        <GameLogo className=" w-16" />
         <div className="flex flex-col gap-3">
           <h1 className="font-heading text-5xl font-bold tracking-tight uppercase sm:text-6xl">
             {copy.welcome.titlePrefix}{" "}
             <span className="text-primary">{copy.welcome.titleAccent}</span>
           </h1>
-          <p className="max-w-md text-balance text-muted-foreground">
-            {copy.welcome.tagline}
-          </p>
+          <p className="text-muted-foreground">{copy.welcome.tagline}</p>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
@@ -41,14 +37,6 @@ export function WelcomeScreen({ onStart }: { onStart: () => void }) {
             {copy.welcome.leaderboardButton}
           </Button>
         </div>
-      </div>
-
-      <div className="flex gap-2" aria-hidden>
-        <span className="size-2 rounded-full bg-chart-1" />
-        <span className="size-2 rounded-full bg-chart-2" />
-        <span className="size-2 rounded-full bg-chart-3" />
-        <span className="size-2 rounded-full bg-chart-4" />
-        <span className="size-2 rounded-full bg-chart-5" />
       </div>
     </div>
   );
