@@ -19,7 +19,7 @@ export function useTriviaGame(questions: Questions[]) {
     if (isFinished || isAnswered) return;
 
     const timeoutId = setTimeout(() => {
-      if (timeLeft <= 1) {
+      if (timeLeft <= 0) {
         setSelectedChoice("");
         setTimeLeft(0);
       } else {
