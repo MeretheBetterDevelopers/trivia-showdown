@@ -18,11 +18,11 @@ export function ResultsScreen({
   score,
   total,
   onPlayAgain,
-}: {
+}: Readonly<{
   score: number;
   total: number;
   onPlayAgain: () => void;
-}) {
+}>) {
   return (
     <Card className="w-full max-w-2xl rounded-3xl border border-white/30 bg-card/60 shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
       <CardContent className="flex flex-col items-center gap-6 text-center">

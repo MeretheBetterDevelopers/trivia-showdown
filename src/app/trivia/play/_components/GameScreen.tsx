@@ -8,10 +8,10 @@ import { ResultsScreen } from "./ResultsScreen";
 export function GameScreen({
   questions,
   onPlayAgain,
-}: {
+}: Readonly<{
   questions: Questions[];
   onPlayAgain: () => void;
-}) {
+}>) {
   const game = useTriviaGame(questions);
 
   if (game.isFinished) {

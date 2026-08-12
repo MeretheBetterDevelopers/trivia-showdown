@@ -1,10 +1,10 @@
 export default function ProgressIndicator({
   questionNumber,
   total,
-}: {
+}: Readonly<{
   questionNumber: number;
   total: number;
-}) {
+}>) {
   return (
     <div className="flex gap-1.5" aria-hidden>
       {Array.from({ length: total }).map((_, index) => (

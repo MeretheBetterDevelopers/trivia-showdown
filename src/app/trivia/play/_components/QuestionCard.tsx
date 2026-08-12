@@ -18,7 +18,7 @@ export function QuestionCard({
   timeLeft,
   onSelectChoice,
   onNext,
-}: {
+}: Readonly<{
   question: Questions;
   questionNumber: number;
   total: number;
@@ -27,7 +27,7 @@ export function QuestionCard({
   timeLeft: number;
   onSelectChoice: (choice: string) => void;
   onNext: () => void;
-}) {
+}>) {
   const isLastQuestion = questionNumber === total;
 
   return (

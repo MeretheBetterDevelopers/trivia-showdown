@@ -3,7 +3,9 @@ import {
   QUESTION_DURATION_SECONDS,
 } from "@/src/lib/constants/game";
 
-export default function TimeLeft({ timeLeft }: { timeLeft: number }) {
+export default function TimeLeft({
+  timeLeft,
+}: Readonly<{ timeLeft: number }>) {
   const isLowTime = timeLeft <= LOW_TIME_THRESHOLD_SECONDS;
   return (
     <div className="h-2 w-full overflow-hidden rounded-full bg-border">

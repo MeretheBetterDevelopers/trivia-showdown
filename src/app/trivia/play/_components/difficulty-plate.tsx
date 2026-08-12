@@ -6,7 +6,9 @@ const DIFFICULTY_STYLES: Record<Questions["difficulty"], string> = {
   hard: "bg-destructive/10 text-destructive",
 };
 
-export default function DifficultyPlate({ question }: { question: Questions }) {
+export default function DifficultyPlate({
+  question,
+}: Readonly<{ question: Questions }>) {
   return (
     <span
       className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${DIFFICULTY_STYLES[question.difficulty]}`}
