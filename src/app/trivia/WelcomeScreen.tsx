@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ThemeToggle } from "@/src/app/theme/ThemeToggle";
 import { Button } from "@/src/components/ui/button";
+import { copy } from "@/src/lib/constants/copy";
 
 export function WelcomeScreen({ onStart }: { onStart: () => void }) {
   return (
@@ -13,21 +14,22 @@ export function WelcomeScreen({ onStart }: { onStart: () => void }) {
 
       <div className="welcome-blob flex w-full max-w-2xl flex-col items-center gap-6 bg-muted px-10 py-16 text-center shadow-xl sm:px-16 sm:py-20">
         <span className="rounded-full bg-accent px-4 py-1 text-sm font-medium text-accent-foreground">
-          10 questions · multiple choice
+          {copy.welcome.badge}
         </span>
 
         <div className="flex flex-col gap-3">
           <h1 className="font-heading text-5xl font-bold tracking-tight uppercase sm:text-6xl">
-            Trivia <span className="text-primary">Showdown</span>
+            {copy.welcome.titlePrefix}{" "}
+            <span className="text-primary">{copy.welcome.titleAccent}</span>
           </h1>
           <p className="max-w-md text-balance text-muted-foreground">
-            Test your knowledge against the clock and your friends.
+            {copy.welcome.tagline}
           </p>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Button onClick={onStart} size="lg" className="px-8 text-base">
-            Start
+            {copy.welcome.startButton}
           </Button>
           <Button
             render={<Link href="/leaderboard" />}
@@ -36,7 +38,7 @@ export function WelcomeScreen({ onStart }: { onStart: () => void }) {
             size="lg"
             className="px-8 text-base"
           >
-            Leaderboard
+            {copy.welcome.leaderboardButton}
           </Button>
         </div>
       </div>

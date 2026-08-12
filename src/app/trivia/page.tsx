@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/src/components/ui/card";
+import { copy } from "@/src/lib/constants/copy";
 import { WelcomeScreen } from "./WelcomeScreen";
 
 export default function Page() {
@@ -38,20 +39,22 @@ export default function Page() {
     <div className="flex min-h-screen flex-col items-center gap-6 px-4 py-10">
       <div className="flex w-full max-w-2xl items-center justify-between">
         <h1 className="font-heading text-2xl font-semibold">
-          Trivia Showdown
+          {copy.appName}
         </h1>
         <ThemeToggle />
       </div>
 
-      {status === "pending" && <p>Loading questions…</p>}
+      {status === "pending" && <p>{copy.trivia.loadingMessage}</p>}
 
       {status === "error" && (
         <div className="flex flex-col items-center gap-3">
           <p className="text-destructive">
-            {error instanceof Error ? error.message : "Something went wrong"}
+            {error instanceof Error
+              ? error.message
+              : copy.trivia.genericErrorMessage}
           </p>
           <Button onClick={() => refetch()} variant="outline">
-            Try again
+            {copy.trivia.retryButton}
           </Button>
         </div>
       )}
