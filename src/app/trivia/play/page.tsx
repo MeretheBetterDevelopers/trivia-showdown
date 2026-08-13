@@ -28,7 +28,6 @@ export default function Page() {
   if (!ready) {
     return <ReadyScreen onBegin={() => setReady(true)} />;
   }
-
   return (
     <>
       {status === "pending" && <QuestionCardSkeleton />}
