@@ -11,7 +11,6 @@ export const copy = {
     leaderboardButton: "Leaderboard",
   },
   trivia: {
-    loadingMessage: "Loading questions…",
     genericErrorMessage: "Something went wrong",
     retryButton: "Try again",
     questionLabel: "Question",
@@ -19,6 +18,12 @@ export const copy = {
     timeLeftSuffix: "s",
     nextButton: "Next question",
     seeResultsButton: "See results",
+    readyHeading: "Ready?",
+    readyTagline: "10 questions, 15 seconds each. Let's go!",
+    beginButton: "Begin",
+  },
+  appHeader: {
+    backLabel: "Back to Trivia Showdown",
   },
   results: {
     heading: "Round complete!",
