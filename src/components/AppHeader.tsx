@@ -4,11 +4,16 @@ import { copy } from "@/src/lib/constants/copy";
 
 export function AppHeader() {
   return (
-    <div className="flex w-full max-w-2xl items-center justify-between">
-      <Link href="/trivia" className="font-heading text-2xl font-semibold">
+    <>
+      <Link
+        href="/trivia"
+        className="fixed top-4 left-4 z-10 font-heading text-2xl font-semibold"
+      >
         {copy.appName}
       </Link>
-      <ThemeToggle />
-    </div>
+      <div className="fixed top-4 right-4 z-10">
+        <ThemeToggle />
+      </div>
+    </>
   );
 }
