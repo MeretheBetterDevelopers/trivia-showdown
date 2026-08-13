@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/src/components/ui/card";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Spinner } from "@/src/components/ui/spinner";
 
-export function QuestionCardSkeleton({}: {}) {
+export function QuestionCardSkeleton() {
   return (
     <Card className="w-full max-w-2xl rounded-3xl border border-white/30 bg-card/60 shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
       <CardContent className="flex flex-col gap-4">
