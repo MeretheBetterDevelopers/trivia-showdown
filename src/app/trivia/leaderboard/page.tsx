@@ -26,7 +26,7 @@ export default function Page() {
         {copy.leaderboard.heading}
       </h1>
 
-      {entries?.length === 0 && <EmptyLeaderboard />}
+      {entries?.length == 0 && <EmptyLeaderboard />}
 
       {entries && entries.length > 0 && (
         <div className="flex w-full flex-col items-center gap-6">

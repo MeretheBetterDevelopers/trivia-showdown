@@ -16,9 +16,6 @@ export default function LeaderboardList({
           <span className="w-6 shrink-0 text-center text-sm font-semibold text-muted-foreground">
             {index + startRank}
           </span>
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-chart-2 text-sm font-bold text-white">
-            {entry.name.charAt(0).toUpperCase()}
-          </span>
           <span className="flex-1 truncate font-medium">{entry.name}</span>
           <span className="text-sm text-muted-foreground">
             {entry.score} / {entry.total}
