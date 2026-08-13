@@ -5,6 +5,7 @@ import { prisma } from "@/src/lib/prisma";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
+  pages: { signIn: "/sign-in" },
   providers: [
     Credentials({
       credentials: {
@@ -52,6 +53,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.id = token.id as string;
       }
       return session;
+    },
+    authorized({ auth, request: { nextUrl } }) {
+      const isLoggedIn = !!auth?.user; //!! means that if auth?.user is truthy, isLoggedIn will be true, otherwise false
+      const isAuthPage =
+        nextUrl.pathname === "/sign-in" || nextUrl.pathname === "/sign-up";
+
+      if (isAuthPage) {
+        return true;
+      }
+      return isLoggedIn;
     },
   },
 });
