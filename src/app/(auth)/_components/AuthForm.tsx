@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { GameLogo } from "@/src/components/GameLogo";
 import {
   Card,
@@ -42,6 +42,13 @@ export function AuthForm({
   const [state, formAction, isPending] = useActionState(action, {
     error: null,
   });
+  // Controlled inputs: React 19 resets uncontrolled form fields after any
+  // action call that resolves, success or not — since the action returns
+  // an error object rather than throwing, that reset would otherwise wipe
+  // out what the user just typed even on a validation failure.
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <form action={formAction} className="w-full max-w-md">
@@ -60,6 +67,8 @@ export function AuthForm({
                 name="name"
                 placeholder="Your name"
                 required
+                value={name}
+                onChange={(event) => setName(event.target.value)}
               />
             </div>
           )}
@@ -71,6 +80,8 @@ export function AuthForm({
               name="email"
               placeholder="you@example.com"
               required
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
             />
           </div>
           <div className="flex flex-col gap-1.5">
@@ -81,6 +92,8 @@ export function AuthForm({
               name="password"
               placeholder="••••••••"
               required
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
             />
           </div>
           {state.error && (
