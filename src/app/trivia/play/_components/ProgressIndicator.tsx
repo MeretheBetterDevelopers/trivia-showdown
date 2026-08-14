@@ -1,4 +1,6 @@
-export default function ProgressIndicator({
+import { memo } from "react";
+
+function ProgressIndicator({
   questionNumber,
   total,
 }: Readonly<{
@@ -18,3 +20,5 @@ export default function ProgressIndicator({
     </div>
   );
 }
+
+export default memo(ProgressIndicator);

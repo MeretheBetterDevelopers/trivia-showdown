@@ -1,35 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { QUESTION_DURATION_SECONDS } from "@/src/lib/constants/game";
+import { useCallback, useState } from "react";
 import { Questions } from "@/src/types/game/Question";
 
 export function useTriviaGame(questions: Questions[]) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(QUESTION_DURATION_SECONDS);
 
   const isFinished = currentIndex >= questions.length;
   const currentQuestion = isFinished ? undefined : questions[currentIndex];
   const isAnswered = selectedChoice !== null;
-
-  // Countdown for the current question; an empty selection at 0 counts as wrong.
-  useEffect(() => {
-    if (isFinished || isAnswered) return;
-
-    const timeoutId = setTimeout(() => {
-      if (timeLeft <= 0) {
-        setSelectedChoice("");
-        setTimeLeft(0);
-      } else {
-        setTimeLeft(timeLeft - 1);
-      }
-    }, 1000);
-    return () => clearTimeout(timeoutId);
-  }, [timeLeft, isAnswered, isFinished]);
-
-  console.log("render");
 
   const selectChoice = useCallback(
     (choice: string) => {
@@ -42,10 +23,14 @@ export function useTriviaGame(questions: Questions[]) {
     [isAnswered, isFinished, currentQuestion],
   );
 
+  // An empty selection when the timer runs out counts as wrong.
+  const handleTimeUp = useCallback(() => {
+    setSelectedChoice((current) => current ?? "");
+  }, []);
+
   const goToNext = useCallback(() => {
     setCurrentIndex((i) => i + 1);
     setSelectedChoice(null);
-    setTimeLeft(QUESTION_DURATION_SECONDS);
   }, []);
 
   const total = questions.length;
@@ -61,9 +46,9 @@ export function useTriviaGame(questions: Questions[]) {
     total,
     selectedChoice,
     isAnswered,
-    timeLeft,
     score,
     selectChoice,
+    handleTimeUp,
     goToNext,
   };
 }

@@ -31,7 +31,7 @@ export function GameScreen({
       total={game.total}
       selectedChoice={game.selectedChoice}
       isAnswered={game.isAnswered}
-      timeLeft={game.timeLeft}
+      onTimeUp={game.handleTimeUp}
       onSelectChoice={game.selectChoice}
       onNext={game.goToNext}
     />

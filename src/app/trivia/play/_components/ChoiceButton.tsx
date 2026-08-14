@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Check, X } from "lucide-react";
 import { clsx } from "clsx";
 const CHOICE_BADGE_COLORS = [
@@ -7,7 +8,7 @@ const CHOICE_BADGE_COLORS = [
   "bg-chart-4",
 ];
 
-export default function ChoiceButton({
+function ChoiceButton({
   choice,
   index,
   isAnswered,
@@ -65,3 +66,5 @@ export default function ChoiceButton({
     </button>
   );
 }
+
+export default memo(ChoiceButton);
