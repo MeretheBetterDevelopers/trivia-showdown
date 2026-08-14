@@ -4,10 +4,10 @@ import { copy } from "@/src/lib/constants/copy";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/src/components/ui/card";
 import { Questions } from "@/src/types/game/Question";
-import ProgressIndicator from "./progress-indicator";
-import DifficultyPlate from "./difficulty-plate";
-import TimeLeft from "./time-left";
-import ChoiseButton from "./choice-button";
+import ProgressIndicator from "./ProgressIndicator";
+import DifficultyPlate from "./DifficultyPlate";
+import TimeLeft from "./TimeLeft";
+import ChoiceButton from "./ChoiceButton";
 
 export function QuestionCard({
   question,
@@ -49,7 +49,7 @@ export function QuestionCard({
 
             return (
               <li key={`${question.id}-${index}`}>
-                <ChoiseButton
+                <ChoiceButton
                   choice={choice}
                   index={index}
                   isAnswered={isAnswered}
