@@ -14,7 +14,8 @@ datasource db {
 
 model LeaderboardEntry {
   id       String   @id @default(cuid())
-  name     String
+  userId   String
+  user     User     @relation(fields: [userId], references: [id])
   score    Int
   total    Int
   playedAt DateTime @default(now())
@@ -27,4 +28,5 @@ model User {
   name         String
   createdAt    DateTime @default(now())
   imageUrl     String?
+  entries      LeaderboardEntry[]
 }
