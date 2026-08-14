@@ -10,6 +10,7 @@ const signUpSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters long"),
+  imageUrl: z.string().url("Invalid image URL").nullish(),
 });
 
 type SignUpState = { error: string | null };
@@ -23,12 +24,13 @@ export async function signUp(
     name: formData.get("name"),
     email: formData.get("email"),
     password: formData.get("password"),
+    imageUrl: formData.get("imageUrl"),
   });
   if (!result.success) {
     return { error: result.error.issues[0]?.message ?? "Invalid form data" };
   }
 
-  const { name, email, password } = result.data;
+  const { name, email, password, imageUrl } = result.data;
 
   // Check if the user already exists
   const existingUser = await prisma.user.findUnique({
@@ -49,6 +51,7 @@ export async function signUp(
       name,
       email,
       passwordHash,
+      imageUrl,
     },
   });
 

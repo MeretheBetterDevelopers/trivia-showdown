@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { useRef } from "react";
+import { X } from "lucide-react";
 import { GameLogo } from "@/src/components/GameLogo";
 import {
   Card,
@@ -13,6 +14,13 @@ import {
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/src/components/ui/avatar";
+import { useAuthForm } from "../_hooks/useAuthForm";
+import { copy } from "@/src/lib/constants/copy";
 
 type AuthFormState = { error: string | null };
 type AuthFormAction = (
@@ -25,7 +33,7 @@ export function AuthForm({
   title,
   submitLabel,
   pendingLabel,
-  showNameField = false,
+  showSignUpOptions = false,
   footerText,
   footerLinkLabel,
   footerLinkHref,
@@ -34,33 +42,39 @@ export function AuthForm({
   title: string;
   submitLabel: string;
   pendingLabel: string;
-  showNameField?: boolean;
+  showSignUpOptions?: boolean;
   footerText: string;
   footerLinkLabel: string;
   footerLinkHref: string;
 }>) {
-  const [state, formAction, isPending] = useActionState(action, {
-    error: null,
-  });
-  // Controlled inputs: React 19 resets uncontrolled form fields after any
-  // action call that resolves, success or not — since the action returns
-  // an error object rather than throwing, that reset would otherwise wipe
-  // out what the user just typed even on a validation failure.
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+  const {
+    name,
+    setName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    previewUrl,
+    isUploading,
+    imageError,
+    state,
+    isPending,
+    handleImageChange,
+    handleRemoveImage,
+    handleSubmit,
+  } = useAuthForm(action);
+  const imageInputRef = useRef<HTMLInputElement>(null);
   return (
-    <form action={formAction} className="w-full max-w-md">
+    <form onSubmit={handleSubmit} className="w-full max-w-md">
       <Card className="rounded-3xl border border-white/30 bg-card/60 shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
         <CardHeader className="flex flex-col items-center gap-3 text-center">
           <GameLogo className="h-10 w-20" />
           <CardTitle className="text-2xl">{title}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
-          {showNameField && (
+          {showSignUpOptions && (
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">{copy.auth.signUp.nameLabel}</Label>
               <Input
                 id="name"
                 type="text"
@@ -73,7 +87,7 @@ export function AuthForm({
             </div>
           )}
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{copy.auth.signUp.emailLabel}</Label>
             <Input
               id="email"
               type="email"
@@ -85,7 +99,7 @@ export function AuthForm({
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{copy.auth.signUp.passwordLabel}</Label>
             <Input
               id="password"
               type="password"
@@ -96,8 +110,49 @@ export function AuthForm({
               onChange={(event) => setPassword(event.target.value)}
             />
           </div>
+          {showSignUpOptions && (
+            <div className="flex flex-col gap-1.5 items-center">
+              <div className="relative">
+                <label htmlFor="image" className="cursor-pointer">
+                  <Avatar className="size-20">
+                    <AvatarImage
+                      src={previewUrl ?? undefined}
+                      alt="Profile picture"
+                    />
+                    <AvatarFallback>{isUploading ? "…" : "+"}</AvatarFallback>
+                  </Avatar>
+                  <input
+                    id="image"
+                    ref={imageInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                </label>
+                {previewUrl && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleRemoveImage();
+                      if (imageInputRef.current) {
+                        imageInputRef.current.value = "";
+                      }
+                    }}
+                    aria-label="Remove image"
+                    className="absolute -top-1 -right-1 flex size-6 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow"
+                  >
+                    <X className="size-3.5" />
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
           {state.error && (
             <p className="text-sm text-destructive">{state.error}</p>
+          )}
+          {imageError && (
+            <p className="text-sm text-destructive">{imageError}</p>
           )}
         </CardContent>
         <CardFooter className="flex flex-col gap-4">

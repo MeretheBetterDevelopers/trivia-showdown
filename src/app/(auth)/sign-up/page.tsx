@@ -8,7 +8,7 @@ export default function SignUpPage() {
       title="Sign up"
       submitLabel="Sign up"
       pendingLabel="Signing up..."
-      showNameField
+      showSignUpOptions
       footerText="Already have an account?"
       footerLinkLabel="Sign in"
       footerLinkHref="/sign-in"
