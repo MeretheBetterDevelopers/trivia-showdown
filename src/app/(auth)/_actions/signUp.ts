@@ -1,16 +1,9 @@
 "use server";
 
-import { z } from "zod";
 import bcrypt from "bcrypt";
 import { prisma } from "@/src/lib/prisma";
 import { signInWithCredentials } from "../_lib/signInWithCredentials";
-
-const signUpSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters long"),
-  imageUrl: z.string().url("Invalid image URL").nullish(),
-});
+import { signUpSchema } from "@/src/lib/schemas/auth";
 
 type SignUpState = { error: string | null };
 

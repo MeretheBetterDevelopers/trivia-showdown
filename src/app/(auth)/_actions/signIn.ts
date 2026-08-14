@@ -1,12 +1,7 @@
 "use server";
 
-import { z } from "zod";
 import { signInWithCredentials } from "../_lib/signInWithCredentials";
-
-const signInSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(1, "Password is required"),
-});
+import { signInSchema } from "@/src/lib/schemas/auth";
 
 type SignInState = { error: string | null };
 
