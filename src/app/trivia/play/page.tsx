@@ -12,7 +12,9 @@ import { copy } from "@/src/lib/constants/copy";
 
 export default function Page() {
   const [ready, setReady] = useState(false);
-  const [roundId, setRoundId] = useState(0);
+  // Seeded per mount (not a fixed 0) so navigating away and back never
+  // reuses a stale cache entry from the last time this page was visited.
+  const [roundId, setRoundId] = useState(() => Date.now());
 
   const {
     data: questions,
@@ -23,6 +25,7 @@ export default function Page() {
     queryKey: ["trivia-questions", roundId],
     queryFn: () => fetchTriviaQuestions(QUESTION_COUNT),
     enabled: ready,
+    gcTime: 0,
   });
 
   if (!ready) {

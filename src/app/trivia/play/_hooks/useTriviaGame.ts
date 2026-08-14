@@ -29,6 +29,8 @@ export function useTriviaGame(questions: Questions[]) {
     return () => clearTimeout(timeoutId);
   }, [timeLeft, isAnswered, isFinished]);
 
+  console.log("render");
+
   const selectChoice = useCallback(
     (choice: string) => {
       if (isAnswered || isFinished || !currentQuestion) return;
