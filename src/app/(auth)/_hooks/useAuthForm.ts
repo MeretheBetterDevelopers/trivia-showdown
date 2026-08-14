@@ -3,8 +3,6 @@
 import { startTransition, useState } from "react";
 import { unstable_rethrow } from "next/navigation";
 import { uploadImage } from "@/src/app/services/cloudinary";
-import { useRef } from "react";
-import { X } from "lucide-react";
 
 type AuthFormState = { error: string | null };
 type AuthFormAction = (
