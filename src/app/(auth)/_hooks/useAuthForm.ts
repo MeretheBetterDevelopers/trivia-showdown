@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useState } from "react";
+import { useState, useTransition } from "react";
 import { unstable_rethrow } from "next/navigation";
 import { uploadImage } from "@/src/app/services/cloudinary";
 
@@ -21,7 +21,7 @@ export function useAuthForm(action: AuthFormAction) {
   const [imageError, setImageError] = useState<string | null>(null);
 
   const [state, setState] = useState<AuthFormState>({ error: null });
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -62,7 +62,6 @@ export function useAuthForm(action: AuthFormAction) {
 
     setState({ error: null });
     startTransition(async () => {
-      setIsPending(true);
       try {
         setState(await action({ error: null }, formData));
       } catch (error) {
@@ -73,8 +72,6 @@ export function useAuthForm(action: AuthFormAction) {
           error:
             "Couldn't reach the server. Check your connection and try again.",
         });
-      } finally {
-        setIsPending(false);
       }
     });
   }

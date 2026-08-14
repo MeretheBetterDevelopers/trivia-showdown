@@ -64,6 +64,7 @@ export function AuthForm({
     handleSubmit,
   } = useAuthForm(action);
   const imageInputRef = useRef<HTMLInputElement>(null);
+
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-md">
       <Card className="rounded-3xl border border-white/30 bg-card/60 shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
