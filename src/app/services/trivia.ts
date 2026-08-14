@@ -12,13 +12,15 @@ export const fetchTriviaQuestions = async (
   amount?: number,
 ): Promise<Questions[]> => {
   const url = new URL(TRIVIA_API_URL);
-  amount && url.searchParams.set("amount", String(amount));
+  if (amount) url.searchParams.set("amount", String(amount));
 
   let data: TriviaApiResponse;
   try {
     const response = await fetch(url, { cache: "no-store" });
     if (response.status === 429) {
-      throw new Error("Trivia API rate limit reached — please wait a moment and try again.");
+      throw new Error(
+        "Trivia API rate limit reached — please wait a moment and try again.",
+      );
     }
     if (!response.ok) {
       throw new Error(`Trivia API request failed (${response.status})`);
