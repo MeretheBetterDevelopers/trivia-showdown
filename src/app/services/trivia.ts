@@ -10,13 +10,9 @@ import { Questions } from "@/src/types/game/Question";
 //fetch and queries for trivia questions
 export const fetchTriviaQuestions = async (
   amount?: number,
-  category?: number,
-  difficulty?: "easy" | "medium" | "hard",
 ): Promise<Questions[]> => {
   const url = new URL(TRIVIA_API_URL);
   amount && url.searchParams.set("amount", String(amount));
-  category && url.searchParams.set("category", String(category));
-  difficulty && url.searchParams.set("difficulty", difficulty);
 
   let data: TriviaApiResponse;
   try {

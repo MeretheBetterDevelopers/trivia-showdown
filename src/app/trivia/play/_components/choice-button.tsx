@@ -1,6 +1,5 @@
 import { Check, X } from "lucide-react";
 import { clsx } from "clsx";
-
 const CHOICE_BADGE_COLORS = [
   "bg-chart-1",
   "bg-chart-2",

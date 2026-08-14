@@ -58,14 +58,15 @@ export const copy = {
       footerText: "Already have an account?",
       footerLinkLabel: "Log in",
     },
-    logIn: {
-      heading: "Log in",
+    signIn: {
+      heading: "Sign in",
       emailLabel: "Email",
       passwordLabel: "Password",
-      submitButton: "Log in",
-      pendingButton: "Logging in…",
+      submitButton: "Sign in",
+      pendingButton: "Signing in…",
       footerText: "Don't have an account?",
       footerLinkLabel: "Sign up",
     },
+    signOutButton: "Sign out",
   },
 } as const;

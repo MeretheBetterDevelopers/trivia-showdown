@@ -162,7 +162,8 @@ export function AuthForm({
             className="w-full"
             disabled={isPending}
           >
-            {isPending ? pendingLabel : submitLabel}
+            {/*TODO: not really working, check why*/}
+            {isPending ? pendingLabel : submitLabel}{" "}
           </Button>
           <p className="text-sm text-muted-foreground">
             {footerText}{" "}

@@ -3,8 +3,7 @@
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import { prisma } from "@/src/lib/prisma";
-import { signIn } from "@/src/lib/auth";
-import { redirect } from "next/navigation";
+import { signInWithCredentials } from "../_lib/signInWithCredentials";
 
 const signUpSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -55,25 +54,10 @@ export async function signUp(
     },
   });
 
-  // Sign in the user after successful sign-up.
-  // signIn() throws on failure rather than returning an error result, and
-  // returns a plain URL string (not an object) on success. A wrong email or
-  // password throws "CredentialsSignin"; anything else (e.g. authorize()
-  // itself throwing because the database is unreachable) throws a different
-  // error type, so it needs a different message.
-  try {
-    await signIn("credentials", { redirect: false, email, password });
-  } catch (error) {
-    if (error instanceof Error && error.name === "CredentialsSignin") {
-      return {
-        error: "Account created, but sign-in failed. Please try logging in.",
-      };
-    }
-    return {
-      error:
-        "Account created, but couldn't reach the server to sign you in. Please try logging in shortly.",
-    };
-  }
-
-  redirect("/trivia");
+  return signInWithCredentials(email, password, {
+    invalidCredentials:
+      "Account created, but sign-in failed. Please try logging in.",
+    serverUnreachable:
+      "Account created, but couldn't reach the server to sign you in. Please try logging in shortly.",
+  });
 }
