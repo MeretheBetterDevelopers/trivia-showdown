@@ -28,11 +28,19 @@ export async function signInAction(
 
   // Attempt to sign in the user.
   // signIn() throws on failure rather than returning an error result, and
-  // returns a plain URL string (not an object) on success.
+  // returns a plain URL string (not an object) on success. A wrong email or
+  // password throws "CredentialsSignin"; anything else (e.g. authorize()
+  // itself throwing because the database is unreachable) throws a different
+  // error type, so it needs a different message.
   try {
     await signIn("credentials", { redirect: false, email, password });
-  } catch {
-    return { error: "Invalid email or password" };
+  } catch (error) {
+    if (error instanceof Error && error.name === "CredentialsSignin") {
+      return { error: "Invalid email or password" };
+    }
+    return {
+      error: "Couldn't reach the server. Please try again shortly.",
+    };
   }
 
   redirect("/trivia");
