@@ -58,7 +58,10 @@ export function AdminUsersForm({
                 <p className="font-medium">
                   {user.name}
                   {isCurrentUser && (
-                    <span className="text-muted-foreground"> (you)</span>
+                    <span className="text-muted-foreground">
+                      {" "}
+                      {copy.roles.you}
+                    </span>
                   )}
                 </p>
                 <p className="text-sm text-muted-foreground">{user.email}</p>
@@ -73,8 +76,8 @@ export function AdminUsersForm({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="MEMBER">Member</SelectItem>
-                  <SelectItem value="ADMIN">Admin</SelectItem>
+                  <SelectItem value="MEMBER">{copy.roles.member}</SelectItem>
+                  <SelectItem value="ADMIN">{copy.roles.admin}</SelectItem>
                 </SelectContent>
               </Select>
             </li>

@@ -14,6 +14,11 @@ export const copy = {
     startButton: "Start",
     leaderboardButton: "Leaderboard",
   },
+  roles: {
+    you: "(You)",
+    admin: "ADMIN",
+    member: "MEMBER",
+  },
   trivia: {
     genericErrorMessage: "Something went wrong",
     retryButton: "Try again",
