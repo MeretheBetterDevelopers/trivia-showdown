@@ -39,7 +39,7 @@ export function QuestionCard({
           <DifficultyPlate question={question} />
         </div>
         <TimeLeft
-          key={question.id}
+          resetKey={question.id}
           isAnswered={isAnswered}
           onTimeUp={onTimeUp}
         />

@@ -90,3 +90,17 @@ body::after {
     animation: none;
   }
 }
+
+/* The question timer bar: shrinks from full to empty over the question's
+   duration. animation-play-state (set inline, per instance) is what lets
+   it pause instantly and exactly where it is when a question is answered —
+   unlike a CSS transition, a paused animation has no "in-flight glide" to
+   finish playing out. */
+@keyframes countdown-shrink {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
