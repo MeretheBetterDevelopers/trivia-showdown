@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Questions } from "@/src/types/game/Question";
 
 const DIFFICULTY_STYLES: Record<Questions["difficulty"], string> = {
@@ -6,9 +7,7 @@ const DIFFICULTY_STYLES: Record<Questions["difficulty"], string> = {
   hard: "bg-destructive/10 text-destructive",
 };
 
-export default function DifficultyPlate({
-  question,
-}: Readonly<{ question: Questions }>) {
+function DifficultyPlate({ question }: Readonly<{ question: Questions }>) {
   return (
     <span
       className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${DIFFICULTY_STYLES[question.difficulty]}`}
@@ -17,3 +16,5 @@ export default function DifficultyPlate({
     </span>
   );
 }
+
+export default memo(DifficultyPlate);

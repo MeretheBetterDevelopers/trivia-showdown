@@ -1,14 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { GameLogo } from "@/src/components/GameLogo";
 import { copy } from "@/src/lib/constants/copy";
-import {
-  getSavedPlayerName,
-  saveLeaderboardEntry,
-  savePlayerName,
-} from "@/src/lib/storage/leaderboard";
+import { saveScore } from "../_actions/saveScore";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent } from "@/src/components/ui/card";
 
@@ -29,16 +25,22 @@ export function ResultsScreen({
   total: number;
   onPlayAgain: () => void;
 }>) {
-  const [name, setName] = useState(() => getSavedPlayerName());
-  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+  const hasSavedRef = useRef(false);
 
-  const handleSave = () => {
-    const trimmedName = name.trim();
-    if (!trimmedName) return;
-    savePlayerName(trimmedName);
-    saveLeaderboardEntry({ name: trimmedName, score, total });
-    setSaved(true);
-  };
+  useEffect(() => {
+    if (hasSavedRef.current) return;
+    hasSavedRef.current = true;
+
+    startTransition(async () => {
+      try {
+        await saveScore(score, total);
+      } catch {
+        setError("Couldn't save your score to the leaderboard.");
+      }
+    });
+  }, [score, total]);
 
   return (
     <Card className="w-full max-w-2xl rounded-3xl border border-white/30 bg-card/60 shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
@@ -59,32 +61,20 @@ export function ResultsScreen({
 
         <p className="text-xl font-medium">{getReaction(score, total)}</p>
 
-        {saved ? (
-          <p className="font-medium text-success">
-            {copy.leaderboard.scoreSavedMessage}
+        {isPending && (
+          <p className="text-sm text-muted-foreground">
+            {copy.leaderboard.savingButton}
           </p>
-        ) : (
-          <div className="flex w-full max-w-xs flex-wrap items-center justify-center gap-2">
-            <input
-              type="text"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              placeholder={copy.leaderboard.nameInputPlaceholder}
-              maxLength={30}
-              className="min-w-0 flex-1 rounded-full border border-border bg-card/75 px-4 py-2 text-sm backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            />
-            <Button onClick={handleSave} disabled={!name.trim()}>
-              {copy.leaderboard.saveScoreButton}
-            </Button>
-          </div>
         )}
+
+        {error && <p className="text-sm text-destructive">{error}</p>}
 
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Button onClick={onPlayAgain} size="lg">
             {copy.results.playAgainButton}
           </Button>
           <Button
-            render={<Link href="/trivia/leaderboard" />}
+            render={<Link href="/trivia/leaderboard?from=results" />}
             nativeButton={false}
             variant="outline"
             size="lg"

@@ -1,24 +1,22 @@
-"use client";
-
-import { useSyncExternalStore } from "react";
-import { getLeaderboardEntries } from "@/src/lib/storage/leaderboard";
+import { prisma } from "@/src/lib/prisma";
 import { copy } from "@/src/lib/constants/copy";
 import EmptyLeaderboard from "./_components/EmptyLeaderboard";
 import LeaderboardList from "./_components/LeaderboardList";
 import Podium from "./_components/Podium";
+import { Button } from "@/src/components/ui/button";
+import Link from "next/link";
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ from?: string }>;
+}) {
+  const { from } = await searchParams;
+  const cameFromResults = from === "results";
+  const rows = await prisma.leaderboardEntry.findMany({
+    include: { user: { select: { name: true, imageUrl: true } } },
+  });
 
-const noopSubscribe = () => () => {};
-
-export default function Page() {
-  // Server and first client render must match (localStorage isn't
-  // available server-side), so the real read waits for this.
-  const mounted = useSyncExternalStore(
-    noopSubscribe,
-    () => true,
-    () => false,
-  );
-
-  const entries = mounted ? getLeaderboardEntries() : null;
+  const entries = rows.sort((a, b) => b.score / b.total - a.score / a.total);
 
   return (
     <>
@@ -26,12 +24,21 @@ export default function Page() {
         {copy.leaderboard.heading}
       </h1>
 
-      {entries?.length == 0 && <EmptyLeaderboard />}
+      {entries.length === 0 && <EmptyLeaderboard />}
 
-      {entries && entries.length > 0 && (
+      {entries.length > 0 && (
         <div className="flex w-full flex-col items-center gap-6">
           <Podium entries={entries} />
           <LeaderboardList entries={entries.slice(3)} startRank={4} />
+          <Button
+            render={<Link href="/trivia/play" />}
+            nativeButton={false}
+            size="lg"
+          >
+            {cameFromResults
+              ? copy.leaderboard.playAgainButton
+              : copy.leaderboard.playNowButton}
+          </Button>
         </div>
       )}
     </>

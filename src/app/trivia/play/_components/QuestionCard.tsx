@@ -15,7 +15,7 @@ export function QuestionCard({
   total,
   selectedChoice,
   isAnswered,
-  timeLeft,
+  onTimeUp,
   onSelectChoice,
   onNext,
 }: Readonly<{
@@ -24,11 +24,12 @@ export function QuestionCard({
   total: number;
   selectedChoice: string | null;
   isAnswered: boolean;
-  timeLeft: number;
+  onTimeUp: () => void;
   onSelectChoice: (choice: string) => void;
   onNext: () => void;
 }>) {
   const isLastQuestion = questionNumber === total;
+  console.log("rerender");
 
   return (
     <Card className="w-full max-w-2xl rounded-3xl border border-white/30 bg-card/60 shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
@@ -37,7 +38,11 @@ export function QuestionCard({
           <ProgressIndicator questionNumber={questionNumber} total={total} />
           <DifficultyPlate question={question} />
         </div>
-        <TimeLeft timeLeft={timeLeft} />
+        <TimeLeft
+          resetKey={question.id}
+          isAnswered={isAnswered}
+          onTimeUp={onTimeUp}
+        />
         <h2 className="font-heading text-2xl font-bold text-balance">
           {question.text}
         </h2>
