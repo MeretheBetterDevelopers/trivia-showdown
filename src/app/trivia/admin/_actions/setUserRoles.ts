@@ -9,7 +9,15 @@ const ROLE_FIELD_PREFIX = "role-";
 
 export async function setUserRoles(formData: FormData) {
   const session = await auth();
-  if (session?.user?.role !== "ADMIN") {
+  if (!session?.user?.id) {
+    throw new Error("Not authorized");
+  }
+  const currentUser = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { role: true },
+  });
+
+  if (currentUser?.role !== "ADMIN") {
     throw new Error("Not authorized");
   }
 
