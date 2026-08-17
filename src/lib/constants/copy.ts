@@ -47,4 +47,26 @@ export const copy = {
     lightLabel: "☀️ Light",
     darkLabel: "🌙 Dark",
   },
+  auth: {
+    signUp: {
+      heading: "Sign up",
+      nameLabel: "Name",
+      emailLabel: "Email",
+      passwordLabel: "Password",
+      submitButton: "Sign up",
+      pendingButton: "Signing up…",
+      footerText: "Already have an account?",
+      footerLinkLabel: "Log in",
+    },
+    signIn: {
+      heading: "Sign in",
+      emailLabel: "Email",
+      passwordLabel: "Password",
+      submitButton: "Sign in",
+      pendingButton: "Signing in…",
+      footerText: "Don't have an account?",
+      footerLinkLabel: "Sign up",
+    },
+    signOutButton: "Sign out",
+  },
 } as const;

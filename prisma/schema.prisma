@@ -26,4 +26,5 @@ model User {
   passwordHash String
   name         String
   createdAt    DateTime @default(now())
+  imageUrl     String?
 }

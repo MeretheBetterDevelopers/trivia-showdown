@@ -1,13 +1,7 @@
 "use server";
 
-import { z } from "zod";
-import { signIn } from "@/src/lib/auth";
-import { redirect } from "next/navigation";
-
-const signInSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(1, "Password is required"),
-});
+import { signInWithCredentials } from "../_lib/signInWithCredentials";
+import { signInSchema } from "@/src/lib/schemas/auth";
 
 type SignInState = { error: string | null };
 
@@ -26,14 +20,8 @@ export async function signInAction(
 
   const { email, password } = result.data;
 
-  // Attempt to sign in the user.
-  // signIn() throws on failure rather than returning an error result, and
-  // returns a plain URL string (not an object) on success.
-  try {
-    await signIn("credentials", { redirect: false, email, password });
-  } catch {
-    return { error: "Invalid email or password" };
-  }
-
-  redirect("/trivia");
+  return signInWithCredentials(email, password, {
+    invalidCredentials: "Invalid email or password",
+    serverUnreachable: "Couldn't reach the server. Please try again shortly.",
+  });
 }
