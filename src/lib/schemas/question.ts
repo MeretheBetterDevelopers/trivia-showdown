@@ -14,6 +14,10 @@ export const questionSchema = z
   .refine((data) => data.choices.includes(data.correctAnswer), {
     message: "Correct answer must be one of the choices",
     path: ["correctAnswer"],
+  })
+  .refine((data) => new Set(data.choices).size === data.choices.length, {
+    message: "Two answers can't be the same — each choice must be unique",
+    path: ["choices"],
   });
 
 export type QuestionInput = z.infer<typeof questionSchema>;

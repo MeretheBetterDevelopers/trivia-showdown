@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { X } from "lucide-react";
 import { createQuestion } from "../_actions/createQuestion";
 import { uploadImage } from "@/src/app/services/cloudinary";
+import { useImagePicker } from "@/src/hooks/useImagePicker";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
@@ -19,31 +20,16 @@ import categories from "@/src/lib/constants/categories.json";
 
 export function CreateQuestionForm() {
   const [error, setError] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [imageError, setImageError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
-  const imageInputRef = useRef<HTMLInputElement>(null);
-
-  function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setImageError(null);
-    setImageFile(file);
-    setPreviewUrl(URL.createObjectURL(file));
-  }
-
-  function handleRemoveImage() {
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setImageError(null);
-    setImageFile(null);
-    setPreviewUrl(null);
-    if (imageInputRef.current) {
-      imageInputRef.current.value = "";
-    }
-  }
+  const {
+    imageFile,
+    previewUrl,
+    imageError,
+    setImageError,
+    inputRef,
+    handleImageChange,
+    handleRemoveImage,
+  } = useImagePicker();
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -67,9 +53,7 @@ export function CreateQuestionForm() {
 
       if (!result.error) {
         form.reset();
-        if (previewUrl) URL.revokeObjectURL(previewUrl);
-        setImageFile(null);
-        setPreviewUrl(null);
+        handleRemoveImage();
       }
     });
   }
@@ -143,7 +127,7 @@ export function CreateQuestionForm() {
         <Label htmlFor="image">{copy.admin.imageLabel}</Label>
         <Input
           id="image"
-          ref={imageInputRef}
+          ref={inputRef}
           type="file"
           accept="image/*"
           onChange={handleImageChange}
@@ -166,7 +150,9 @@ export function CreateQuestionForm() {
             </button>
           </div>
         )}
-        {imageError && <p className="text-sm text-destructive">{imageError}</p>}
+        {imageError && (
+          <p className="text-sm text-destructive">{imageError}</p>
+        )}
       </div>
 
       {error && <p className="text-sm text-destructive">{error}</p>}

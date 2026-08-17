@@ -43,11 +43,11 @@ export function QuestionDetailDialog({
               />
             )}
             <ul className="flex flex-col gap-2">
-              {question.choices.map((choice) => {
+              {question.choices.map((choice, index) => {
                 const isCorrect = choice === question.correctAnswer;
                 return (
                   <li
-                    key={choice}
+                    key={index}
                     className={clsx(
                       "flex items-center gap-2 rounded-lg border px-3 py-2 text-sm",
                       isCorrect

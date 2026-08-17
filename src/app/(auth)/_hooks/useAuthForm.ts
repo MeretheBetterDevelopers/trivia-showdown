@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { unstable_rethrow } from "next/navigation";
 import { uploadImage } from "@/src/app/services/cloudinary";
+import { useImagePicker } from "@/src/hooks/useImagePicker";
 
 type AuthFormState = { error: string | null };
 type AuthFormAction = (
@@ -15,30 +16,20 @@ export function useAuthForm(action: AuthFormAction) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const {
+    imageFile,
+    previewUrl,
+    imageError,
+    setImageError,
+    inputRef,
+    handleImageChange,
+    handleRemoveImage,
+  } = useImagePicker();
   const [isUploading, setIsUploading] = useState(false);
-  const [imageError, setImageError] = useState<string | null>(null);
 
   const [state, setState] = useState<AuthFormState>({ error: null });
   const [isPending, startTransition] = useTransition();
 
-  function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setImageError(null);
-    setImageFile(file);
-    setPreviewUrl(URL.createObjectURL(file));
-  }
-
-  function handleRemoveImage() {
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setImageError(null);
-    setImageFile(null);
-    setPreviewUrl(null);
-  }
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -51,9 +42,7 @@ export function useAuthForm(action: AuthFormAction) {
         setImageError(
           "Couldn't upload image. Try again, or sign up without one.",
         );
-        if (previewUrl) URL.revokeObjectURL(previewUrl);
-        setImageFile(null);
-        setPreviewUrl(null);
+        handleRemoveImage();
         return;
       } finally {
         setIsUploading(false);
@@ -86,6 +75,7 @@ export function useAuthForm(action: AuthFormAction) {
     previewUrl,
     isUploading,
     imageError,
+    inputRef,
     state,
     isPending,
     handleImageChange,
