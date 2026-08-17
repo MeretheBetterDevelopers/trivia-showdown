@@ -4,6 +4,7 @@ import { getCurrentAdmin } from "@/src/lib/auth";
 import { prisma } from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { questionSchema } from "@/src/lib/schemas/question";
+import { deleteCloudinaryImage } from "@/src/lib/actions/deleteCloudinaryImage";
 
 type CreateQuestionState = { error: string | null };
 
@@ -18,6 +19,7 @@ export async function createQuestion(
 
   const choices = formData.getAll("choices").map(String);
   const correctAnswerIndex = Number(formData.get("correctAnswerIndex"));
+  const rawImageUrl = formData.get("imageUrl");
 
   const result = questionSchema.safeParse({
     text: formData.get("text"),
@@ -25,10 +27,17 @@ export async function createQuestion(
     correctAnswer: choices[correctAnswerIndex],
     category: formData.get("category") || undefined,
     difficulty: formData.get("difficulty"),
-    imageUrl: formData.get("imageUrl"),
+    imageUrl: rawImageUrl,
   });
 
   if (!result.success) {
+    if (typeof rawImageUrl === "string" && rawImageUrl) {
+      try {
+        await deleteCloudinaryImage(rawImageUrl);
+      } catch (error) {
+        console.error("Failed to delete Cloudinary image:", error);
+      }
+    }
     return { error: result.error.issues[0]?.message ?? "Invalid question" };
   }
 
