@@ -6,6 +6,7 @@ export const copy = {
     save: "Save",
     saving: "Saving…",
     delete: "Delete",
+    cancel: "Cancel",
   },
   welcome: {
     badge: "10 questions · multiple choice",
@@ -77,6 +78,9 @@ export const copy = {
     difficultyMedium: "Medium",
     difficultyHard: "Hard",
     createQuestionButton: "Create question",
+    deleteQuestionConfirmTitle: "Delete this question?",
+    deleteQuestionConfirmDescription:
+      "This can't be undone. The question will be permanently removed.",
     questionDeletedMessage: "Question deleted",
     questionDeleteErrorMessage: "Couldn't delete question. Please try again.",
     noQuestionsMessage: "No questions yet — create the first one above.",

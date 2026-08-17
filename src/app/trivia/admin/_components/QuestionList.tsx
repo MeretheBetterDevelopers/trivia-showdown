@@ -1,29 +1,15 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { toast } from "sonner";
-import { deleteQuestion } from "../_actions/deleteQuestion";
-import { Button } from "@/src/components/ui/button";
+import { useState } from "react";
 import { copy } from "@/src/lib/constants/copy";
 import { QuestionDetailDialog, QuestionRow } from "./QuestionDetailDialog";
+import { DeleteQuestionButton } from "./DeleteQuestionButton";
 
 export function QuestionList({
   questions,
 }: Readonly<{ questions: QuestionRow[] }>) {
-  const [isPending, startTransition] = useTransition();
   const [selectedQuestion, setSelectedQuestion] =
     useState<QuestionRow | null>(null);
-
-  function handleDelete(id: string) {
-    startTransition(async () => {
-      try {
-        await deleteQuestion(id);
-        toast.success(copy.admin.questionDeletedMessage);
-      } catch {
-        toast.error(copy.admin.questionDeleteErrorMessage);
-      }
-    });
-  }
 
   if (questions.length === 0) {
     return (
@@ -52,14 +38,7 @@ export function QuestionList({
                 {question.difficulty}
               </p>
             </button>
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={isPending}
-              onClick={() => handleDelete(question.id)}
-            >
-              {copy.common.delete}
-            </Button>
+            <DeleteQuestionButton questionId={question.id} />
           </li>
         ))}
       </ul>
