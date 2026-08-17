@@ -2,6 +2,9 @@ const appName = "Trivia Showdown";
 
 export const copy = {
   appName,
+  common: {
+    save: "Save",
+  },
   welcome: {
     badge: "10 questions · multiple choice",
     titlePrefix: "Trivia",
