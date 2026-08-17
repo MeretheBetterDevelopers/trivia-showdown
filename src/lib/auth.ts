@@ -1,5 +1,3 @@
-//TODO: should this be in api folder instead?
-
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
@@ -55,16 +53,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.id = token.id as string;
       }
       return session;
-    },
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user; //!! means that if auth?.user is truthy, isLoggedIn will be true, otherwise false
-      const isAuthPage =
-        nextUrl.pathname === "/sign-in" || nextUrl.pathname === "/sign-up";
-
-      if (isAuthPage) {
-        return true;
-      }
-      return isLoggedIn;
     },
   },
 });
