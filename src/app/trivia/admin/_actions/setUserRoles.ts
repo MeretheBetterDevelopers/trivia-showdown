@@ -23,11 +23,13 @@ export async function setUserRoles(formData: FormData) {
 
   const updates = Array.from(formData.entries())
     .filter(([key]) => key.startsWith(ROLE_FIELD_PREFIX))
-    .map(([key, value]) =>
-      prisma.user.update({
-        where: { id: key.slice(ROLE_FIELD_PREFIX.length) },
-        data: { role: value as Role },
-      }),
+    .map(([key, value]) => ({
+      userId: key.slice(ROLE_FIELD_PREFIX.length),
+      role: value as Role,
+    }))
+    .filter(({ userId }) => userId !== session.user.id)
+    .map(({ userId, role }) =>
+      prisma.user.update({ where: { id: userId }, data: { role } }),
     );
 
   await Promise.all(updates);

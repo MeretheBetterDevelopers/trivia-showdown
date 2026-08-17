@@ -23,7 +23,8 @@ type AdminUser = {
 
 export function AdminUsersForm({
   users,
-}: Readonly<{ users: AdminUser[] }>) {
+  currentUserId,
+}: Readonly<{ users: AdminUser[]; currentUserId: string }>) {
   const [isPending, startTransition] = useTransition();
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -46,30 +47,39 @@ export function AdminUsersForm({
       className="flex w-full max-w-2xl flex-col items-center gap-4"
     >
       <ul className="flex w-full flex-col gap-2">
-        {users.map((user) => (
-          <li
-            key={user.id}
-            className="flex items-center justify-between gap-3 rounded-2xl border border-white/30 bg-card/60 px-4 py-3 backdrop-blur-xl backdrop-saturate-150 dark:border-white/10"
-          >
-            <div>
-              <p className="font-medium">{user.name}</p>
-              <p className="text-sm text-muted-foreground">{user.email}</p>
-            </div>
-            <Select
-              key={user.role}
-              name={`role-${user.id}`}
-              defaultValue={user.role}
+        {users.map((user) => {
+          const isCurrentUser = user.id === currentUserId;
+          return (
+            <li
+              key={user.id}
+              className="flex items-center justify-between gap-3 rounded-2xl border border-white/30 bg-card/60 px-4 py-3 backdrop-blur-xl backdrop-saturate-150 dark:border-white/10"
             >
-              <SelectTrigger size="sm">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="MEMBER">Member</SelectItem>
-                <SelectItem value="ADMIN">Admin</SelectItem>
-              </SelectContent>
-            </Select>
-          </li>
-        ))}
+              <div>
+                <p className="font-medium">
+                  {user.name}
+                  {isCurrentUser && (
+                    <span className="text-muted-foreground"> (you)</span>
+                  )}
+                </p>
+                <p className="text-sm text-muted-foreground">{user.email}</p>
+              </div>
+              <Select
+                key={user.role}
+                name={`role-${user.id}`}
+                defaultValue={user.role}
+                disabled={isCurrentUser}
+              >
+                <SelectTrigger size="sm">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="MEMBER">Member</SelectItem>
+                  <SelectItem value="ADMIN">Admin</SelectItem>
+                </SelectContent>
+              </Select>
+            </li>
+          );
+        })}
       </ul>
       <Button type="submit" disabled={isPending}>
         {isPending ? copy.common.saving : copy.common.save}
