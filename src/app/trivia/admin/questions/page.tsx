@@ -13,6 +13,7 @@ export default async function AdminQuestionsPage() {
       correctAnswer: true,
       category: true,
       difficulty: true,
+      imageUrl: true,
     },
   });
 

@@ -16,6 +16,7 @@ export type QuestionRow = {
   correctAnswer: string;
   category: string | null;
   difficulty: "easy" | "medium" | "hard";
+  imageUrl: string | null;
 };
 
 export function QuestionDetailDialog({
@@ -33,6 +34,14 @@ export function QuestionDetailDialog({
             <DialogHeader>
               <DialogTitle>{question.text}</DialogTitle>
             </DialogHeader>
+            {question.imageUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={question.imageUrl}
+                alt=""
+                className="h-40 w-full rounded-lg object-cover"
+              />
+            )}
             <ul className="flex flex-col gap-2">
               {question.choices.map((choice) => {
                 const isCorrect = choice === question.correctAnswer;

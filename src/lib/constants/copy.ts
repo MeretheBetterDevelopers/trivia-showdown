@@ -77,6 +77,7 @@ export const copy = {
     difficultyEasy: "Easy",
     difficultyMedium: "Medium",
     difficultyHard: "Hard",
+    imageLabel: "Image (optional)",
     createQuestionButton: "Create question",
     deleteQuestionConfirmTitle: "Delete this question?",
     deleteQuestionConfirmDescription:

@@ -1,7 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useRef, useState, useTransition } from "react";
+import { X } from "lucide-react";
 import { createQuestion } from "../_actions/createQuestion";
+import { uploadImage } from "@/src/app/services/cloudinary";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
@@ -15,17 +17,66 @@ import {
 import { copy } from "@/src/lib/constants/copy";
 import categories from "@/src/lib/constants/categories.json";
 
-const initialState = { error: null };
-
 export function CreateQuestionForm() {
-  const [state, formAction, isPending] = useActionState(
-    createQuestion,
-    initialState,
-  );
+  const [error, setError] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [imageError, setImageError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
+  function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setImageError(null);
+    setImageFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  }
+
+  function handleRemoveImage() {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setImageError(null);
+    setImageFile(null);
+    setPreviewUrl(null);
+    if (imageInputRef.current) {
+      imageInputRef.current.value = "";
+    }
+  }
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    startTransition(async () => {
+      if (imageFile) {
+        try {
+          formData.set("imageUrl", await uploadImage(imageFile));
+        } catch {
+          setImageError(
+            "Couldn't upload image. Try again, or create the question without one.",
+          );
+          return;
+        }
+      }
+
+      const result = await createQuestion({ error: null }, formData);
+      setError(result.error);
+
+      if (!result.error) {
+        form.reset();
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        setImageFile(null);
+        setPreviewUrl(null);
+      }
+    });
+  }
 
   return (
     <form
-      action={formAction}
+      onSubmit={handleSubmit}
       className="flex w-full max-w-xl flex-col gap-4 rounded-2xl border border-white/30 bg-card/60 p-6 text-left backdrop-blur-xl backdrop-saturate-150 dark:border-white/10"
     >
       <div className="flex flex-col gap-1.5">
@@ -88,7 +139,37 @@ export function CreateQuestionForm() {
         </Select>
       </div>
 
-      {state.error && <p className="text-sm text-destructive">{state.error}</p>}
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="image">{copy.admin.imageLabel}</Label>
+        <Input
+          id="image"
+          ref={imageInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+        {previewUrl && (
+          <div className="relative w-full">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={previewUrl}
+              alt="Preview"
+              className="h-32 w-full rounded-lg object-cover"
+            />
+            <button
+              type="button"
+              onClick={handleRemoveImage}
+              aria-label="Remove image"
+              className="absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow"
+            >
+              <X className="size-3.5" />
+            </button>
+          </div>
+        )}
+        {imageError && <p className="text-sm text-destructive">{imageError}</p>}
+      </div>
+
+      {error && <p className="text-sm text-destructive">{error}</p>}
 
       <Button type="submit" disabled={isPending}>
         {isPending ? copy.common.saving : copy.admin.createQuestionButton}

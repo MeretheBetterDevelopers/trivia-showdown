@@ -9,6 +9,7 @@ export const questionSchema = z
     correctAnswer: z.string().min(1, "Select the correct answer"),
     category: z.string().optional(),
     difficulty: z.enum(["easy", "medium", "hard"]),
+    imageUrl: z.string().url("Invalid image URL").nullish(),
   })
   .refine((data) => data.choices.includes(data.correctAnswer), {
     message: "Correct answer must be one of the choices",

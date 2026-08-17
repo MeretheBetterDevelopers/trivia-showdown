@@ -25,14 +25,21 @@ export async function createQuestion(
     correctAnswer: choices[correctAnswerIndex],
     category: formData.get("category") || undefined,
     difficulty: formData.get("difficulty"),
+    imageUrl: formData.get("imageUrl"),
   });
 
   if (!result.success) {
     return { error: result.error.issues[0]?.message ?? "Invalid question" };
   }
 
-  const { text, choices: validChoices, correctAnswer, category, difficulty } =
-    result.data;
+  const {
+    text,
+    choices: validChoices,
+    correctAnswer,
+    category,
+    difficulty,
+    imageUrl,
+  } = result.data;
 
   await prisma.question.create({
     data: {
@@ -41,6 +48,7 @@ export async function createQuestion(
       correctAnswer,
       category,
       difficulty,
+      imageUrl,
       createdBy: admin.id,
     },
   });
