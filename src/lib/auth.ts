@@ -59,3 +59,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
   },
 });
+
+// The session's role can be stale (JWTs are a snapshot from sign-in time),
+// so anything gating admin access or an admin-only mutation should check
+// this instead of session.user.role directly.
+export async function getCurrentAdmin() {
+  const session = await auth();
+  if (!session?.user?.id) return null;
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { id: true, role: true },
+  });
+
+  return user?.role === "ADMIN" ? user : null;
+}

@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@/src/lib/auth";
+import { getCurrentAdmin } from "@/src/lib/auth";
 import { prisma } from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { Role } from "@/src/generated/prisma/enums";
@@ -8,16 +8,8 @@ import { Role } from "@/src/generated/prisma/enums";
 const ROLE_FIELD_PREFIX = "role-";
 
 export async function setUserRoles(formData: FormData) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    throw new Error("Not authorized");
-  }
-  const currentUser = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
-  });
-
-  if (currentUser?.role !== "ADMIN") {
+  const admin = await getCurrentAdmin();
+  if (!admin) {
     throw new Error("Not authorized");
   }
 
@@ -27,7 +19,7 @@ export async function setUserRoles(formData: FormData) {
       userId: key.slice(ROLE_FIELD_PREFIX.length),
       role: value as Role,
     }))
-    .filter(({ userId }) => userId !== session.user.id)
+    .filter(({ userId }) => userId !== admin.id)
     .map(({ userId, role }) =>
       prisma.user.update({ where: { id: userId }, data: { role } }),
     );

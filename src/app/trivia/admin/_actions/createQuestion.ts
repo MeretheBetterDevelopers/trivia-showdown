@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@/src/lib/auth";
+import { getCurrentAdmin } from "@/src/lib/auth";
 import { prisma } from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { questionSchema } from "@/src/lib/schemas/question";
@@ -11,16 +11,8 @@ export async function createQuestion(
   prevState: CreateQuestionState,
   formData: FormData,
 ): Promise<CreateQuestionState> {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return { error: "Not authorized" };
-  }
-
-  const currentUser = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
-  });
-  if (currentUser?.role !== "ADMIN") {
+  const admin = await getCurrentAdmin();
+  if (!admin) {
     return { error: "Not authorized" };
   }
 
@@ -49,7 +41,7 @@ export async function createQuestion(
       correctAnswer,
       category,
       difficulty,
-      createdBy: session.user.id,
+      createdBy: admin.id,
     },
   });
 

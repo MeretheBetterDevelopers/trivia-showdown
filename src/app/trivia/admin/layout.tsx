@@ -1,22 +1,12 @@
-import { auth } from "@/src/lib/auth";
+import { getCurrentAdmin } from "@/src/lib/auth";
 import { redirect } from "next/navigation";
-import { prisma } from "@/src/lib/prisma";
 import { AppHeader } from "@/src/components/AppHeader";
 
 export default async function AdminLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    redirect("/trivia");
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { role: true },
-  });
-
-  if (user?.role !== "ADMIN") {
+  const admin = await getCurrentAdmin();
+  if (!admin) {
     redirect("/trivia");
   }
 
