@@ -4,6 +4,7 @@ import { themeInitScript } from "./theme/themeInitScript";
 import { QueryProvider } from "./query/QueryProvider";
 import { Barlow, DM_Sans } from "next/font/google";
 import { clsx } from "clsx";
+import { Toaster } from "@/src/components/ui/sonner";
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -32,7 +33,10 @@ export default function RootLayout({
       </head>
       <body>
         <QueryProvider>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            {children}
+            <Toaster />
+          </ThemeProvider>
         </QueryProvider>
       </body>
     </html>

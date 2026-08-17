@@ -4,6 +4,7 @@ export const copy = {
   appName,
   common: {
     save: "Save",
+    saving: "Saving…",
   },
   welcome: {
     badge: "10 questions · multiple choice",
@@ -50,6 +51,11 @@ export const copy = {
     ariaLabel: "Toggle color theme",
     lightLabel: "☀️ Light",
     darkLabel: "🌙 Dark",
+  },
+  admin: {
+    manageRolesHeading: "Manage roles",
+    rolesSavedMessage: "Roles updated",
+    rolesSaveErrorMessage: "Couldn't update roles. Please try again.",
   },
   auth: {
     signUp: {
