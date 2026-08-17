@@ -32,7 +32,7 @@ export default async function AdminUsersPage() {
               action={setUserRole.bind(null, user.id)}
               className="flex items-center gap-2"
             >
-              <Select name="role" defaultValue={user.role}>
+              <Select key={user.role} name="role" defaultValue={user.role}>
                 <SelectTrigger size="sm">
                   <SelectValue />
                 </SelectTrigger>
