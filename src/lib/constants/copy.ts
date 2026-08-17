@@ -5,6 +5,7 @@ export const copy = {
   common: {
     save: "Save",
     saving: "Saving…",
+    delete: "Delete",
   },
   welcome: {
     badge: "10 questions · multiple choice",
@@ -13,6 +14,8 @@ export const copy = {
     tagline: "Test your knowledge against the clock and your friends.",
     startButton: "Start",
     leaderboardButton: "Leaderboard",
+    settingsLabel: "Settings",
+    createQuestionsButton: "Create questions",
   },
   roles: {
     you: "(You)",
@@ -61,6 +64,23 @@ export const copy = {
     manageRolesHeading: "Manage roles",
     rolesSavedMessage: "Roles updated",
     rolesSaveErrorMessage: "Couldn't update roles. Please try again.",
+    manageQuestionsHeading: "Manage questions",
+    questionTextLabel: "Question",
+    choicesLabel: "Choices",
+    choiceLabel: "Choice",
+    correctAnswerLabel: "Correct answer",
+    correctAnswerHint: "Select the radio button next to the correct choice.",
+    categoryLabel: "Category",
+    categoryPlaceholder: "Choose category",
+    difficultyLabel: "Difficulty",
+    difficultyEasy: "Easy",
+    difficultyMedium: "Medium",
+    difficultyHard: "Hard",
+    createQuestionButton: "Create question",
+    questionDeletedMessage: "Question deleted",
+    questionDeleteErrorMessage: "Couldn't delete question. Please try again.",
+    noQuestionsMessage: "No questions yet — create the first one above.",
+    noCategoryLabel: "No category",
   },
   auth: {
     signUp: {

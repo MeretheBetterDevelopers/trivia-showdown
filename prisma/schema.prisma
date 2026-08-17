@@ -17,6 +17,12 @@ enum Role {
   MEMBER
 }
 
+enum Difficulty {
+  easy
+  medium
+  hard
+}
+
 model LeaderboardEntry {
   id       String   @id @default(cuid())
   userId   String
@@ -26,13 +32,27 @@ model LeaderboardEntry {
   playedAt DateTime @default(now())
 }
 
+model Question {
+  id            String     @id @default(cuid())
+  text          String
+  choices       String[]
+  correctAnswer String
+  category      String?
+  difficulty    Difficulty @default(medium)
+  imageUrl      String?
+  createdBy     String
+  creator       User       @relation(fields: [createdBy], references: [id])
+  createdAt     DateTime   @default(now())
+}
+
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
+  id           String             @id @default(cuid())
+  email        String             @unique
   passwordHash String
   name         String
-  createdAt    DateTime @default(now())
+  createdAt    DateTime           @default(now())
   imageUrl     String?
-  role         Role     @default(MEMBER)
+  role         Role               @default(MEMBER)
   entries      LeaderboardEntry[]
+  questions    Question[]
 }
