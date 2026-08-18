@@ -27,12 +27,12 @@ model LeaderboardEntry {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  name         String
-  createdAt    DateTime @default(now())
-  imageUrl     String?
-  role         Role     @default(MEMBER)
-  entries      LeaderboardEntry[]
+  id                 String             @id @default(cuid())
+  email              String             @unique
+  passwordHash       String
+  name               String
+  createdAt          DateTime           @default(now())
+  imageUrl           String?
+  role               Role               @default(MEMBER)
+  leaderboardEntries LeaderboardEntry[]
 }
