@@ -13,18 +13,17 @@ import {
 } from "@/src/components/ui/select";
 import { copy } from "@/src/lib/constants/copy";
 import { Role } from "@/src/generated/prisma/enums";
+import { UserModel } from "@/src/generated/prisma/models";
 
-type AdminUser = {
-  id: string;
-  name: string;
-  email: string;
-  role: Role;
-};
+type AdminUser = Pick<UserModel, "id" | "name" | "email" | "role">;
 
 export function AdminUsersForm({
   users,
   currentUserId,
-}: Readonly<{ users: AdminUser[]; currentUserId: string }>) {
+}: {
+  users: AdminUser[];
+  currentUserId: string;
+}) {
   const [isPending, startTransition] = useTransition();
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
