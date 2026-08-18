@@ -86,6 +86,7 @@ export const copy = {
     questionDeleteErrorMessage: "Couldn't delete question. Please try again.",
     noQuestionsMessage: "No questions yet — create the first one above.",
     noCategoryLabel: "No category",
+    noIdFound: "No user id found",
   },
   auth: {
     signUp: {

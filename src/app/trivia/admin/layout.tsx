@@ -4,7 +4,9 @@ import { AppHeader } from "@/src/components/AppHeader";
 
 export default async function AdminLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: {
+  children: React.ReactNode;
+}) {
   const admin = await getCurrentAdmin();
   if (!admin) {
     redirect("/trivia");
