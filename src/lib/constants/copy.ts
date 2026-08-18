@@ -2,6 +2,10 @@ const appName = "Trivia Showdown";
 
 export const copy = {
   appName,
+  common: {
+    save: "Save",
+    saving: "Saving…",
+  },
   welcome: {
     badge: "10 questions · multiple choice",
     titlePrefix: "Trivia",
@@ -9,6 +13,11 @@ export const copy = {
     tagline: "Test your knowledge against the clock and your friends.",
     startButton: "Start",
     leaderboardButton: "Leaderboard",
+  },
+  roles: {
+    you: "(You)",
+    admin: "ADMIN",
+    member: "MEMBER",
   },
   trivia: {
     genericErrorMessage: "Something went wrong",
@@ -47,6 +56,12 @@ export const copy = {
     ariaLabel: "Toggle color theme",
     lightLabel: "☀️ Light",
     darkLabel: "🌙 Dark",
+  },
+  admin: {
+    manageRolesHeading: "Manage roles",
+    rolesSavedMessage: "Roles updated",
+    rolesSaveErrorMessage: "Couldn't update roles. Please try again.",
+    noIdFound: "No user id found",
   },
   auth: {
     signUp: {

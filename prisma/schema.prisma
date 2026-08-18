@@ -12,6 +12,11 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  ADMIN
+  MEMBER
+}
+
 model LeaderboardEntry {
   id       String   @id @default(cuid())
   userId   String
@@ -22,11 +27,12 @@ model LeaderboardEntry {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  name         String
-  createdAt    DateTime @default(now())
-  imageUrl     String?
-  entries      LeaderboardEntry[]
+  id                 String             @id @default(cuid())
+  email              String             @unique
+  passwordHash       String
+  name               String
+  createdAt          DateTime           @default(now())
+  imageUrl           String?
+  role               Role               @default(MEMBER)
+  leaderboardEntries LeaderboardEntry[]
 }
