@@ -54,4 +54,5 @@ model User {
   imageUrl           String?
   role               Role               @default(MEMBER)
   leaderboardEntries LeaderboardEntry[]
+  questions          Question[]
 }
