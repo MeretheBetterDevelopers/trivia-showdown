@@ -9,7 +9,8 @@ const ROLE_FIELD_PREFIX = "role-";
 
 export async function setUserRoles(formData: FormData) {
   const session = await auth();
-  if (!session?.user?.id) {
+  const isSignedOut = !session?.user?.id;
+  if (isSignedOut) {
     throw new Error("Not authorized");
   }
   const currentUser = await prisma.user.findUnique({

@@ -61,6 +61,7 @@ export const copy = {
     manageRolesHeading: "Manage roles",
     rolesSavedMessage: "Roles updated",
     rolesSaveErrorMessage: "Couldn't update roles. Please try again.",
+    noIdFound: "No user id found",
   },
   auth: {
     signUp: {

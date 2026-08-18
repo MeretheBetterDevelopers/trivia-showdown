@@ -5,7 +5,9 @@ import { AppHeader } from "@/src/components/AppHeader";
 
 export default async function AdminLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: {
+  children: React.ReactNode;
+}) {
   const session = await auth();
   if (!session?.user?.id) {
     redirect("/trivia");
