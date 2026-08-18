@@ -12,7 +12,6 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { copy } from "@/src/lib/constants/copy";
-import { Role } from "@/src/generated/prisma/enums";
 import { UserModel } from "@/src/generated/prisma/models";
 
 type AdminUser = Pick<UserModel, "id" | "name" | "email" | "role">;

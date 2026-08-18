@@ -13,7 +13,7 @@ export async function setUserRoles(formData: FormData) {
     throw new Error("Not authorized");
   }
 
-  const updates = Array.from(formData.entries())
+  const updatedRoles = Array.from(formData.entries())
     .filter(([key]) => key.startsWith(ROLE_FIELD_PREFIX))
     .map(([key, value]) => ({
       userId: key.slice(ROLE_FIELD_PREFIX.length),
@@ -24,6 +24,6 @@ export async function setUserRoles(formData: FormData) {
       prisma.user.update({ where: { id: userId }, data: { role } }),
     );
 
-  await Promise.all(updates);
+  await Promise.all(updatedRoles);
   revalidatePath("/trivia/admin/users");
 }
