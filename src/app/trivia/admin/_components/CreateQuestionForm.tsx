@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Image from "next/image";
 import { X } from "lucide-react";
 import { createQuestion } from "../_actions/createQuestion";
 import { uploadImage } from "@/src/app/services/cloudinary";
@@ -133,12 +134,13 @@ export function CreateQuestionForm() {
           onChange={handleImageChange}
         />
         {previewUrl && (
-          <div className="relative w-full">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+          <div className="relative h-32 w-full">
+            <Image
               src={previewUrl}
               alt="Preview"
-              className="h-32 w-full rounded-lg object-cover"
+              fill
+              unoptimized
+              className="rounded-lg object-cover"
             />
             <button
               type="button"
