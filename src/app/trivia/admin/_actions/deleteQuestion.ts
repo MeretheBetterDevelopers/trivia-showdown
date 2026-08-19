@@ -6,8 +6,8 @@ import { revalidatePath } from "next/cache";
 import { deleteCloudinaryImage } from "@/src/lib/actions/deleteCloudinaryImage";
 
 export async function deleteQuestion(questionId: string) {
-  const admin = await getCurrentAdmin();
-  if (!admin) {
+  const isAdmin = await getCurrentAdmin();
+  if (!isAdmin) {
     throw new Error("Not authorized");
   }
 
