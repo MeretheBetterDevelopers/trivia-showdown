@@ -8,16 +8,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/src/components/ui/dialog";
+import { QuestionModel } from "@/src/generated/prisma/models";
 
-export type QuestionRow = {
-  id: string;
-  text: string;
-  choices: string[];
-  correctAnswer: string;
-  category: string | null;
-  difficulty: "easy" | "medium" | "hard";
-  imageUrl: string | null;
-};
+export type QuestionRow = Pick<
+  QuestionModel,
+  | "id"
+  | "text"
+  | "choices"
+  | "correctAnswer"
+  | "category"
+  | "difficulty"
+  | "imageUrl"
+>;
 
 export function QuestionDetailDialog({
   question,
