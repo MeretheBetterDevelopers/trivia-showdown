@@ -17,14 +17,12 @@ export async function createQuestion(
     return { error: "Not authorized" };
   }
 
-  const choices = formData.getAll("choices").map(String);
-  const correctAnswerIndex = Number(formData.get("correctAnswerIndex"));
   const rawImageUrl = formData.get("imageUrl");
 
   const result = questionSchema.safeParse({
     text: formData.get("text"),
-    choices,
-    correctAnswer: choices[correctAnswerIndex],
+    choices: formData.getAll("choices").map(String),
+    correctAnswerIndex: Number(formData.get("correctAnswerIndex")),
     category: formData.get("category") || undefined,
     difficulty: formData.get("difficulty"),
     imageUrl: rawImageUrl,
@@ -44,7 +42,7 @@ export async function createQuestion(
   const {
     text,
     choices: validChoices,
-    correctAnswer,
+    correctAnswerIndex,
     category,
     difficulty,
     imageUrl,
@@ -54,7 +52,7 @@ export async function createQuestion(
     data: {
       text,
       choices: validChoices,
-      correctAnswer,
+      correctAnswer: validChoices[correctAnswerIndex],
       category,
       difficulty,
       imageUrl,

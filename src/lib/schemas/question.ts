@@ -6,14 +6,13 @@ export const questionSchema = z
     choices: z
       .array(z.string().min(1, "Choice can't be empty"))
       .length(4, "Exactly 4 choices are required"),
-    correctAnswer: z.string().min(1, "Select the correct answer"),
+    correctAnswerIndex: z.preprocess(
+      (val) => (typeof val === "string" && val !== "" ? Number(val) : val),
+      z.number("Select the correct answer").min(0).max(3),
+    ),
     category: z.string().optional(),
     difficulty: z.enum(["easy", "medium", "hard"]),
     imageUrl: z.string().url("Invalid image URL").nullish(),
-  })
-  .refine((data) => data.choices.includes(data.correctAnswer), {
-    message: "Correct answer must be one of the choices",
-    path: ["correctAnswer"],
   })
   .refine((data) => new Set(data.choices).size === data.choices.length, {
     message: "Two answers can't be the same — each choice must be unique",
@@ -21,3 +20,5 @@ export const questionSchema = z
   });
 
 export type QuestionInput = z.infer<typeof questionSchema>;
+
+export type QuestionFormValues = z.input<typeof questionSchema>;

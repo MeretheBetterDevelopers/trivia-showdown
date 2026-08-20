@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ThemeToggle } from "@/src/app/theme/ThemeToggle";
 import { copy } from "@/src/lib/constants/copy";
 
-export function AppHeader() {
+export function BackToHomeButton() {
   return (
     <>
       <Link
