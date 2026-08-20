@@ -1,5 +1,5 @@
-import { signInAction } from "../_actions/signIn";
-import { AuthForm } from "../_components/AuthForm";
+import { signInAction } from "../_actions/sign-in";
+import { AuthForm } from "../_components/auth-form";
 import { copy } from "@/src/lib/constants/copy";
 
 export default function SignInPage() {

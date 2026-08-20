@@ -3,11 +3,11 @@
 import { copy } from "@/src/lib/constants/copy";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/src/components/ui/card";
-import { Questions } from "@/src/types/game/Question";
-import ProgressIndicator from "./ProgressIndicator";
-import DifficultyPlate from "./DifficultyPlate";
-import TimeLeft from "./TimeLeft";
-import ChoiceButton from "./ChoiceButton";
+import { Questions } from "@/src/types/game/question";
+import ProgressIndicator from "./progress-indicator";
+import DifficultyPlate from "./difficulty-plate";
+import TimeLeft from "./time-left";
+import ChoiceButton from "./choice-button";
 
 export function QuestionCard({
   question,

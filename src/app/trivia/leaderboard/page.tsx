@@ -1,8 +1,8 @@
 import { prisma } from "@/src/lib/prisma";
 import { copy } from "@/src/lib/constants/copy";
-import EmptyLeaderboard from "./_components/EmptyLeaderboard";
-import LeaderboardList from "./_components/LeaderboardList";
-import Podium from "./_components/Podium";
+import EmptyLeaderboard from "./_components/empty-leaderboard";
+import LeaderboardList from "./_components/leaderboard-list";
+import Podium from "./_components/podium";
 import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
 export default async function Page({

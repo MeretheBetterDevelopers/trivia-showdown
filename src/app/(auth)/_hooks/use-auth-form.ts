@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { unstable_rethrow } from "next/navigation";
 import { uploadImage } from "@/src/app/services/cloudinary";
-import { useImagePicker } from "@/src/hooks/useImagePicker";
+import { useImagePicker } from "@/src/hooks/use-image-picker";
 
 type AuthFormState = { error: string | null };
 type AuthFormAction = (

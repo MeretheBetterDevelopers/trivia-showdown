@@ -1,5 +1,5 @@
-import { signUp } from "../_actions/signUp";
-import { AuthForm } from "../_components/AuthForm";
+import { signUp } from "../_actions/sign-up";
+import { AuthForm } from "../_components/auth-form";
 import { copy } from "@/src/lib/constants/copy";
 
 export default function SignUpPage() {

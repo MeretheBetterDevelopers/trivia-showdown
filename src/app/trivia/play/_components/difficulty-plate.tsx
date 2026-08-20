@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Questions } from "@/src/types/game/Question";
+import { Questions } from "@/src/types/game/question";
 
 const DIFFICULTY_STYLES: Record<Questions["difficulty"], string> = {
   easy: "bg-success/10 text-success",

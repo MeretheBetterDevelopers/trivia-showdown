@@ -1,4 +1,4 @@
-import { BackToHomeButton } from "@/src/components/BackToHomeButton";
+import { BackToHomeButton } from "@/src/components/back-to-home-button";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

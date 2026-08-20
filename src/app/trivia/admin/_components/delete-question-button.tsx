@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { deleteQuestion } from "../_actions/deleteQuestion";
+import { deleteQuestion } from "../_actions/delete-question";
 import { Button } from "@/src/components/ui/button";
 import {
   AlertDialog,

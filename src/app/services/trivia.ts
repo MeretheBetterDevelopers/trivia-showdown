@@ -1,11 +1,11 @@
 import { TRIVIA_API_URL } from "@/src/lib/constants/urls";
-import { TRIVIA_RESPOND_CODES } from "@/src/lib/constants/triviaRespondCodes";
-import { mapTriviaApiQuestions } from "@/src/lib/helpers/mapTriviaQuestion";
+import { TRIVIA_RESPOND_CODES } from "@/src/lib/constants/trivia-respond-codes";
+import { mapTriviaApiQuestions } from "@/src/lib/helpers/map-trivia-question";
 import {
   TriviaApiResponse,
   triviaApiResponseSchema,
 } from "@/src/lib/schemas/trivia";
-import { Questions } from "@/src/types/game/Question";
+import { Questions } from "@/src/types/game/question";
 
 //fetch and queries for trivia questions
 export const fetchTriviaQuestions = async (

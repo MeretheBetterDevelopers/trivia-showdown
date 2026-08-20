@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, useTransition } from "react";
-import { GameLogo } from "@/src/components/GameLogo";
+import { GameLogo } from "@/src/components/game-logo";
 import { copy } from "@/src/lib/constants/copy";
-import { saveScore } from "../_actions/saveScore";
+import { saveScore } from "../_actions/save-score";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent } from "@/src/components/ui/card";
 

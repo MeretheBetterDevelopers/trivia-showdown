@@ -1,6 +1,6 @@
 import { getCurrentUserIfAdmin } from "@/src/lib/roles";
 import { prisma } from "@/src/lib/prisma";
-import { AdminUsersForm } from "../_components/AdminUsersForm";
+import { AdminUsersForm } from "../_components/admin-users-form";
 import { copy } from "@/src/lib/constants/copy";
 
 export default async function AdminUsersPage() {

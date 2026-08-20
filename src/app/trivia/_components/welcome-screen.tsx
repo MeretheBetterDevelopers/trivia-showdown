@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { Settings } from "lucide-react";
-import { ThemeToggle } from "@/src/app/theme/ThemeToggle";
+import { ThemeToggle } from "@/src/app/theme/theme-toggle";
 import { Button } from "@/src/components/ui/button";
-import { GameLogo } from "@/src/components/GameLogo";
+import { GameLogo } from "@/src/components/game-logo";
 import { copy } from "@/src/lib/constants/copy";
 
 export function WelcomeScreen({ isAdmin }: Readonly<{ isAdmin: boolean }>) {

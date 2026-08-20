@@ -1,5 +1,5 @@
 import { LogOut } from "lucide-react";
-import { signOutAction } from "../_actions/signOut";
+import { signOutAction } from "../_actions/sign-out";
 import { Button } from "@/src/components/ui/button";
 import { copy } from "@/src/lib/constants/copy";
 
