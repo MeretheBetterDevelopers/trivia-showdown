@@ -10,9 +10,11 @@ import { Questions } from "@/src/types/game/question";
 //fetch and queries for trivia questions
 export const fetchTriviaQuestions = async (
   amount?: number,
+  categoryId?: number,
 ): Promise<Questions[]> => {
   const url = new URL(TRIVIA_API_URL);
   if (amount) url.searchParams.set("amount", String(amount));
+  if (categoryId) url.searchParams.set("category", String(categoryId));
 
   let data: TriviaApiResponse;
   try {
@@ -31,6 +33,12 @@ export const fetchTriviaQuestions = async (
     throw error;
   }
 
+  // Code 1 ("No results found") is a valid empty outcome for a narrow
+  // category request, not an error — the round-building logic treats it
+  // as "nothing more from OTDB" rather than failing the whole round.
+  if (data.response_code === 1) {
+    return [];
+  }
   if (data.response_code !== 0) {
     throw new Error(
       `Trivia API error: ${TRIVIA_RESPOND_CODES[data.response_code]}`,
