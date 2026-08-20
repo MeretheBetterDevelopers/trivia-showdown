@@ -1,11 +1,11 @@
-import { getCurrentAdmin } from "@/src/lib/auth";
+import { getCurrentUserIfAdmin } from "@/src/lib/roles";
 import { prisma } from "@/src/lib/prisma";
 import { AdminUsersForm } from "../_components/AdminUsersForm";
 import { copy } from "@/src/lib/constants/copy";
 
 export default async function AdminUsersPage() {
   const [admin, users] = await Promise.all([
-    getCurrentAdmin(),
+    getCurrentUserIfAdmin(),
     prisma.user.findMany({
       orderBy: { name: "asc" },
       select: { id: true, name: true, email: true, role: true },

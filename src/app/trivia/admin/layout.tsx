@@ -1,4 +1,4 @@
-import { getCurrentAdmin } from "@/src/lib/auth";
+import { getCurrentUserIfAdmin } from "@/src/lib/roles";
 import { redirect } from "next/navigation";
 import { BackToHomeButton } from "@/src/components/BackToHomeButton";
 
@@ -7,7 +7,7 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const admin = await getCurrentAdmin();
+  const admin = await getCurrentUserIfAdmin();
   if (!admin) {
     redirect("/trivia");
   }

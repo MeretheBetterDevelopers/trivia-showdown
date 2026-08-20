@@ -1,12 +1,12 @@
 "use server";
 
-import { getCurrentAdmin } from "@/src/lib/auth";
+import { getCurrentUserIfAdmin } from "@/src/lib/roles";
 import { prisma } from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { deleteCloudinaryImage } from "@/src/lib/actions/deleteCloudinaryImage";
 
 export async function deleteQuestion(questionId: string) {
-  const isAdmin = await getCurrentAdmin();
+  const isAdmin = await getCurrentUserIfAdmin();
   if (!isAdmin) {
     throw new Error("Not authorized");
   }

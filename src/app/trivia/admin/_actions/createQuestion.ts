@@ -1,6 +1,5 @@
 "use server";
-
-import { getCurrentAdmin } from "@/src/lib/auth";
+import { getCurrentUserIfAdmin } from "@/src/lib/roles";
 import { prisma } from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { questionSchema } from "@/src/lib/schemas/question";
@@ -12,7 +11,7 @@ export async function createQuestion(
   prevState: CreateQuestionState,
   formData: FormData,
 ): Promise<CreateQuestionState> {
-  const admin = await getCurrentAdmin();
+  const admin = await getCurrentUserIfAdmin();
   if (!admin) {
     return { error: "Not authorized" };
   }

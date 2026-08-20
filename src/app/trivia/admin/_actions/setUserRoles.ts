@@ -1,6 +1,6 @@
 "use server";
 
-import { getCurrentAdmin } from "@/src/lib/auth";
+import { getCurrentUserIfAdmin } from "@/src/lib/roles";
 import { prisma } from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { Role } from "@/src/generated/prisma/enums";
@@ -8,7 +8,7 @@ import { Role } from "@/src/generated/prisma/enums";
 const ROLE_FIELD_PREFIX = "role-";
 
 export async function setUserRoles(formData: FormData) {
-  const admin = await getCurrentAdmin();
+  const admin = await getCurrentUserIfAdmin();
   if (!admin) {
     throw new Error("Not authorized");
   }
