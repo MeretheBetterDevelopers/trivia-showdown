@@ -3,7 +3,6 @@ const appName = "Trivia Showdown";
 export const copy = {
   appName,
   common: {
-    save: "Save",
     saving: "Saving…",
     delete: "Delete",
     cancel: "Cancel",
@@ -63,8 +62,8 @@ export const copy = {
   },
   admin: {
     manageRolesHeading: "Manage roles",
-    rolesSavedMessage: "Roles updated",
-    rolesSaveErrorMessage: "Couldn't update roles. Please try again.",
+    roleSavedMessage: "Role updated",
+    roleSaveErrorMessage: "Couldn't update role. Please try again.",
     manageQuestionsHeading: "Manage questions",
     questionTextLabel: "Question",
     choicesLabel: "Choices",
