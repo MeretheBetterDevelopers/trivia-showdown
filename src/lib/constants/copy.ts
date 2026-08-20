@@ -39,6 +39,11 @@ export const copy = {
       "No questions found for the selected categories — try picking a few more.",
     questionCountLabel: "How many questions?",
     questionCountHint: "Between 1 and 50.",
+    shortfallDialogTitle: "Not enough questions",
+    shortfallDialogDescription:
+      "This only gives {available} questions, which doesn't fit your request of {requested}.",
+    playWithAvailableButton: "Play with {available}",
+    chooseMoreCategoriesButton: "Choose more categories",
     difficultyHeading: "Difficulty",
     anyDifficultyLabel: "Any",
   },

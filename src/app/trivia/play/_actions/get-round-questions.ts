@@ -86,32 +86,39 @@ async function fetchOtdbQuestions(
   return interleave(results).slice(0, amount);
 }
 
-async function fetchAdminQuestions(
-  amount: number,
+// "Other" (copy.admin.noCategoryLabel) represents questions with no
+// category set at all — Prisma's `in` filter can't match `null`, so it
+// needs its own clause, OR'd alongside any real category names selected.
+function buildAdminQuestionWhere(
   categoryNames: string[],
   difficulty: Difficulty | undefined,
-): Promise<Questions[]> {
+) {
   const hasFilter = categoryNames.length > 0;
-  // "Other" (copy.admin.noCategoryLabel) represents questions with no
-  // category set at all — Prisma's `in` filter can't match `null`, so it
-  // needs its own clause, OR'd alongside any real category names selected.
   const realCategoryNames = categoryNames.filter(
     (name) => name !== copy.admin.noCategoryLabel,
   );
   const includesOther = categoryNames.includes(copy.admin.noCategoryLabel);
 
+  return {
+    ...(hasFilter && {
+      OR: [
+        ...(realCategoryNames.length > 0
+          ? [{ category: { in: realCategoryNames } }]
+          : []),
+        ...(includesOther ? [{ category: null }] : []),
+      ],
+    }),
+    ...(difficulty && { difficulty }),
+  };
+}
+
+async function fetchAdminQuestions(
+  amount: number,
+  categoryNames: string[],
+  difficulty: Difficulty | undefined,
+): Promise<Questions[]> {
   const adminQuestions = await prisma.question.findMany({
-    where: {
-      ...(hasFilter && {
-        OR: [
-          ...(realCategoryNames.length > 0
-            ? [{ category: { in: realCategoryNames } }]
-            : []),
-          ...(includesOther ? [{ category: null }] : []),
-        ],
-      }),
-      ...(difficulty && { difficulty }),
-    },
+    where: buildAdminQuestionWhere(categoryNames, difficulty),
     select: {
       id: true,
       text: true,
@@ -227,4 +234,27 @@ export async function getNextCategoryQuestions(
   difficulty?: Difficulty,
 ): Promise<Questions[]> {
   return fetchTriviaQuestions(amount, categoryId, difficulty);
+}
+
+// Lets the Ready screen warn before starting a round, but only when the
+// answer is actually knowable: the admin pool's count is an exact, instant
+// DB query, but OTDB's real availability isn't — checking it would mean
+// extra calls and reintroducing the latency this whole progressive-loading
+// approach was built to avoid. So this only reports a hard shortfall when
+// no real OTDB category is in play at all (e.g. only "Other" and/or
+// "Better Developers" selected) and the admin pool alone can't cover it —
+// otherwise it's silent, trusting OTDB (which is essentially always
+// sufficient) and falling back on the results-screen note if it isn't.
+export async function checkRoundAvailability(
+  categoryNames: string[] = [],
+  difficulty?: Difficulty,
+): Promise<{ adminCount: number; hasRealOtdbCategory: boolean }> {
+  const adminCount = await prisma.question.count({
+    where: buildAdminQuestionWhere(categoryNames, difficulty),
+  });
+  const hasRealOtdbCategory =
+    categoryNames.length === 0 ||
+    shuffleOtdbCategoryIds(categoryNames).length > 0;
+
+  return { adminCount, hasRealOtdbCategory };
 }

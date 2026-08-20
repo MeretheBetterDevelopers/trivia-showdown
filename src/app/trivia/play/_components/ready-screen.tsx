@@ -29,7 +29,11 @@ export type ReadyScreenSettings = {
 
 export function ReadyScreen({
   onBegin,
-}: Readonly<{ onBegin: (settings: ReadyScreenSettings) => void }>) {
+  disabled = false,
+}: Readonly<{
+  onBegin: (settings: ReadyScreenSettings) => void;
+  disabled?: boolean;
+}>) {
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
     new Set(),
   );
@@ -152,7 +156,7 @@ export function ReadyScreen({
               questionCount: parsedQuestionCount,
             })
           }
-          disabled={!isQuestionCountValid}
+          disabled={!isQuestionCountValid || disabled}
           size="lg"
           className="px-10 text-base"
         >
