@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 import { toast } from "sonner";
 import { setUserRoles } from "../_actions/setUserRoles";
+import { resetUserPassword } from "../_actions/resetUserPassword";
 import { Button } from "@/src/components/ui/button";
 import {
   Select,
@@ -16,6 +17,10 @@ import { UserModel } from "@/src/generated/prisma/models";
 
 type AdminUser = Pick<UserModel, "id" | "name" | "email" | "role">;
 
+function generateTempPassword() {
+  return crypto.randomUUID().replace(/-/g, "").slice(0, 16);
+}
+
 export function AdminUsersForm({
   users,
   currentUserId,
@@ -24,6 +29,7 @@ export function AdminUsersForm({
   currentUserId: string;
 }) {
   const [isPending, startTransition] = useTransition();
+  const [isResetPending, startResetTransition] = useTransition();
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -35,6 +41,22 @@ export function AdminUsersForm({
         toast.success(copy.admin.rolesSavedMessage);
       } catch {
         toast.error(copy.admin.rolesSaveErrorMessage);
+      }
+    });
+  }
+
+  function handleResetPassword(userId: string) {
+    const confirmed = window.confirm(copy.admin.resetPasswordConfirmMessage);
+    if (!confirmed) return;
+
+    startResetTransition(async () => {
+      try {
+        const newPassword = generateTempPassword();
+        await resetUserPassword(userId, newPassword);
+        await navigator.clipboard.writeText(newPassword);
+        toast.success(copy.admin.resetPasswordSuccessMessage);
+      } catch {
+        toast.error(copy.admin.resetPasswordErrorMessage);
       }
     });
   }
@@ -64,20 +86,31 @@ export function AdminUsersForm({
                 </p>
                 <p className="text-sm text-muted-foreground">{user.email}</p>
               </div>
-              <Select
-                key={user.role}
-                name={`role-${user.id}`}
-                defaultValue={user.role}
-                disabled={isCurrentUser}
-              >
-                <SelectTrigger size="sm">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="MEMBER">{copy.roles.member}</SelectItem>
-                  <SelectItem value="ADMIN">{copy.roles.admin}</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={isCurrentUser || isResetPending}
+                  onClick={() => handleResetPassword(user.id)}
+                >
+                  {copy.admin.resetPasswordButton}
+                </Button>
+                <Select
+                  key={user.role}
+                  name={`role-${user.id}`}
+                  defaultValue={user.role}
+                  disabled={isCurrentUser}
+                >
+                  <SelectTrigger size="sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="MEMBER">{copy.roles.member}</SelectItem>
+                    <SelectItem value="ADMIN">{copy.roles.admin}</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </li>
           );
         })}

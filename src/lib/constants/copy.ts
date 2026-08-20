@@ -87,6 +87,12 @@ export const copy = {
     noQuestionsMessage: "No questions yet — create the first one above.",
     noCategoryLabel: "No category",
     noIdFound: "No user id found",
+    resetPasswordButton: "Reset password",
+    resetPasswordConfirmMessage:
+      "This generates a new password for this user and copies it to your clipboard — share it with them directly.",
+    resetPasswordSuccessMessage: "New password copied to clipboard",
+    resetPasswordErrorMessage:
+      "Couldn't reset password. Please try again.",
   },
   auth: {
     signUp: {
