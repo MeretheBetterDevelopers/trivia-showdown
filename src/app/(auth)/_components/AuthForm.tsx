@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
 import { X } from "lucide-react";
 import { GameLogo } from "@/src/components/GameLogo";
 import {
@@ -57,13 +56,13 @@ export function AuthForm({
     previewUrl,
     isUploading,
     imageError,
+    inputRef,
     state,
     isPending,
     handleImageChange,
     handleRemoveImage,
     handleSubmit,
   } = useAuthForm(action);
-  const imageInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-md">
@@ -124,7 +123,7 @@ export function AuthForm({
                   </Avatar>
                   <input
                     id="image"
-                    ref={imageInputRef}
+                    ref={inputRef}
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
@@ -134,12 +133,7 @@ export function AuthForm({
                 {previewUrl && (
                   <button
                     type="button"
-                    onClick={() => {
-                      handleRemoveImage();
-                      if (imageInputRef.current) {
-                        imageInputRef.current.value = "";
-                      }
-                    }}
+                    onClick={handleRemoveImage}
                     aria-label="Remove image"
                     className="absolute -top-1 -right-1 flex size-6 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow"
                   >

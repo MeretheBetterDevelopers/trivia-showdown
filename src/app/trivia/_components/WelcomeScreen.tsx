@@ -1,15 +1,27 @@
 "use client";
 
 import Link from "next/link";
+import { Settings } from "lucide-react";
 import { ThemeToggle } from "@/src/app/theme/ThemeToggle";
 import { Button } from "@/src/components/ui/button";
 import { GameLogo } from "@/src/components/GameLogo";
 import { copy } from "@/src/lib/constants/copy";
 
-export function WelcomeScreen() {
+export function WelcomeScreen({ isAdmin }: Readonly<{ isAdmin: boolean }>) {
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-12 text-center">
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-4 right-4 flex items-center gap-2">
+        {isAdmin && (
+          <Button
+            render={<Link href="/trivia/admin/users" />}
+            nativeButton={false}
+            variant="outline"
+            size="icon"
+            aria-label={copy.welcome.settingsLabel}
+          >
+            <Settings className="size-4" />
+          </Button>
+        )}
         <ThemeToggle />
       </div>
 
@@ -42,6 +54,17 @@ export function WelcomeScreen() {
             {copy.welcome.leaderboardButton}
           </Button>
         </div>
+        {isAdmin && (
+          <Button
+            render={<Link href="/trivia/admin/questions" />}
+            nativeButton={false}
+            variant="ghost"
+            size="lg"
+            className="px-8 text-base"
+          >
+            {copy.welcome.createQuestionsButton}
+          </Button>
+        )}
       </div>
     </div>
   );
