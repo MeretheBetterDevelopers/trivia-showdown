@@ -1,6 +1,6 @@
 "use server";
 
-import { signInWithCredentials } from "../_lib/signInWithCredentials";
+import { signInWithCredentials } from "../_lib/sign-in-with-credentials";
 import { signInSchema } from "@/src/lib/schemas/auth";
 
 type SignInState = { error: string | null };

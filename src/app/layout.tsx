@@ -1,7 +1,7 @@
 import "./globals.css";
-import { ThemeProvider } from "./theme/ThemeProvider";
-import { themeInitScript } from "./theme/themeInitScript";
-import { QueryProvider } from "./query/QueryProvider";
+import { ThemeProvider } from "./theme/theme-provider";
+import { themeInitScript } from "./theme/theme-init-script";
+import { QueryProvider } from "./query/query-provider";
 import { Barlow, DM_Sans } from "next/font/google";
 import { clsx } from "clsx";
 import { Toaster } from "@/src/components/ui/sonner";

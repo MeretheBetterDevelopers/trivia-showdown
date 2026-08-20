@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { X } from "lucide-react";
-import { GameLogo } from "@/src/components/GameLogo";
+import { GameLogo } from "@/src/components/game-logo";
 import {
   Card,
   CardContent,
@@ -18,7 +18,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/src/components/ui/avatar";
-import { useAuthForm } from "../_hooks/useAuthForm";
+import { useAuthForm } from "../_hooks/use-auth-form";
 import { copy } from "@/src/lib/constants/copy";
 
 type AuthFormState = { error: string | null };

@@ -4,9 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { fetchTriviaQuestions } from "@/src/app/services/trivia";
 import { Button } from "@/src/components/ui/button";
-import { GameScreen } from "./_components/GameScreen";
-import { QuestionCardSkeleton } from "./_components/QuestionCardSkeleton";
-import { ReadyScreen } from "./_components/ReadyScreen";
+import { GameScreen } from "./_components/game-screen";
+import { QuestionCardSkeleton } from "./_components/question-card-skeleton";
+import { ReadyScreen } from "./_components/ready-screen";
 import { QUESTION_COUNT } from "@/src/lib/constants/game";
 import { copy } from "@/src/lib/constants/copy";
 

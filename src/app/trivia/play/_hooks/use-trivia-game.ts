@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { Questions } from "@/src/types/game/Question";
+import { Questions } from "@/src/types/game/question";
 
 export function useTriviaGame(questions: Questions[]) {
   const [currentIndex, setCurrentIndex] = useState(0);

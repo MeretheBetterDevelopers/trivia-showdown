@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { copy } from "@/src/lib/constants/copy";
-import { QuestionDetailDialog, QuestionRow } from "./QuestionDetailDialog";
-import { DeleteQuestionButton } from "./DeleteQuestionButton";
+import { QuestionDetailDialog, QuestionRow } from "./question-detail-dialog";
+import { DeleteQuestionButton } from "./delete-question-button";
 
 export function QuestionList({
   questions,

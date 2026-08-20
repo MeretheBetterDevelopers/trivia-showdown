@@ -1,6 +1,6 @@
 import { prisma } from "@/src/lib/prisma";
-import { CreateQuestionForm } from "../_components/CreateQuestionForm";
-import { QuestionList } from "../_components/QuestionList";
+import { CreateQuestionForm } from "../_components/create-question-form";
+import { QuestionList } from "../_components/question-list";
 import { copy } from "@/src/lib/constants/copy";
 
 export default async function AdminQuestionsPage() {

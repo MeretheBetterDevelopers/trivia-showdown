@@ -3,7 +3,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/src/components/ui/avatar";
-import { LeaderboardEntryWithUser } from "@/src/types/game/LeaderboardEntry";
+import { LeaderboardEntryWithUser } from "@/src/types/game/leaderboard-entry";
 
 export default function LeaderboardList({
   entries,

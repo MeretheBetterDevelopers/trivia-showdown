@@ -1,6 +1,6 @@
 import { getCurrentUserIfAdmin } from "@/src/lib/roles";
 import { redirect } from "next/navigation";
-import { BackToHomeButton } from "@/src/components/BackToHomeButton";
+import { BackToHomeButton } from "@/src/components/back-to-home-button";
 
 export default async function AdminLayout({
   children,

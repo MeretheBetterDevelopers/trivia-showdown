@@ -5,7 +5,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/src/components/ui/avatar";
-import { LeaderboardEntryWithUser } from "@/src/types/game/LeaderboardEntry";
+import { LeaderboardEntryWithUser } from "@/src/types/game/leaderboard-entry";
 
 const PODIUM_ORDER = [1, 0, 2];
 const PODIUM_COLORS = ["bg-chart-4", "bg-primary", "bg-chart-3"];

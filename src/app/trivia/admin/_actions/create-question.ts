@@ -3,7 +3,7 @@ import { getCurrentUserIfAdmin } from "@/src/lib/roles";
 import { prisma } from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { questionSchema } from "@/src/lib/schemas/question";
-import { deleteCloudinaryImage } from "@/src/lib/actions/deleteCloudinaryImage";
+import { deleteCloudinaryImage } from "@/src/lib/actions/delete-cloudinary-image";
 
 type CreateQuestionState = { error: string | null };
 

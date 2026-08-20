@@ -1,9 +1,9 @@
 "use client";
 
-import { Questions } from "@/src/types/game/Question";
-import { useTriviaGame } from "../_hooks/useTriviaGame";
-import { QuestionCard } from "./QuestionCard";
-import { ResultsScreen } from "./ResultsScreen";
+import { Questions } from "@/src/types/game/question";
+import { useTriviaGame } from "../_hooks/use-trivia-game";
+import { QuestionCard } from "./question-card";
+import { ResultsScreen } from "./results-screen";
 
 export function GameScreen({
   questions,

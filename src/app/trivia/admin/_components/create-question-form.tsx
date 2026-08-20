@@ -3,9 +3,9 @@
 import { useState, useTransition } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
-import { createQuestion } from "../_actions/createQuestion";
+import { createQuestion } from "../_actions/create-question";
 import { uploadImage } from "@/src/app/services/cloudinary";
-import { useImagePicker } from "@/src/hooks/useImagePicker";
+import { useImagePicker } from "@/src/hooks/use-image-picker";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";

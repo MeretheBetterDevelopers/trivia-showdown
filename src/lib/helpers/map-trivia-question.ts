@@ -1,9 +1,9 @@
 //this file is used to map the TriviaApiQuestion type to the Questions type used in the game. It also decodes HTML entities in the question and answer text, and shuffles the answer choices.
 
 import { TriviaApiQuestion } from "@/src/lib/schemas/trivia";
-import { Questions } from "@/src/types/game/Question";
-import { decodeHtmlEntities } from "./decodeHtmlEntities";
-import { shuffle } from "./shuffleItems";
+import { Questions } from "@/src/types/game/question";
+import { decodeHtmlEntities } from "./decode-html-entities";
+import { shuffle } from "./shuffle-items";
 
 export function mapTriviaApiQuestion(
   apiQuestion: TriviaApiQuestion,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { deleteCloudinaryImage } from "@/src/lib/actions/deleteCloudinaryImage";
+import { deleteCloudinaryImage } from "@/src/lib/actions/delete-cloudinary-image";
 
 export function useImagePicker(initialImageUrl?: string | null) {
   const [imageFile, setImageFile] = useState<File | null>(null);

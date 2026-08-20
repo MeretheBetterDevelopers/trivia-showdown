@@ -2,8 +2,8 @@
 
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { setUserRoles } from "../_actions/setUserRoles";
-import { resetUserPassword } from "../_actions/resetUserPassword";
+import { setUserRoles } from "../_actions/set-user-roles";
+import { resetUserPassword } from "../_actions/reset-user-password";
 import { Button } from "@/src/components/ui/button";
 import {
   Select,
