@@ -1,21 +1,10 @@
-//decode OTDB's &quot;-style encoding
-const NAMED_ENTITIES: Record<string, string> = {
-  amp: "&",
-  lt: "<",
-  gt: ">",
-  quot: '"',
-  apos: "'",
-};
+import { decode } from "he";
 
+// OTDB encodes question/answer text with HTML entities (not just the
+// basic &amp;/&quot;/etc. — things like &deg; or accented letters too).
+// he.decode() covers the full HTML5 named + numeric entity set instead
+// of a hand-maintained allowlist that silently misses ones we haven't
+// hit yet.
 export function decodeHtmlEntities(str: string): string {
-  return str.replace(/&(#\d+|#x[0-9a-f]+|[a-z]+);/gi, (match, entity) => {
-    if (entity[0] === "#") {
-      const code =
-        entity[1].toLowerCase() === "x"
-          ? parseInt(entity.slice(2), 16)
-          : parseInt(entity.slice(1), 10);
-      return String.fromCodePoint(code);
-    }
-    return NAMED_ENTITIES[entity.toLowerCase()] ?? match;
-  });
+  return decode(str);
 }
