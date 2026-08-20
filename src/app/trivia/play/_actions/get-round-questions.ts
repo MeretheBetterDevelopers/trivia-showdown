@@ -6,6 +6,7 @@ import { copy } from "@/src/lib/constants/copy";
 import { shuffle } from "@/src/lib/helpers/shuffle-items";
 import { prisma } from "@/src/lib/prisma";
 import { Questions } from "@/src/types/game/question";
+import { Difficulty } from "@/src/generated/prisma/enums";
 
 const OTDB_CATEGORY_IDS: Record<string, number> = Object.fromEntries(
   categories.trivia_categories
@@ -44,11 +45,12 @@ function interleave<T>(lists: T[][]): T[] {
 async function fetchOtdbQuestions(
   amount: number,
   categoryIds: number[],
+  difficulty?: Difficulty,
 ): Promise<Questions[]> {
   // 0 or 1 categories: unchanged single-call behavior, including letting
   // errors (rate limit, etc.) propagate so the player sees why it failed.
   if (categoryIds.length <= 1) {
-    return fetchTriviaQuestions(amount, categoryIds[0]);
+    return fetchTriviaQuestions(amount, categoryIds[0], difficulty);
   }
 
   // Multiple categories: each call is best-effort. If OTDB rate-limits one
@@ -60,7 +62,7 @@ async function fetchOtdbQuestions(
   const results = await Promise.all(
     categoryIds.map(async (categoryId) => {
       try {
-        return await fetchTriviaQuestions(perCategory, categoryId);
+        return await fetchTriviaQuestions(perCategory, categoryId, difficulty);
       } catch (error) {
         console.error(
           `Skipping OTDB category ${categoryId} for this round:`,
@@ -76,11 +78,15 @@ async function fetchOtdbQuestions(
 export async function getRoundQuestions(
   amount: number,
   categoryNames: string[] = [],
+  difficulty?: Difficulty,
 ): Promise<Questions[]> {
   const hasFilter = categoryNames.length > 0;
 
   const adminQuestions = await prisma.question.findMany({
-    where: hasFilter ? { category: { in: categoryNames } } : undefined,
+    where: {
+      ...(hasFilter && { category: { in: categoryNames } }),
+      ...(difficulty && { difficulty }),
+    },
     select: {
       id: true,
       text: true,
@@ -108,7 +114,7 @@ export async function getRoundQuestions(
   const otdbCategoryIds = hasFilter ? pickOtdbCategoryIds(categoryNames) : [];
   const otdbQuestions =
     otdbCount > 0 && (!hasFilter || otdbCategoryIds.length > 0)
-      ? await fetchOtdbQuestions(otdbCount, otdbCategoryIds)
+      ? await fetchOtdbQuestions(otdbCount, otdbCategoryIds, difficulty)
       : [];
 
   // Zero matches for the selected categories is an expected outcome (e.g. a

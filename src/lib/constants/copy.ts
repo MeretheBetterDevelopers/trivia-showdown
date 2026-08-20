@@ -31,12 +31,20 @@ export const copy = {
     nextButton: "Next question",
     seeResultsButton: "See results",
     readyHeading: "Ready?",
-    readyTagline: "10 questions, 15 seconds each. Let's go!",
+    readyTagline: "15 seconds per question. Let's go!",
     beginButton: "Begin",
     categoriesHeading: "Categories",
     categoriesHint: "Pick a few, or leave blank for anything.",
     noQuestionsForCategoriesMessage:
       "No questions found for the selected categories — try picking a few more.",
+    questionCountLabel: "How many questions?",
+    questionCountHint: "Between 1 and 50.",
+    difficultyHeading: "Difficulty",
+    anyDifficultyLabel: "Any",
+    shortRoundWarning:
+      "This only gives {available} questions, which doesn't fit your request of {requested}. Want to proceed with {available} questions, or choose more categories?",
+    playWithAvailableButton: "Play with {available}",
+    chooseMoreCategoriesButton: "Choose more categories",
   },
   appHeader: {
     backLabel: "Back to Trivia Showdown",
