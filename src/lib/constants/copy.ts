@@ -93,6 +93,13 @@ export const copy = {
     resetPasswordSuccessMessage: "New password copied to clipboard",
     resetPasswordErrorMessage:
       "Couldn't reset password. Please try again.",
+    deleteUserButton: "Delete user",
+    deleteUserConfirmTitle: "Delete this user?",
+    deleteUserConfirmDescription:
+      "This can't be undone. Their scores will be removed, but any questions they created will be kept. Type their name to confirm.",
+    deleteUserConfirmPlaceholder: "Type the user's name",
+    userDeletedMessage: "User deleted",
+    userDeleteErrorMessage: "Couldn't delete user. Please try again.",
   },
   auth: {
     signUp: {
