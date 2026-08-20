@@ -12,7 +12,7 @@ export default function TimeLeft({
   isAnswered,
   onTimeUp,
 }: Readonly<{
-  resetKey: number;
+  resetKey: string;
   isAnswered: boolean;
   onTimeUp: () => void;
 }>) {

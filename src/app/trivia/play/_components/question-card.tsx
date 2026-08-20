@@ -43,6 +43,14 @@ export function QuestionCard({
           isAnswered={isAnswered}
           onTimeUp={onTimeUp}
         />
+        {question.imageUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={question.imageUrl}
+            alt=""
+            className="h-40 w-full rounded-lg object-cover"
+          />
+        )}
         <h2 className="font-heading text-2xl font-bold text-balance">
           {question.text}
         </h2>

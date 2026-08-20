@@ -1,10 +1,11 @@
 import { TriviaApiQuestion } from "@/src/lib/schemas/trivia";
 
 export type Questions = {
-  id: number;
+  id: string;
   text: string;
   choices: string[];
   correctAnswer: string;
   category: string;
   difficulty: TriviaApiQuestion["difficulty"];
+  imageUrl?: string | null;
 };

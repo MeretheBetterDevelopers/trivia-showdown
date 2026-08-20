@@ -15,7 +15,7 @@ export function mapTriviaApiQuestion(
   ]).map(decodeHtmlEntities);
 
   return {
-    id,
+    id: `otdb-${id}`,
     text: decodeHtmlEntities(apiQuestion.question),
     choices,
     correctAnswer: decodeHtmlEntities(apiQuestion.correct_answer),

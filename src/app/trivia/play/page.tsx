@@ -2,8 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { fetchTriviaQuestions } from "@/src/app/services/trivia";
 import { Button } from "@/src/components/ui/button";
+import { getRoundQuestions } from "./_actions/get-round-questions";
 import { GameScreen } from "./_components/game-screen";
 import { QuestionCardSkeleton } from "./_components/question-card-skeleton";
 import { ReadyScreen } from "./_components/ready-screen";
@@ -23,7 +23,7 @@ export default function Page() {
     refetch,
   } = useQuery({
     queryKey: ["trivia-questions", roundId],
-    queryFn: () => fetchTriviaQuestions(QUESTION_COUNT),
+    queryFn: () => getRoundQuestions(QUESTION_COUNT),
     enabled: ready,
     gcTime: 0,
   });
