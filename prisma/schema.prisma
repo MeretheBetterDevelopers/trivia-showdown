@@ -26,7 +26,7 @@ enum Difficulty {
 model LeaderboardEntry {
   id       String   @id @default(cuid())
   userId   String
-  user     User     @relation(fields: [userId], references: [id])
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   score    Int
   total    Int
   playedAt DateTime @default(now())
@@ -40,8 +40,8 @@ model Question {
   category      String?
   difficulty    Difficulty @default(medium)
   imageUrl      String?
-  createdBy     String
-  creator       User       @relation(fields: [createdBy], references: [id])
+  createdBy     String?
+  creator       User?      @relation(fields: [createdBy], references: [id], onDelete: SetNull)
   createdAt     DateTime   @default(now())
 }
 
