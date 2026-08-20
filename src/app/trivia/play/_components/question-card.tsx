@@ -13,6 +13,7 @@ export function QuestionCard({
   question,
   questionNumber,
   total,
+  requestedTotal,
   selectedChoice,
   isAnswered,
   onTimeUp,
@@ -22,6 +23,7 @@ export function QuestionCard({
   question: Questions;
   questionNumber: number;
   total: number;
+  requestedTotal: number;
   selectedChoice: string | null;
   isAnswered: boolean;
   onTimeUp: () => void;
@@ -29,13 +31,15 @@ export function QuestionCard({
   onNext: () => void;
 }>) {
   const isLastQuestion = questionNumber === total;
-  console.log("rerender");
 
   return (
     <Card className="w-full max-w-2xl rounded-3xl border border-white/30 bg-card/60 shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
       <CardContent className="flex flex-col gap-4">
         <div className="flex items-center justify-between gap-4">
-          <ProgressIndicator questionNumber={questionNumber} total={total} />
+          <ProgressIndicator
+            questionNumber={questionNumber}
+            total={requestedTotal}
+          />
           <DifficultyPlate question={question} />
         </div>
         <TimeLeft

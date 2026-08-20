@@ -41,10 +41,6 @@ export const copy = {
     questionCountHint: "Between 1 and 50.",
     difficultyHeading: "Difficulty",
     anyDifficultyLabel: "Any",
-    shortRoundWarning:
-      "This only gives {available} questions, which doesn't fit your request of {requested}. Want to proceed with {available} questions, or choose more categories?",
-    playWithAvailableButton: "Play with {available}",
-    chooseMoreCategoriesButton: "Choose more categories",
   },
   appHeader: {
     backLabel: "Back to Trivia Showdown",
@@ -58,6 +54,8 @@ export const copy = {
     reactionGood: "Nice round! 🙌",
     reactionOkay: "Not bad - buuut maybe go again? 🤔",
     reactionTryAgain: "Rough one - try again! 😅",
+    shortRoundNote:
+      "Only {total} questions were available for this round's settings.",
   },
   leaderboard: {
     heading: "Leaderboard",
@@ -96,7 +94,7 @@ export const copy = {
     questionDeletedMessage: "Question deleted",
     questionDeleteErrorMessage: "Couldn't delete question. Please try again.",
     noQuestionsMessage: "No questions yet — create the first one above.",
-    noCategoryLabel: "No category",
+    noCategoryLabel: "Other",
     noIdFound: "No user id found",
     resetPasswordButton: "Reset password",
     resetPasswordConfirmMessage:

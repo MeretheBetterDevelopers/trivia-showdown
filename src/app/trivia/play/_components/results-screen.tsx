@@ -19,10 +19,12 @@ function getReaction(score: number, total: number) {
 export function ResultsScreen({
   score,
   total,
+  requestedTotal,
   onPlayAgain,
 }: Readonly<{
   score: number;
   total: number;
+  requestedTotal?: number;
   onPlayAgain: () => void;
 }>) {
   const [error, setError] = useState<string | null>(null);
@@ -60,6 +62,12 @@ export function ResultsScreen({
         </p>
 
         <p className="text-xl font-medium">{getReaction(score, total)}</p>
+
+        {requestedTotal !== undefined && total < requestedTotal && (
+          <p className="text-sm text-muted-foreground">
+            {copy.results.shortRoundNote.replaceAll("{total}", String(total))}
+          </p>
+        )}
 
         {isPending && (
           <p className="text-sm text-muted-foreground">

@@ -85,6 +85,18 @@ export function ReadyScreen({
                 {category.name}
               </Button>
             ))}
+            <Button
+              type="button"
+              size="sm"
+              variant={
+                selectedCategories.has(copy.admin.noCategoryLabel)
+                  ? "default"
+                  : "outline"
+              }
+              onClick={() => toggleCategory(copy.admin.noCategoryLabel)}
+            >
+              {copy.admin.noCategoryLabel}
+            </Button>
           </div>
         </div>
         <div className="flex flex-col items-center gap-2">

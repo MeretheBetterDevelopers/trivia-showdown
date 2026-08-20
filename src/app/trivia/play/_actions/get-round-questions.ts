@@ -14,12 +14,12 @@ const OTDB_CATEGORY_IDS: Record<string, number> = Object.fromEntries(
     .map((category) => [category.name, category.id]),
 );
 
-// OTDB only accepts one category per request, so blending N selected
-// categories into one round means N separate calls. Cap it — beyond this,
-// each extra selected category just isn't guaranteed a slice this round
-// (rerolls on the next round instead) — to bound how many near-simultaneous
-// requests we send OTDB, which rate-limits aggressively per IP.
 const MAX_OTDB_CATEGORIES_PER_ROUND = 3;
+const OTDB_RATE_LIMIT_DELAY_MS = 5500;
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 function pickOtdbCategoryIds(names: string[]): number[] {
   const ids = names
@@ -28,9 +28,25 @@ function pickOtdbCategoryIds(names: string[]): number[] {
   return shuffle(ids).slice(0, MAX_OTDB_CATEGORIES_PER_ROUND);
 }
 
-// Round-robin merge so slicing down to the round size doesn't just keep
-// whichever category's results happened to land first in the array —
-// every successful category gets a fair share of the final round.
+function shuffleOtdbCategoryIds(names: string[]): number[] {
+  const ids = names
+    .map((name) => OTDB_CATEGORY_IDS[name])
+    .filter((id): id is number => id !== undefined);
+  return shuffle(ids);
+}
+
+function distributeCounts(total: number, count: number): number[] {
+  if (count <= 0) return [];
+  const base = Math.floor(total / count);
+  const remainder = total - base * count;
+  const amounts = Array(count).fill(base) as number[];
+  const bonusIndices = shuffle(
+    Array.from({ length: count }, (_, i) => i),
+  ).slice(0, remainder);
+  for (const index of bonusIndices) amounts[index] += 1;
+  return amounts;
+}
+
 function interleave<T>(lists: T[][]): T[] {
   const merged: T[] = [];
   const maxLength = Math.max(0, ...lists.map((list) => list.length));
@@ -47,44 +63,53 @@ async function fetchOtdbQuestions(
   categoryIds: number[],
   difficulty?: Difficulty,
 ): Promise<Questions[]> {
-  // 0 or 1 categories: unchanged single-call behavior, including letting
-  // errors (rate limit, etc.) propagate so the player sees why it failed.
   if (categoryIds.length <= 1) {
     return fetchTriviaQuestions(amount, categoryIds[0], difficulty);
   }
 
-  // Multiple categories: each call is best-effort. If OTDB rate-limits one
-  // of them, that category just contributes nothing this round rather than
-  // failing the whole round — the other categories (and the admin pool)
-  // still carry it, falling back to the "shrink the round" behavior only
-  // if everything comes up empty.
   const perCategory = Math.ceil(amount / categoryIds.length);
-  const results = await Promise.all(
-    categoryIds.map(async (categoryId) => {
-      try {
-        return await fetchTriviaQuestions(perCategory, categoryId, difficulty);
-      } catch (error) {
-        console.error(
-          `Skipping OTDB category ${categoryId} for this round:`,
-          error,
-        );
-        return [];
-      }
-    }),
-  );
+  const results: Questions[][] = [];
+  for (let i = 0; i < categoryIds.length; i++) {
+    if (i > 0) await sleep(OTDB_RATE_LIMIT_DELAY_MS);
+    try {
+      results.push(
+        await fetchTriviaQuestions(perCategory, categoryIds[i], difficulty),
+      );
+    } catch (error) {
+      console.error(
+        `Skipping OTDB category ${categoryIds[i]} for this round:`,
+        error,
+      );
+      results.push([]);
+    }
+  }
   return interleave(results).slice(0, amount);
 }
 
-export async function getRoundQuestions(
+async function fetchAdminQuestions(
   amount: number,
-  categoryNames: string[] = [],
-  difficulty?: Difficulty,
+  categoryNames: string[],
+  difficulty: Difficulty | undefined,
 ): Promise<Questions[]> {
   const hasFilter = categoryNames.length > 0;
+  // "Other" (copy.admin.noCategoryLabel) represents questions with no
+  // category set at all — Prisma's `in` filter can't match `null`, so it
+  // needs its own clause, OR'd alongside any real category names selected.
+  const realCategoryNames = categoryNames.filter(
+    (name) => name !== copy.admin.noCategoryLabel,
+  );
+  const includesOther = categoryNames.includes(copy.admin.noCategoryLabel);
 
   const adminQuestions = await prisma.question.findMany({
     where: {
-      ...(hasFilter && { category: { in: categoryNames } }),
+      ...(hasFilter && {
+        OR: [
+          ...(realCategoryNames.length > 0
+            ? [{ category: { in: realCategoryNames } }]
+            : []),
+          ...(includesOther ? [{ category: null }] : []),
+        ],
+      }),
       ...(difficulty && { difficulty }),
     },
     select: {
@@ -98,7 +123,7 @@ export async function getRoundQuestions(
     },
   });
 
-  const mappedAdmin: Questions[] = shuffle(adminQuestions)
+  return shuffle(adminQuestions)
     .slice(0, amount)
     .map((question) => ({
       id: question.id,
@@ -109,6 +134,19 @@ export async function getRoundQuestions(
       difficulty: question.difficulty,
       imageUrl: question.imageUrl,
     }));
+}
+
+export async function getRoundQuestions(
+  amount: number,
+  categoryNames: string[] = [],
+  difficulty?: Difficulty,
+): Promise<Questions[]> {
+  const hasFilter = categoryNames.length > 0;
+  const mappedAdmin = await fetchAdminQuestions(
+    amount,
+    categoryNames,
+    difficulty,
+  );
 
   const otdbCount = amount - mappedAdmin.length;
   const otdbCategoryIds = hasFilter ? pickOtdbCategoryIds(categoryNames) : [];
@@ -116,11 +154,77 @@ export async function getRoundQuestions(
     otdbCount > 0 && (!hasFilter || otdbCategoryIds.length > 0)
       ? await fetchOtdbQuestions(otdbCount, otdbCategoryIds, difficulty)
       : [];
-
-  // Zero matches for the selected categories is an expected outcome (e.g. a
-  // company category with nothing authored yet), not a server error —
-  // return an empty round and let the caller show a friendly message
-  // instead of throwing, which Next.js would otherwise surface as a raw
-  // Server Action 500.
   return shuffle([...mappedAdmin, ...otdbQuestions]);
+}
+
+export async function getInitialRoundQuestions(
+  amount: number,
+  categoryNames: string[] = [],
+  difficulty?: Difficulty,
+): Promise<{
+  questions: Questions[];
+  pendingCategoryIds: number[];
+  pendingCounts: number[];
+}> {
+  const hasFilter = categoryNames.length > 0;
+  const mappedAdmin = await fetchAdminQuestions(
+    amount,
+    categoryNames,
+    difficulty,
+  );
+  const otdbCount = amount - mappedAdmin.length;
+
+  const empty = {
+    questions: shuffle(mappedAdmin),
+    pendingCategoryIds: [],
+    pendingCounts: [],
+  };
+  if (otdbCount <= 0) return empty;
+
+  if (!hasFilter) {
+    const firstBatch = await fetchTriviaQuestions(
+      otdbCount,
+      undefined,
+      difficulty,
+    );
+    return {
+      questions: shuffle([...mappedAdmin, ...firstBatch]),
+      pendingCategoryIds: [],
+      pendingCounts: [],
+    };
+  }
+
+  const shuffledIds = shuffleOtdbCategoryIds(categoryNames);
+  if (shuffledIds.length === 0) return empty;
+
+  // Never use more categories than there are questions to hand out — a
+  // category assigned 0 questions would just be a wasted background fetch.
+  const usedIds = shuffledIds.slice(0, Math.min(shuffledIds.length, otdbCount));
+  const counts = distributeCounts(otdbCount, usedIds.length);
+
+  const [firstCategoryId, ...pendingCategoryIds] = usedIds;
+  const [firstCount, ...pendingCounts] = counts;
+  const firstBatch = await fetchTriviaQuestions(
+    firstCount,
+    firstCategoryId,
+    difficulty,
+  );
+
+  return {
+    questions: shuffle([...mappedAdmin, ...firstBatch]),
+    pendingCategoryIds,
+    pendingCounts,
+  };
+}
+
+// Best-effort fetch for exactly one more selected category, called by the
+// client in the background while the player is already answering earlier
+// questions — failures (rate limit, etc.) are the caller's to swallow, same
+// philosophy as the multi-category loop in fetchOtdbQuestions above.
+export async function getNextCategoryQuestions(
+  amount: number,
+  categoryId: number,
+  difficulty?: Difficulty,
+): Promise<Questions[]> {
+  return fetchTriviaQuestions(amount, categoryId, difficulty);
 }
