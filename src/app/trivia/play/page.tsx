@@ -12,6 +12,7 @@ import { copy } from "@/src/lib/constants/copy";
 
 export default function Page() {
   const [ready, setReady] = useState(false);
+  const [categoryNames, setCategoryNames] = useState<string[]>([]);
   // Seeded per mount (not a fixed 0) so navigating away and back never
   // reuses a stale cache entry from the last time this page was visited.
   const [roundId, setRoundId] = useState(() => Date.now());
@@ -23,13 +24,20 @@ export default function Page() {
     refetch,
   } = useQuery({
     queryKey: ["trivia-questions", roundId],
-    queryFn: () => getRoundQuestions(QUESTION_COUNT),
+    queryFn: () => getRoundQuestions(QUESTION_COUNT, categoryNames),
     enabled: ready,
     gcTime: 0,
   });
 
   if (!ready) {
-    return <ReadyScreen onBegin={() => setReady(true)} />;
+    return (
+      <ReadyScreen
+        onBegin={(names) => {
+          setCategoryNames(names);
+          setReady(true);
+        }}
+      />
+    );
   }
   return (
     <>
@@ -48,7 +56,18 @@ export default function Page() {
         </div>
       )}
 
-      {status === "success" && questions && (
+      {status === "success" && questions && questions.length === 0 && (
+        <div className="flex flex-col items-center gap-3">
+          <p className="text-destructive">
+            {copy.trivia.noQuestionsForCategoriesMessage}
+          </p>
+          <Button onClick={() => setReady(false)} variant="outline">
+            {copy.trivia.retryButton}
+          </Button>
+        </div>
+      )}
+
+      {status === "success" && questions && questions.length > 0 && (
         <GameScreen
           key={roundId}
           questions={questions}

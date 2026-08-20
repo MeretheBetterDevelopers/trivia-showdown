@@ -33,6 +33,10 @@ export const copy = {
     readyHeading: "Ready?",
     readyTagline: "10 questions, 15 seconds each. Let's go!",
     beginButton: "Begin",
+    categoriesHeading: "Categories",
+    categoriesHint: "Pick a few, or leave blank for anything.",
+    noQuestionsForCategoriesMessage:
+      "No questions found for the selected categories — try picking a few more.",
   },
   appHeader: {
     backLabel: "Back to Trivia Showdown",
