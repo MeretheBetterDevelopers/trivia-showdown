@@ -1,8 +1,8 @@
 "use server";
 
-import bcrypt from "bcrypt";
-import { prisma } from "@/src/lib/prisma";
-import { signInWithCredentials } from "../_lib/signInWithCredentials";
+import { auth } from "@/src/lib/auth";
+import { APIError } from "better-auth/api";
+import { redirect } from "next/navigation";
 import { signUpSchema } from "@/src/lib/schemas/auth";
 
 type SignUpState = { error: string | null };
@@ -24,33 +24,22 @@ export async function signUp(
 
   const { name, email, password, imageUrl } = result.data;
 
-  // Check if the user already exists
-  const existingUser = await prisma.user.findUnique({
-    where: { email },
-  });
-  if (existingUser) {
+  try {
+    await auth.api.signUpEmail({
+      body: { name, email, password, image: imageUrl ?? undefined },
+    });
+  } catch (error) {
+    if (
+      error instanceof APIError &&
+      error.body?.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL"
+    ) {
+      return { error: "User already exists" };
+    }
     return {
-      error: "User already exists",
+      error:
+        "Couldn't reach the server to create your account. Please try again shortly.",
     };
   }
 
-  // Hash the password
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  // Create the new user in the database
-  await prisma.user.create({
-    data: {
-      name,
-      email,
-      passwordHash,
-      imageUrl,
-    },
-  });
-
-  return signInWithCredentials(email, password, {
-    invalidCredentials:
-      "Account created, but sign-in failed. Please try logging in.",
-    serverUnreachable:
-      "Account created, but couldn't reach the server to sign you in. Please try logging in shortly.",
-  });
+  redirect("/trivia");
 }

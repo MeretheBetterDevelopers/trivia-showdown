@@ -1,11 +1,11 @@
 "use server";
 
-import { auth } from "@/src/lib/auth";
+import { getCurrentSession } from "@/src/lib/auth";
 import { prisma } from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function saveScore(score: number, total: number) {
-  const session = await auth();
+  const session = await getCurrentSession();
   if (!session?.user?.id) {
     throw new Error("Not signed in");
   }
