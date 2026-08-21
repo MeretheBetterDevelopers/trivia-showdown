@@ -4,10 +4,22 @@ import { useCallback, useState } from "react";
 import { shuffle } from "@/src/lib/helpers/shuffle-items";
 import { Questions } from "@/src/types/game/question";
 
-export function useTriviaGame(questions: Questions[], isFetchingMore: boolean) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export function useTriviaGame({
+  questions,
+  isFetchingMore,
+  initialIndex = 0,
+  initialScore = 0,
+  onAnswer,
+}: {
+  questions: Questions[];
+  isFetchingMore: boolean;
+  initialIndex?: number;
+  initialScore?: number;
+  onAnswer?: (index: number, choice: string | null, isCorrect: boolean) => void;
+}) {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(initialScore);
 
   // The order actually shown to the player. Seeded from `questions`, but
   // whenever it grows (a new background batch landed), only the portion
@@ -36,17 +48,21 @@ export function useTriviaGame(questions: Questions[], isFetchingMore: boolean) {
     (choice: string) => {
       if (isAnswered || !currentQuestion) return;
       setSelectedChoice(choice);
-      if (choice === currentQuestion.correctAnswer) {
+      const isCorrect = choice === currentQuestion.correctAnswer;
+      if (isCorrect) {
         setScore((s) => s + 1);
       }
+      onAnswer?.(currentIndex, choice, isCorrect);
     },
-    [isAnswered, currentQuestion],
+    [isAnswered, currentQuestion, currentIndex, onAnswer],
   );
 
   // An empty selection when the timer runs out counts as wrong.
   const handleTimeUp = useCallback(() => {
-    setSelectedChoice((current) => current ?? "");
-  }, []);
+    if (isAnswered) return;
+    setSelectedChoice("");
+    onAnswer?.(currentIndex, null, false);
+  }, [isAnswered, currentIndex, onAnswer]);
 
   const goToNext = useCallback(() => {
     setCurrentIndex((i) => i + 1);
