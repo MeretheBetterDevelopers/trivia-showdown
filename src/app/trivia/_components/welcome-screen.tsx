@@ -7,7 +7,10 @@ import { Button } from "@/src/components/ui/button";
 import { GameLogo } from "@/src/components/game-logo";
 import { copy } from "@/src/lib/constants/copy";
 
-export function WelcomeScreen({ isAdmin }: Readonly<{ isAdmin: boolean }>) {
+export function WelcomeScreen({
+  isAdmin,
+  signOutButton,
+}: Readonly<{ isAdmin: boolean; signOutButton: React.ReactNode }>) {
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-12 text-center">
       <div className="absolute top-4 right-4 flex items-center gap-2">
@@ -66,6 +69,7 @@ export function WelcomeScreen({ isAdmin }: Readonly<{ isAdmin: boolean }>) {
           </Button>
         )}
       </div>
+      {signOutButton}
     </div>
   );
 }
