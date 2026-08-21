@@ -1,21 +1,27 @@
 "use client";
 
 import { useState } from "react";
+import { ScheduledRoundMode } from "./_actions/get-round";
 import { ComingSoonScreen } from "./_components/coming-soon-screen";
-import { DailyFlow } from "./_components/daily-flow";
 import { GameMode, ModeSelectScreen } from "./_components/mode-select-screen";
 import { NavRow } from "./_components/nav-row";
 import { QuickPlayFlow } from "./_components/quick-play-flow";
+import { RoundFlow } from "./_components/round-flow";
 import { copy } from "@/src/lib/constants/copy";
 
-const COMING_SOON_MODE_LABELS: Record<
-  Exclude<GameMode, "quick" | "daily">,
-  string
+const COMING_SOON_MODE_LABELS: Record<Extract<GameMode, "event" | "room">, string> =
+  {
+    event: copy.trivia.eventLabel,
+    room: copy.trivia.gameRoomLabel,
+  };
+
+const SCHEDULED_ROUND_MODES: Record<
+  Extract<GameMode, "daily" | "weekly" | "monthly">,
+  ScheduledRoundMode
 > = {
-  weekly: copy.trivia.weeklyLabel,
-  monthly: copy.trivia.monthlyLabel,
-  event: copy.trivia.eventLabel,
-  room: copy.trivia.gameRoomLabel,
+  daily: "DAILY",
+  weekly: "WEEKLY",
+  monthly: "MONTHLY",
 };
 
 export default function Page() {
@@ -30,8 +36,13 @@ export default function Page() {
     );
   }
 
-  if (mode === "daily") {
-    return <DailyFlow onBackToModes={() => setMode(null)} />;
+  if (mode === "daily" || mode === "weekly" || mode === "monthly") {
+    return (
+      <RoundFlow
+        mode={SCHEDULED_ROUND_MODES[mode]}
+        onBackToModes={() => setMode(null)}
+      />
+    );
   }
 
   if (mode !== "quick") {

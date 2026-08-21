@@ -5,7 +5,7 @@ import { getCurrentSession } from "@/src/lib/auth";
 import { prisma } from "@/src/lib/prisma";
 import { Answer } from "@/src/types/game/answer";
 
-export async function resumeDailyRound(
+export async function resumeRound(
   roundId: string,
 ): Promise<{ answers: Answer[] }> {
   const session = await getCurrentSession();

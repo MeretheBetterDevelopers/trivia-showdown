@@ -1,5 +1,7 @@
 export const QUESTION_COUNT = 10;
 export const DAILY_QUESTION_COUNT = 8;
+export const WEEKLY_QUESTION_COUNT = 15;
+export const MONTHLY_QUESTION_COUNT = 20;
 export const MIN_QUESTION_COUNT = 1;
 // OTDB caps a single request at 50 questions.
 export const MAX_QUESTION_COUNT = 50;

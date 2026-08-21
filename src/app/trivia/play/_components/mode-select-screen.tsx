@@ -44,14 +44,14 @@ const MODES: {
     icon: CalendarRange,
     label: copy.trivia.weeklyLabel,
     description: copy.trivia.weeklyDescription,
-    available: false,
+    available: true,
   },
   {
     mode: "monthly",
     icon: Trophy,
     label: copy.trivia.monthlyLabel,
     description: copy.trivia.monthlyDescription,
-    available: false,
+    available: true,
   },
   {
     mode: "event",
