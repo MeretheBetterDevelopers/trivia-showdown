@@ -9,29 +9,17 @@ import {
 } from "@/src/lib/constants/game";
 import { getCurrentSession } from "@/src/lib/auth";
 import {
-  getUTCDayWindow,
-  getUTCMonthWindow,
-  getUTCWeekWindow,
-} from "@/src/lib/helpers/date-window";
+  ROUND_WINDOW,
+  ScheduledRoundMode,
+} from "@/src/lib/helpers/round-window";
 import { prisma } from "@/src/lib/prisma";
 import { Answer } from "@/src/types/game/answer";
 import { Questions } from "@/src/types/game/question";
 
-export type ScheduledRoundMode = "DAILY" | "WEEKLY" | "MONTHLY";
-
-const ROUND_CONFIG: Record<
-  ScheduledRoundMode,
-  {
-    window: (date?: Date) => { opensAt: Date; closesAt: Date };
-    questionCount: number;
-  }
-> = {
-  DAILY: { window: getUTCDayWindow, questionCount: DAILY_QUESTION_COUNT },
-  WEEKLY: { window: getUTCWeekWindow, questionCount: WEEKLY_QUESTION_COUNT },
-  MONTHLY: {
-    window: getUTCMonthWindow,
-    questionCount: MONTHLY_QUESTION_COUNT,
-  },
+const QUESTION_COUNT: Record<ScheduledRoundMode, number> = {
+  DAILY: DAILY_QUESTION_COUNT,
+  WEEKLY: WEEKLY_QUESTION_COUNT,
+  MONTHLY: MONTHLY_QUESTION_COUNT,
 };
 
 export async function getRound(mode: ScheduledRoundMode): Promise<{
@@ -39,8 +27,7 @@ export async function getRound(mode: ScheduledRoundMode): Promise<{
   questions: Questions[];
   progress: { answers: Answer[]; score: number; completed: boolean } | null;
 }> {
-  const { window, questionCount } = ROUND_CONFIG[mode];
-  const { opensAt, closesAt } = window();
+  const { opensAt, closesAt } = ROUND_WINDOW[mode]();
   const session = await getCurrentSession();
 
   const existing = await prisma.round.findFirst({
@@ -59,7 +46,7 @@ export async function getRound(mode: ScheduledRoundMode): Promise<{
 
   // No category filter, any difficulty - same round for everyone, per
   // #22's "Why" (a shared moment, not a personalized mix).
-  const questions = await getRoundQuestions(questionCount, []);
+  const questions = await getRoundQuestions(QUESTION_COUNT[mode], []);
 
   // Two players racing to create this period's first round both landing
   // here is an accepted edge case for this slice - worst case is a

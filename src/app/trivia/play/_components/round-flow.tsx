@@ -2,7 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getRound, ScheduledRoundMode } from "../_actions/get-round";
+import { getRound } from "../_actions/get-round";
+import { ScheduledRoundMode } from "@/src/lib/helpers/round-window";
 import { resumeRound } from "../_actions/resume-round";
 import { saveRoundAnswer } from "../_actions/save-round-answer";
 import { ErrorRetry } from "./error-retry";

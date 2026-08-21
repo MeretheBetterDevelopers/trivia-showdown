@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/src/components/ui/button";
 import { copy } from "@/src/lib/constants/copy";
 
-export type LeaderboardView = "daily" | "all-time";
+export type LeaderboardView = "daily" | "weekly" | "monthly" | "all-time";
 
 export default function LeaderboardModeSwitcher({
   view,
@@ -26,6 +26,26 @@ export default function LeaderboardModeSwitcher({
         className="transition-none"
       >
         {copy.leaderboard.dailyViewLabel}
+      </Button>
+      <Button
+        render={<Link href={`/trivia/leaderboard?view=weekly${fromSuffix}`} />}
+        nativeButton={false}
+        size="sm"
+        variant={view === "weekly" ? "default" : "outline"}
+        className="transition-none"
+      >
+        {copy.trivia.weeklyLabel}
+      </Button>
+      <Button
+        render={
+          <Link href={`/trivia/leaderboard?view=monthly${fromSuffix}`} />
+        }
+        nativeButton={false}
+        size="sm"
+        variant={view === "monthly" ? "default" : "outline"}
+        className="transition-none"
+      >
+        {copy.trivia.monthlyLabel}
       </Button>
       <Button
         render={

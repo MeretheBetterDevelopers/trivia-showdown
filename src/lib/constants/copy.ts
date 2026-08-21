@@ -98,6 +98,8 @@ export const copy = {
     dailyViewLabel: "Daily",
     allTimeViewLabel: "All-time",
     noDailyRoundMessage: "No Daily round for this date.",
+    noWeeklyRoundMessage: "No Weekly round for this period.",
+    noMonthlyRoundMessage: "No Monthly round for this period.",
     datePickerLabel: "Date",
   },
   themeToggle: {
