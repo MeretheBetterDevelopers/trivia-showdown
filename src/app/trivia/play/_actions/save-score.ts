@@ -4,7 +4,7 @@ import { getCurrentSession } from "@/src/lib/auth";
 import { prisma } from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-export async function saveScore(score: number, total: number) {
+export async function saveScore(score: number, total: number, roundId?: string) {
   const session = await getCurrentSession();
   if (!session?.user?.id) {
     throw new Error("Not signed in");
@@ -15,6 +15,7 @@ export async function saveScore(score: number, total: number) {
       userId: session.user.id,
       score,
       total,
+      roundId,
     },
   });
 

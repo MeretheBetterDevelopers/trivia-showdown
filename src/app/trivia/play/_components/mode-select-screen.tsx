@@ -36,7 +36,7 @@ const MODES: {
     icon: CalendarDays,
     label: copy.trivia.dailyLabel,
     description: copy.trivia.dailyDescription,
-    available: false,
+    available: true,
   },
   {
     mode: "weekly",

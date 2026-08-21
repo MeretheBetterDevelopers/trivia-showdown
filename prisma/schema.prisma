@@ -23,6 +23,26 @@ enum Difficulty {
   hard
 }
 
+enum RoundMode {
+  DAILY
+  WEEKLY
+  MONTHLY
+  EVENT
+}
+
+model Round {
+  id                 String             @id @default(cuid())
+  mode               RoundMode
+  questions          Json
+  opensAt            DateTime
+  closesAt           DateTime
+  label              String?
+  createdAt          DateTime           @default(now())
+  leaderboardEntries LeaderboardEntry[]
+
+  @@index([mode, opensAt])
+}
+
 model LeaderboardEntry {
   id       String   @id @default(cuid())
   userId   String
@@ -30,6 +50,8 @@ model LeaderboardEntry {
   score    Int
   total    Int
   playedAt DateTime @default(now())
+  roundId  String?
+  round    Round?   @relation(fields: [roundId], references: [id], onDelete: SetNull)
 }
 
 model Question {

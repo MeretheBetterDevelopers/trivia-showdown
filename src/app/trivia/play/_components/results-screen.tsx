@@ -21,11 +21,13 @@ export function ResultsScreen({
   score,
   total,
   requestedTotal,
+  roundId,
   onPlayAgain,
 }: Readonly<{
   score: number;
   total: number;
   requestedTotal?: number;
+  roundId?: string;
   onPlayAgain: () => void;
 }>) {
   const [error, setError] = useState<string | null>(null);
@@ -38,12 +40,12 @@ export function ResultsScreen({
 
     startTransition(async () => {
       try {
-        await saveScore(score, total);
+        await saveScore(score, total, roundId);
       } catch {
         setError("Couldn't save your score to the leaderboard.");
       }
     });
-  }, [score, total]);
+  }, [score, total, roundId]);
 
   return (
     <Card className="w-full max-w-2xl rounded-3xl border border-white/30 bg-card/60 shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
