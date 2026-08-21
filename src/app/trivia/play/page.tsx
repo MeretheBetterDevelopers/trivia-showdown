@@ -12,9 +12,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/src/components/ui/alert-dialog";
+import { BackToHomeButton } from "@/src/components/trivia-nav-controls";
 import { useProgressiveQuestions } from "./_hooks/use-progressive-questions";
 import { checkRoundAvailability } from "./_actions/get-round-questions";
+import { ComingSoonScreen } from "./_components/coming-soon-screen";
 import { GameScreen } from "./_components/game-screen";
+import { GameMode, ModeSelectScreen } from "./_components/mode-select-screen";
 import { QuestionCardSkeleton } from "./_components/question-card-skeleton";
 import { ReadyScreen, ReadyScreenSettings } from "./_components/ready-screen";
 import { QUESTION_COUNT } from "@/src/lib/constants/game";
@@ -22,7 +25,29 @@ import { copy } from "@/src/lib/constants/copy";
 import { pluralize } from "@/src/lib/helpers/pluralize";
 import { Difficulty } from "@/src/generated/prisma/enums";
 
+const COMING_SOON_MODE_LABELS: Record<Exclude<GameMode, "quick">, string> = {
+  daily: copy.trivia.dailyLabel,
+  weekly: copy.trivia.weeklyLabel,
+  monthly: copy.trivia.monthlyLabel,
+  event: copy.trivia.eventLabel,
+  room: copy.trivia.gameRoomLabel,
+};
+
+function NavRow({ onBackToModes }: Readonly<{ onBackToModes?: () => void }>) {
+  return (
+    <div className="flex flex-wrap justify-center gap-3">
+      {onBackToModes && (
+        <Button onClick={onBackToModes} variant="outline" size="lg">
+          {copy.trivia.backToModesButton}
+        </Button>
+      )}
+      <BackToHomeButton />
+    </div>
+  );
+}
+
 export default function Page() {
+  const [mode, setMode] = useState<GameMode | null>(null);
   const [ready, setReady] = useState(false);
   const [categoryNames, setCategoryNames] = useState<string[]>([]);
   const [difficulty, setDifficulty] = useState<Difficulty | undefined>(
@@ -71,10 +96,29 @@ export default function Page() {
     });
   }
 
+  if (mode === null) {
+    return (
+      <>
+        <ModeSelectScreen onSelectMode={setMode} />
+        <NavRow />
+      </>
+    );
+  }
+
+  if (mode !== "quick") {
+    return (
+      <>
+        <ComingSoonScreen modeLabel={COMING_SOON_MODE_LABELS[mode]} />
+        <NavRow onBackToModes={() => setMode(null)} />
+      </>
+    );
+  }
+
   if (!ready) {
     return (
       <>
         <ReadyScreen onBegin={handleBegin} disabled={isChecking} />
+        <NavRow onBackToModes={() => setMode(null)} />
         <AlertDialog
           open={shortfall !== null}
           onOpenChange={(open) => {
@@ -167,6 +211,8 @@ export default function Page() {
           onPlayAgain={() => setRoundId((id) => id + 1)}
         />
       )}
+
+      <NavRow />
     </>
   );
 }
