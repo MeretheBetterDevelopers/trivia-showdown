@@ -2,22 +2,22 @@
 
 import { useState, useTransition } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getDailyRound } from "../_actions/get-daily-round";
-import { resumeDailyRound } from "../_actions/resume-daily-round";
-import { saveDailyAnswer } from "../_actions/save-daily-answer";
-import { DailyCheckingScreen } from "./daily-checking-screen";
-import { DailyReadyScreen } from "./daily-ready-screen";
-import { DailyResumeScreen } from "./daily-resume-screen";
+import { getRound, ScheduledRoundMode } from "../_actions/get-round";
+import { resumeRound } from "../_actions/resume-round";
+import { saveRoundAnswer } from "../_actions/save-round-answer";
 import { ErrorRetry } from "./error-retry";
 import { GameScreen } from "./game-screen";
 import { NavRow } from "./nav-row";
 import { ResultsScreen } from "./results-screen";
+import { RoundReadyScreen } from "./round-ready-screen";
+import { RoundResumeScreen } from "./round-resume-screen";
 import { copy } from "@/src/lib/constants/copy";
 import { getErrorMessage } from "@/src/lib/helpers/get-error-message";
 
-export function DailyFlow({
+export function RoundFlow({
+  mode,
   onBackToModes,
-}: Readonly<{ onBackToModes: () => void }>) {
+}: Readonly<{ mode: ScheduledRoundMode; onBackToModes: () => void }>) {
   const [started, setStarted] = useState(false);
   const [resumed, setResumed] = useState<{
     index: number;
@@ -26,15 +26,15 @@ export function DailyFlow({
   const [isResuming, startResuming] = useTransition();
   const [hasUnansweredQuestion, setHasUnansweredQuestion] = useState(false);
 
-  const dailyQuery = useQuery({
-    queryKey: ["daily-round"],
-    queryFn: getDailyRound,
+  const roundQuery = useQuery({
+    queryKey: ["round", mode],
+    queryFn: () => getRound(mode),
     gcTime: 0,
   });
 
   function handleContinue(roundId: string) {
     startResuming(async () => {
-      const { answers } = await resumeDailyRound(roundId);
+      const { answers } = await resumeRound(roundId);
       setResumed({
         index: answers.length,
         score: answers.filter((answer) => answer.correct).length,
@@ -42,26 +42,27 @@ export function DailyFlow({
     });
   }
 
-  const { data } = dailyQuery;
+  const { data } = roundQuery;
   const progress = data?.progress;
+  // No LeaderboardEntry for this round at all - never played, never even
+  // started. Only this case gets the "Ready? Begin" screen; existing
+  // progress or a completed round skip straight to resuming/results.
   const isFreshRound = !!data && !progress;
 
   return (
     <>
-      {dailyQuery.status === "pending" && <DailyCheckingScreen />}
-
-      {dailyQuery.status === "error" && (
+      {roundQuery.status === "error" && (
         <ErrorRetry
           message={getErrorMessage(
-            dailyQuery.error,
+            roundQuery.error,
             copy.trivia.genericErrorMessage,
           )}
-          onRetry={() => dailyQuery.refetch()}
+          onRetry={() => roundQuery.refetch()}
         />
       )}
 
       {isFreshRound && !started && (
-        <DailyReadyScreen onBegin={() => setStarted(true)} />
+        <RoundReadyScreen mode={mode} onBegin={() => setStarted(true)} />
       )}
 
       {data && progress?.completed && (
@@ -74,7 +75,7 @@ export function DailyFlow({
       )}
 
       {data && progress && !progress.completed && !resumed && (
-        <DailyResumeScreen
+        <RoundResumeScreen
           answered={progress.answers.length + 1}
           total={data.questions.length}
           disabled={isResuming}
@@ -91,7 +92,7 @@ export function DailyFlow({
           initialIndex={resumed?.index}
           initialScore={resumed?.score}
           onAnswer={(index, choice, isCorrect) => {
-            saveDailyAnswer(data.roundId, index, choice, isCorrect).catch(
+            saveRoundAnswer(data.roundId, index, choice, isCorrect).catch(
               () => {
                 // Best-effort: a failed save just means this question
                 // won't persist for resume purposes, not a blocking error.
@@ -102,10 +103,12 @@ export function DailyFlow({
         />
       )}
 
-      <NavRow
-        onBackToModes={onBackToModes}
-        confirmLeave={hasUnansweredQuestion}
-      />
+      {roundQuery.status !== "pending" && (
+        <NavRow
+          onBackToModes={onBackToModes}
+          confirmLeave={hasUnansweredQuestion}
+        />
+      )}
     </>
   );
 }

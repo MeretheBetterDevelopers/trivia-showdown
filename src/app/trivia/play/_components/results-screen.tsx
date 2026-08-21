@@ -34,9 +34,10 @@ export function ResultsScreen({
   const hasSavedRef = useRef(false);
 
   useEffect(() => {
-    // Daily rounds are already persisted question-by-question via
-    // saveDailyAnswer, so calling saveScore here too would create a
-    // duplicate LeaderboardEntry row and hit the unique constraint.
+    // Round-based modes (Daily/Weekly/Monthly) are already persisted
+    // question-by-question via saveRoundAnswer, so calling saveScore here
+    // too would create a duplicate LeaderboardEntry row and hit the
+    // unique constraint.
     if (roundId) return;
     if (hasSavedRef.current) return;
     hasSavedRef.current = true;

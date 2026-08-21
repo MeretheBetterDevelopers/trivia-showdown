@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 import { Answer } from "@/src/types/game/answer";
 import { Questions } from "@/src/types/game/question";
 
-export async function saveDailyAnswer(
+export async function saveRoundAnswer(
   roundId: string,
   index: number,
   choice: string | null,

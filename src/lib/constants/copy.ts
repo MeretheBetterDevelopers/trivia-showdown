@@ -64,8 +64,11 @@ export const copy = {
     continueButton: "Continue",
     weeklyLabel: "Weekly",
     weeklyDescription: "A bigger round, open all week.",
+    weeklyReadyTagline: "One shared round for everyone this week — {count}.",
     monthlyLabel: "Monthly",
     monthlyDescription: "The championship round for the month.",
+    monthlyReadyTagline:
+      "One shared round for everyone this month — {count}.",
     eventLabel: "Event",
     eventDescription: "Special one-off rounds, like Friday bar trivia.",
     gameRoomLabel: "Game Room",

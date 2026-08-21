@@ -4,7 +4,7 @@ import { GlassCard } from "@/src/components/glass-card";
 import { copy } from "@/src/lib/constants/copy";
 import { pluralize } from "@/src/lib/helpers/pluralize";
 
-export function DailyResumeScreen({
+export function RoundResumeScreen({
   answered,
   total,
   disabled,
