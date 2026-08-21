@@ -10,11 +10,13 @@ export function GameScreen({
   questions,
   isFetchingMore,
   requestedTotal,
+  roundId,
   onPlayAgain,
 }: Readonly<{
   questions: Questions[];
   isFetchingMore: boolean;
   requestedTotal: number;
+  roundId?: string;
   onPlayAgain: () => void;
 }>) {
   const game = useTriviaGame(questions, isFetchingMore);
@@ -29,6 +31,7 @@ export function GameScreen({
         score={game.score}
         total={game.total}
         requestedTotal={requestedTotal}
+        roundId={roundId}
         onPlayAgain={onPlayAgain}
       />
     );

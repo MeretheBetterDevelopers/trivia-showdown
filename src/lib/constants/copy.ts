@@ -54,6 +54,7 @@ export const copy = {
     quickPlayDescription: "Jump into a round with your own settings.",
     dailyLabel: "Daily",
     dailyDescription: "One shared round, same for everyone today.",
+    dailyReadyTagline: "One shared round for everyone today — {count}.",
     weeklyLabel: "Weekly",
     weeklyDescription: "A bigger round, open all week.",
     monthlyLabel: "Monthly",
