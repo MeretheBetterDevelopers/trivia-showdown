@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ScheduledRoundMode } from "./_actions/get-round";
+import { ScheduledRoundMode } from "@/src/lib/helpers/round-window";
 import { ComingSoonScreen } from "./_components/coming-soon-screen";
 import { GameMode, ModeSelectScreen } from "./_components/mode-select-screen";
 import { NavRow } from "./_components/nav-row";

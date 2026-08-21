@@ -1,4 +1,4 @@
-import { ScheduledRoundMode } from "../_actions/get-round";
+import { ScheduledRoundMode } from "@/src/lib/helpers/round-window";
 import { Button } from "@/src/components/ui/button";
 import { CardContent } from "@/src/components/ui/card";
 import { GlassCard } from "@/src/components/glass-card";
