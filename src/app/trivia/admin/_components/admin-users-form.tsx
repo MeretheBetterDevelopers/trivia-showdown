@@ -74,7 +74,7 @@ export function AdminUsersForm({
               key={user.id}
               className="flex items-center justify-between gap-3 rounded-2xl border border-white/30 bg-card/60 px-4 py-3 backdrop-blur-xl backdrop-saturate-150 dark:border-white/10"
             >
-              <div>
+              <div className="text-left">
                 <p className="font-medium">
                   {user.name}
                   {isCurrentUser && (

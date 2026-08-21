@@ -50,9 +50,15 @@ export function DeleteQuestionButton({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{copy.common.cancel}</AlertDialogCancel>
-          <AlertDialogAction variant="destructive" onClick={handleDelete}>
-            {copy.common.delete}
+          <AlertDialogCancel disabled={isPending}>
+            {copy.common.cancel}
+          </AlertDialogCancel>
+          <AlertDialogAction
+            variant="destructive"
+            disabled={isPending}
+            onClick={handleDelete}
+          >
+            {isPending ? copy.common.saving : copy.common.delete}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
