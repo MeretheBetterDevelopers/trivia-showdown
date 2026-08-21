@@ -38,7 +38,7 @@ export function RoundFlow({
       const { answers } = await resumeRound(roundId);
       setResumed({
         index: answers.length,
-        score: answers.filter((answer) => answer.correct).length,
+        score: answers.reduce((sum, answer) => sum + answer.points, 0),
       });
     });
   }
@@ -92,13 +92,17 @@ export function RoundFlow({
           roundId={data.roundId}
           initialIndex={resumed?.index}
           initialScore={resumed?.score}
-          onAnswer={(index, choice, isCorrect) => {
-            saveRoundAnswer(data.roundId, index, choice, isCorrect).catch(
-              () => {
-                // Best-effort: a failed save just means this question
-                // won't persist for resume purposes, not a blocking error.
-              },
-            );
+          onAnswer={(index, choice, isCorrect, points) => {
+            saveRoundAnswer(
+              data.roundId,
+              index,
+              choice,
+              isCorrect,
+              points,
+            ).catch(() => {
+              // Best-effort: a failed save just means this question
+              // won't persist for resume purposes, not a blocking error.
+            });
           }}
           onActiveQuestionChange={setHasUnansweredQuestion}
         />

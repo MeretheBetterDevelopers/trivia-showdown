@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { GameLogo } from "@/src/components/game-logo";
+import { MAX_POINTS } from "@/src/lib/constants/game";
 import { copy } from "@/src/lib/constants/copy";
 import { pluralize } from "@/src/lib/helpers/pluralize";
 import { saveScore } from "../_actions/save-score";
@@ -11,7 +12,8 @@ import { CardContent } from "@/src/components/ui/card";
 import { GlassCard } from "@/src/components/glass-card";
 
 function getReaction(score: number, total: number) {
-  const ratio = total > 0 ? score / total : 0;
+  const maxPoints = total * MAX_POINTS;
+  const ratio = maxPoints > 0 ? score / maxPoints : 0;
   if (ratio >= 0.8) return copy.results.reactionGreat;
   if (ratio >= 0.5) return copy.results.reactionGood;
   if (ratio >= 0.3) return copy.results.reactionOkay;
@@ -62,10 +64,12 @@ export function ResultsScreen({
 
         <p
           className="font-heading text-6xl font-bold text-primary"
-          aria-label={`${copy.results.scoreLabel} ${score} ${copy.trivia.ofLabel} ${total}`}
+          aria-label={`${copy.results.scoreLabel} ${score} ${copy.results.pointsLabel}`}
         >
-          {score}
-          <span className="text-3xl text-muted-foreground"> / {total}</span>
+          {score.toLocaleString()}
+          <span className="ml-2 text-3xl text-muted-foreground">
+            {copy.results.pointsLabel}
+          </span>
         </p>
 
         <p className="text-xl font-medium">{getReaction(score, total)}</p>

@@ -23,7 +23,12 @@ export function GameScreen({
   roundId?: string;
   initialIndex?: number;
   initialScore?: number;
-  onAnswer?: (index: number, choice: string | null, isCorrect: boolean) => void;
+  onAnswer?: (
+    index: number,
+    choice: string | null,
+    isCorrect: boolean,
+    points: number,
+  ) => void;
   onActiveQuestionChange?: (hasUnansweredQuestion: boolean) => void;
 }>) {
   const game = useTriviaGame({

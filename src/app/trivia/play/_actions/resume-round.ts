@@ -24,9 +24,9 @@ export async function resumeRound(
   const priorAnswers = existing.answers as unknown as Answer[];
   const answers: Answer[] = [
     ...priorAnswers,
-    { index: priorAnswers.length, choice: null, correct: false },
+    { index: priorAnswers.length, choice: null, correct: false, points: 0 },
   ];
-  const score = answers.filter((answer) => answer.correct).length;
+  const score = answers.reduce((sum, answer) => sum + answer.points, 0);
 
   await prisma.leaderboardEntry.update({
     where: { userId_roundId: { userId, roundId } },
