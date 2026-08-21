@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { Questions } from "@/src/types/game/question";
 import { useTriviaGame } from "../_hooks/use-trivia-game";
 import { QuestionCard } from "./question-card";
@@ -11,13 +12,34 @@ export function GameScreen({
   isFetchingMore,
   requestedTotal,
   roundId,
+  initialIndex,
+  initialScore,
+  onAnswer,
+  onActiveQuestionChange,
 }: Readonly<{
   questions: Questions[];
   isFetchingMore: boolean;
   requestedTotal: number;
   roundId?: string;
+  initialIndex?: number;
+  initialScore?: number;
+  onAnswer?: (index: number, choice: string | null, isCorrect: boolean) => void;
+  onActiveQuestionChange?: (hasUnansweredQuestion: boolean) => void;
 }>) {
-  const game = useTriviaGame(questions, isFetchingMore);
+  const game = useTriviaGame({
+    questions,
+    isFetchingMore,
+    initialIndex,
+    initialScore,
+    onAnswer,
+  });
+
+  const hasUnansweredQuestion =
+    !game.isFinished && !game.isWaitingForMore && !game.isAnswered;
+
+  useEffect(() => {
+    onActiveQuestionChange?.(hasUnansweredQuestion);
+  }, [hasUnansweredQuestion, onActiveQuestionChange]);
 
   if (game.isWaitingForMore) {
     return <QuestionCardSkeleton count={requestedTotal} />;

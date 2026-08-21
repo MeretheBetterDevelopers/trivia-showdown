@@ -41,6 +41,7 @@ export function QuickPlayFlow({
   // Seeded per mount (not a fixed 0) so navigating away and back never
   // reuses a stale cache entry from the last time this flow was visited.
   const [playKey] = useState(() => Date.now());
+  const [hasUnansweredQuestion, setHasUnansweredQuestion] = useState(false);
 
   const { questions, status, error, isFetchingMore, refetch } =
     useProgressiveQuestions({
@@ -160,10 +161,14 @@ export function QuickPlayFlow({
           questions={questions}
           isFetchingMore={isFetchingMore}
           requestedTotal={questionCount}
+          onActiveQuestionChange={setHasUnansweredQuestion}
         />
       )}
 
-      <NavRow onBackToModes={onBackToModes} />
+      <NavRow
+        onBackToModes={onBackToModes}
+        confirmLeave={hasUnansweredQuestion}
+      />
     </>
   );
 }
