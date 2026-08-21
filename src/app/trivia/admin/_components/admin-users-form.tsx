@@ -72,10 +72,10 @@ export function AdminUsersForm({
           return (
             <li
               key={user.id}
-              className="flex items-center justify-between gap-3 rounded-2xl border border-white/30 bg-card/60 px-4 py-3 backdrop-blur-xl backdrop-saturate-150 dark:border-white/10"
+              className="flex flex-col gap-3 rounded-2xl border border-white/30 bg-card/60 px-4 py-3 backdrop-blur-xl backdrop-saturate-150 sm:flex-row sm:items-center sm:justify-between dark:border-white/10"
             >
-              <div className="text-left">
-                <p className="font-medium">
+              <div className="min-w-0 text-left">
+                <p className="truncate font-medium">
                   {user.name}
                   {isCurrentUser && (
                     <span className="text-muted-foreground">
@@ -84,9 +84,11 @@ export function AdminUsersForm({
                     </span>
                   )}
                 </p>
-                <p className="text-sm text-muted-foreground">{user.email}</p>
+                <p className="truncate text-sm text-muted-foreground">
+                  {user.email}
+                </p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Select
                   key={`${user.role}-${resetKey}`}
                   defaultValue={user.role}
