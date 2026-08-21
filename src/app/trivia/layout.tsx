@@ -1,6 +1,5 @@
 import { getCurrentSession } from "@/src/lib/auth";
 import { redirect } from "next/navigation";
-import { SignOutButton } from "./_components/sign-out-button";
 
 export default async function Layout({
   children,
@@ -12,10 +11,5 @@ export default async function Layout({
     redirect("/sign-in");
   }
 
-  return (
-    <>
-      {children}
-      <SignOutButton />
-    </>
-  );
+  return children;
 }

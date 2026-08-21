@@ -5,7 +5,7 @@ import { copy } from "@/src/lib/constants/copy";
 
 export function ThemeToggleCorner() {
   return (
-    <div className="fixed top-4 right-4 z-10">
+    <div className="fixed top-4 right-4 z-10 hidden sm:block">
       <ThemeToggle />
     </div>
   );
