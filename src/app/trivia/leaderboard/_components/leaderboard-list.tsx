@@ -3,6 +3,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/src/components/ui/avatar";
+import { copy } from "@/src/lib/constants/copy";
 import { LeaderboardEntryWithUser } from "@/src/types/game/leaderboard-entry";
 
 export default function LeaderboardList({
@@ -32,7 +33,7 @@ export default function LeaderboardList({
           </Avatar>
           <span className="flex-1 truncate font-medium">{entry.user.name}</span>
           <span className="text-sm text-muted-foreground">
-            {entry.score} / {entry.total}
+            {entry.score.toLocaleString()} {copy.results.pointsLabel}
           </span>
         </li>
       ))}

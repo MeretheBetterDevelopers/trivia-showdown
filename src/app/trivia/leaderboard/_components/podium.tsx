@@ -5,6 +5,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/src/components/ui/avatar";
+import { copy } from "@/src/lib/constants/copy";
 import { LeaderboardEntryWithUser } from "@/src/types/game/leaderboard-entry";
 
 const PODIUM_ORDER = [1, 0, 2];
@@ -65,7 +66,7 @@ export default function Podium({
               {entry.user.name}
             </p>
             <p className="text-xs font-medium text-primary">
-              {entry.score} / {entry.total}
+              {entry.score.toLocaleString()} {copy.results.pointsLabel}
             </p>
           </div>
         );

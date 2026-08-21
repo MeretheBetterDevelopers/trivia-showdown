@@ -12,6 +12,7 @@ export async function saveRoundAnswer(
   index: number,
   choice: string | null,
   isCorrect: boolean,
+  points: number,
 ) {
   const session = await getCurrentSession();
   if (!session?.user?.id) {
@@ -32,9 +33,9 @@ export async function saveRoundAnswer(
 
   const answers: Answer[] = [
     ...priorAnswers.filter((answer) => answer.index !== index),
-    { index, choice, correct: isCorrect },
+    { index, choice, correct: isCorrect, points },
   ];
-  const score = answers.filter((answer) => answer.correct).length;
+  const score = answers.reduce((sum, answer) => sum + answer.points, 0);
   const completed = answers.length >= total;
 
   await prisma.leaderboardEntry.upsert({

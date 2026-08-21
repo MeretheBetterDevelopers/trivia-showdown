@@ -26,7 +26,6 @@ export const copy = {
     genericErrorMessage: "Something went wrong",
     retryButton: "Try again",
     questionLabel: "Question",
-    ofLabel: "of",
     timeLeftSuffix: "s",
     nextButton: "Next question",
     seeResultsButton: "See results",
@@ -83,6 +82,7 @@ export const copy = {
   results: {
     heading: "Round complete!",
     scoreLabel: "You scored",
+    pointsLabel: "pts",
     leaderboardButton: "Leaderboard",
     reactionGreat: "Nailed it! 🎉",
     reactionGood: "Nice round! 🙌",
