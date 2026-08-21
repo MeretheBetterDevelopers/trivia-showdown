@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { GameLogo } from "@/src/components/game-logo";
 import { copy } from "@/src/lib/constants/copy";
+import { pluralize } from "@/src/lib/helpers/pluralize";
 import { saveScore } from "../_actions/save-score";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent } from "@/src/components/ui/card";
@@ -65,7 +66,10 @@ export function ResultsScreen({
 
         {requestedTotal !== undefined && total < requestedTotal && (
           <p className="text-sm text-muted-foreground">
-            {copy.results.shortRoundNote.replaceAll("{total}", String(total))}
+            {copy.results.shortRoundNote.replaceAll(
+              "{total}",
+              pluralize(total, "question"),
+            )}
           </p>
         )}
 

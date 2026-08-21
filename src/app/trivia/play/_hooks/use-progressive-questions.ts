@@ -7,13 +7,8 @@ import {
   getNextCategoryQuestions,
 } from "../_actions/get-round-questions";
 import { Questions } from "@/src/types/game/question";
+import { OTDB_RATE_LIMIT_DELAY_MS } from "@/src/lib/constants/game";
 import { Difficulty } from "@/src/generated/prisma/enums";
-
-// OTDB allows roughly one request per 5 seconds per IP. Spacing background
-// category fetches out by this much — while the player is already reading
-// or answering an earlier question — means the delay is real but never
-// perceived as a loading wait.
-const CLIENT_CATEGORY_DELAY_MS = 5500;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -88,7 +83,7 @@ export function useProgressiveQuestions({
 
     async function loadMore() {
       while (!cancelled && pendingIds.length > 0) {
-        await sleep(CLIENT_CATEGORY_DELAY_MS);
+        await sleep(OTDB_RATE_LIMIT_DELAY_MS);
         if (cancelled) return;
 
         const [nextCategoryId, ...restIds] = pendingIds;

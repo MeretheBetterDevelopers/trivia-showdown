@@ -3,6 +3,7 @@
 import { fetchTriviaQuestions } from "@/src/app/services/trivia";
 import categories from "@/src/lib/constants/categories.json";
 import { copy } from "@/src/lib/constants/copy";
+import { OTDB_RATE_LIMIT_DELAY_MS } from "@/src/lib/constants/game";
 import { shuffle } from "@/src/lib/helpers/shuffle-items";
 import { prisma } from "@/src/lib/prisma";
 import { Questions } from "@/src/types/game/question";
@@ -15,7 +16,6 @@ const OTDB_CATEGORY_IDS: Record<string, number> = Object.fromEntries(
 );
 
 const MAX_OTDB_CATEGORIES_PER_ROUND = 3;
-const OTDB_RATE_LIMIT_DELAY_MS = 5500;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));

@@ -19,6 +19,7 @@ import { QuestionCardSkeleton } from "./_components/question-card-skeleton";
 import { ReadyScreen, ReadyScreenSettings } from "./_components/ready-screen";
 import { QUESTION_COUNT } from "@/src/lib/constants/game";
 import { copy } from "@/src/lib/constants/copy";
+import { pluralize } from "@/src/lib/helpers/pluralize";
 import { Difficulty } from "@/src/generated/prisma/enums";
 
 export default function Page() {
@@ -88,10 +89,13 @@ export default function Page() {
               <AlertDialogDescription>
                 {shortfall &&
                   copy.trivia.shortfallDialogDescription
-                    .replaceAll("{available}", String(shortfall.adminCount))
+                    .replaceAll(
+                      "{available}",
+                      pluralize(shortfall.adminCount, "question"),
+                    )
                     .replaceAll(
                       "{requested}",
-                      String(shortfall.settings.questionCount),
+                      pluralize(shortfall.settings.questionCount, "question"),
                     )}
               </AlertDialogDescription>
             </AlertDialogHeader>
@@ -112,7 +116,7 @@ export default function Page() {
                 {shortfall &&
                   copy.trivia.playWithAvailableButton.replaceAll(
                     "{available}",
-                    String(shortfall.adminCount),
+                    pluralize(shortfall.adminCount, "question"),
                   )}
               </AlertDialogAction>
             </AlertDialogFooter>
@@ -124,7 +128,7 @@ export default function Page() {
 
   return (
     <>
-      {status === "pending" && <QuestionCardSkeleton />}
+      {status === "pending" && <QuestionCardSkeleton count={questionCount} />}
 
       {status === "error" && (
         <div className="flex flex-col items-center gap-3">
@@ -140,7 +144,7 @@ export default function Page() {
       )}
 
       {status === "success" && questions.length === 0 && isFetchingMore && (
-        <QuestionCardSkeleton />
+        <QuestionCardSkeleton count={questionCount} />
       )}
 
       {status === "success" && questions.length === 0 && !isFetchingMore && (

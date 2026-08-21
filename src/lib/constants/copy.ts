@@ -41,7 +41,7 @@ export const copy = {
     questionCountHint: "Between 1 and 50.",
     shortfallDialogTitle: "Not enough questions",
     shortfallDialogDescription:
-      "This only gives {available} questions, which doesn't fit your request of {requested}.",
+      "This only gives {available}, which doesn't fit your request of {requested}.",
     playWithAvailableButton: "Play with {available}",
     chooseMoreCategoriesButton: "Choose more categories",
     difficultyHeading: "Difficulty",
@@ -60,7 +60,7 @@ export const copy = {
     reactionOkay: "Not bad - buuut maybe go again? 🤔",
     reactionTryAgain: "Rough one - try again! 😅",
     shortRoundNote:
-      "Only {total} questions were available for this round's settings.",
+      "Only {total} were available for this round's settings.",
   },
   leaderboard: {
     heading: "Leaderboard",

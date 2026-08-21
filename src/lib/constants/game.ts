@@ -4,3 +4,5 @@ export const MIN_QUESTION_COUNT = 1;
 export const MAX_QUESTION_COUNT = 50;
 export const QUESTION_DURATION_SECONDS = 15;
 export const LOW_TIME_THRESHOLD_SECONDS = 5;
+// OTDB allows roughly one request per 5 seconds per IP.
+export const OTDB_RATE_LIMIT_DELAY_MS = 5500;

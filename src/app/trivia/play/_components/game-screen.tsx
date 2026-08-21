@@ -20,7 +20,7 @@ export function GameScreen({
   const game = useTriviaGame(questions, isFetchingMore);
 
   if (game.isWaitingForMore) {
-    return <QuestionCardSkeleton />;
+    return <QuestionCardSkeleton count={requestedTotal} />;
   }
 
   if (game.isFinished) {
