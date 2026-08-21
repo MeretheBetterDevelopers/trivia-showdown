@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { Button } from "@/src/components/ui/button";
-import { Card, CardContent } from "@/src/components/ui/card";
+import { CardContent } from "@/src/components/ui/card";
+import { GlassCard } from "@/src/components/glass-card";
 import { Input } from "@/src/components/ui/input";
 import categories from "@/src/lib/constants/categories.json";
 import { copy } from "@/src/lib/constants/copy";
@@ -64,7 +65,7 @@ export function ReadyScreen({
     parsedQuestionCount <= MAX_QUESTION_COUNT;
 
   return (
-    <Card className="w-full max-w-2xl rounded-3xl border border-white/30 bg-card/60 text-center shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
+    <GlassCard className="text-center">
       <CardContent className="flex flex-col items-center gap-6 py-10">
         <h2 className="font-heading text-4xl font-bold">
           {copy.trivia.readyHeading}
@@ -163,6 +164,6 @@ export function ReadyScreen({
           {copy.trivia.beginButton}
         </Button>
       </CardContent>
-    </Card>
+    </GlassCard>
   );
 }

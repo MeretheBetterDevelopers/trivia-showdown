@@ -7,7 +7,8 @@ import { copy } from "@/src/lib/constants/copy";
 import { pluralize } from "@/src/lib/helpers/pluralize";
 import { saveScore } from "../_actions/save-score";
 import { Button } from "@/src/components/ui/button";
-import { Card, CardContent } from "@/src/components/ui/card";
+import { CardContent } from "@/src/components/ui/card";
+import { GlassCard } from "@/src/components/glass-card";
 
 function getReaction(score: number, total: number) {
   const ratio = total > 0 ? score / total : 0;
@@ -22,16 +23,14 @@ export function ResultsScreen({
   total,
   requestedTotal,
   roundId,
-  onPlayAgain,
 }: Readonly<{
   score: number;
   total: number;
   requestedTotal?: number;
   roundId?: string;
-  onPlayAgain: () => void;
 }>) {
   const [error, setError] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const hasSavedRef = useRef(false);
 
   useEffect(() => {
@@ -48,7 +47,7 @@ export function ResultsScreen({
   }, [score, total, roundId]);
 
   return (
-    <Card className="w-full max-w-2xl rounded-3xl border border-white/30 bg-card/60 shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
+    <GlassCard>
       <CardContent className="flex flex-col items-center gap-6 text-center">
         <GameLogo className="h-12 w-20" />
 
@@ -75,28 +74,16 @@ export function ResultsScreen({
           </p>
         )}
 
-        {isPending && (
-          <p className="text-sm text-muted-foreground">
-            {copy.leaderboard.savingButton}
-          </p>
-        )}
-
         {error && <p className="text-sm text-destructive">{error}</p>}
 
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button onClick={onPlayAgain} size="lg">
-            {copy.results.playAgainButton}
-          </Button>
-          <Button
-            render={<Link href="/trivia/leaderboard?from=results" />}
-            nativeButton={false}
-            variant="outline"
-            size="lg"
-          >
-            {copy.results.leaderboardButton}
-          </Button>
-        </div>
+        <Button
+          render={<Link href="/trivia/leaderboard?from=results" />}
+          nativeButton={false}
+          size="lg"
+        >
+          {copy.results.leaderboardButton}
+        </Button>
       </CardContent>
-    </Card>
+    </GlassCard>
   );
 }
