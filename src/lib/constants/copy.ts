@@ -30,6 +30,7 @@ export const copy = {
     timeLeftSuffix: "s",
     nextButton: "Next question",
     seeResultsButton: "See results",
+    timesUpMessage: "Time's up! You didn't answer in time.",
     readyHeading: "Ready?",
     readyTagline: "15 seconds per question. Let's go!",
     beginButton: "Begin",

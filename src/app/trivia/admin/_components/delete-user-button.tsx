@@ -74,13 +74,15 @@ export function DeleteUserButton({
           />
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel>{copy.common.cancel}</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>
+            {copy.common.cancel}
+          </AlertDialogCancel>
           <AlertDialogAction
             variant="destructive"
-            disabled={!nameMatches}
+            disabled={!nameMatches || isPending}
             onClick={handleDelete}
           >
-            {copy.admin.deleteUserButton}
+            {isPending ? copy.common.saving : copy.admin.deleteUserButton}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
