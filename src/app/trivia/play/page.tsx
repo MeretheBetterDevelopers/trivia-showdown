@@ -12,6 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/src/components/ui/alert-dialog";
+import { BackToHomeButton } from "@/src/components/trivia-nav-controls";
 import { useProgressiveQuestions } from "./_hooks/use-progressive-questions";
 import { checkRoundAvailability } from "./_actions/get-round-questions";
 import { ComingSoonScreen } from "./_components/coming-soon-screen";
@@ -28,8 +29,22 @@ const COMING_SOON_MODE_LABELS: Record<Exclude<GameMode, "quick">, string> = {
   daily: copy.trivia.dailyLabel,
   weekly: copy.trivia.weeklyLabel,
   monthly: copy.trivia.monthlyLabel,
+  event: copy.trivia.eventLabel,
   room: copy.trivia.gameRoomLabel,
 };
+
+function NavRow({ onBackToModes }: Readonly<{ onBackToModes?: () => void }>) {
+  return (
+    <div className="flex flex-wrap justify-center gap-3">
+      {onBackToModes && (
+        <Button onClick={onBackToModes} variant="outline" size="lg">
+          {copy.trivia.backToModesButton}
+        </Button>
+      )}
+      <BackToHomeButton />
+    </div>
+  );
+}
 
 export default function Page() {
   const [mode, setMode] = useState<GameMode | null>(null);
@@ -82,15 +97,20 @@ export default function Page() {
   }
 
   if (mode === null) {
-    return <ModeSelectScreen onSelectMode={setMode} />;
+    return (
+      <>
+        <ModeSelectScreen onSelectMode={setMode} />
+        <NavRow />
+      </>
+    );
   }
 
   if (mode !== "quick") {
     return (
-      <ComingSoonScreen
-        modeLabel={COMING_SOON_MODE_LABELS[mode]}
-        onBack={() => setMode(null)}
-      />
+      <>
+        <ComingSoonScreen modeLabel={COMING_SOON_MODE_LABELS[mode]} />
+        <NavRow onBackToModes={() => setMode(null)} />
+      </>
     );
   }
 
@@ -98,6 +118,7 @@ export default function Page() {
     return (
       <>
         <ReadyScreen onBegin={handleBegin} disabled={isChecking} />
+        <NavRow onBackToModes={() => setMode(null)} />
         <AlertDialog
           open={shortfall !== null}
           onOpenChange={(open) => {
@@ -190,6 +211,8 @@ export default function Page() {
           onPlayAgain={() => setRoundId((id) => id + 1)}
         />
       )}
+
+      <NavRow />
     </>
   );
 }

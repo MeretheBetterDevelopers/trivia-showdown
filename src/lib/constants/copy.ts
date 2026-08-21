@@ -48,7 +48,7 @@ export const copy = {
     anyDifficultyLabel: "Any",
     modeSelectHeading: "How do you want to play?",
     modeSelectTagline: "Pick a mode to get started.",
-    backButton: "Back",
+    backToModesButton: "Back to game modes",
     quickPlayLabel: "Quick Play",
     quickPlayDescription: "Jump into a round with your own settings.",
     dailyLabel: "Daily",
@@ -57,6 +57,8 @@ export const copy = {
     weeklyDescription: "A bigger round, open all week.",
     monthlyLabel: "Monthly",
     monthlyDescription: "The championship round for the month.",
+    eventLabel: "Event",
+    eventDescription: "Special one-off rounds, like Friday bar trivia.",
     gameRoomLabel: "Game Room",
     gameRoomDescription: "Create or join a room to play head-to-head.",
     comingSoonBadge: "Soon",
@@ -64,7 +66,7 @@ export const copy = {
     comingSoonMessage: "{mode} isn't ready yet — check back soon!",
   },
   appHeader: {
-    backLabel: "Back to Trivia Showdown",
+    backLabel: "Back to welcome screen",
   },
   results: {
     heading: "Round complete!",
@@ -75,8 +77,7 @@ export const copy = {
     reactionGood: "Nice round! 🙌",
     reactionOkay: "Not bad - buuut maybe go again? 🤔",
     reactionTryAgain: "Rough one - try again! 😅",
-    shortRoundNote:
-      "Only {total} were available for this round's settings.",
+    shortRoundNote: "Only {total} were available for this round's settings.",
   },
   leaderboard: {
     heading: "Leaderboard",
@@ -121,8 +122,7 @@ export const copy = {
     resetPasswordConfirmMessage:
       "This generates a new password for this user and copies it to your clipboard — share it with them directly.",
     resetPasswordSuccessMessage: "New password copied to clipboard",
-    resetPasswordErrorMessage:
-      "Couldn't reset password. Please try again.",
+    resetPasswordErrorMessage: "Couldn't reset password. Please try again.",
     deleteUserButton: "Delete user",
     deleteUserConfirmTitle: "Delete this user?",
     deleteUserConfirmDescription:

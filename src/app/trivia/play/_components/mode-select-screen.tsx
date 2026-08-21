@@ -1,8 +1,21 @@
-import { CalendarDays, CalendarRange, Trophy, Users, Zap } from "lucide-react";
+import {
+  CalendarDays,
+  CalendarRange,
+  PartyPopper,
+  Trophy,
+  Users,
+  Zap,
+} from "lucide-react";
 import { Card, CardContent } from "@/src/components/ui/card";
 import { copy } from "@/src/lib/constants/copy";
 
-export type GameMode = "quick" | "daily" | "weekly" | "monthly" | "room";
+export type GameMode =
+  | "quick"
+  | "daily"
+  | "weekly"
+  | "monthly"
+  | "event"
+  | "room";
 
 const MODES: {
   mode: GameMode;
@@ -37,6 +50,13 @@ const MODES: {
     icon: Trophy,
     label: copy.trivia.monthlyLabel,
     description: copy.trivia.monthlyDescription,
+    available: false,
+  },
+  {
+    mode: "event",
+    icon: PartyPopper,
+    label: copy.trivia.eventLabel,
+    description: copy.trivia.eventDescription,
     available: false,
   },
   {
