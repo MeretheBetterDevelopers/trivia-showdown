@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Button } from "@/src/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,12 +13,14 @@ import {
 } from "@/src/components/ui/alert-dialog";
 import { useProgressiveQuestions } from "../_hooks/use-progressive-questions";
 import { checkRoundAvailability } from "../_actions/get-round-questions";
+import { ErrorRetry } from "./error-retry";
 import { GameScreen } from "./game-screen";
 import { NavRow } from "./nav-row";
 import { QuestionCardSkeleton } from "./question-card-skeleton";
 import { ReadyScreen, ReadyScreenSettings } from "./ready-screen";
 import { QUESTION_COUNT } from "@/src/lib/constants/game";
 import { copy } from "@/src/lib/constants/copy";
+import { getErrorMessage } from "@/src/lib/helpers/get-error-message";
 import { pluralize } from "@/src/lib/helpers/pluralize";
 import { Difficulty } from "@/src/generated/prisma/enums";
 
@@ -39,7 +40,7 @@ export function QuickPlayFlow({
   } | null>(null);
   // Seeded per mount (not a fixed 0) so navigating away and back never
   // reuses a stale cache entry from the last time this flow was visited.
-  const [playKey, setPlayKey] = useState(() => Date.now());
+  const [playKey] = useState(() => Date.now());
 
   const { questions, status, error, isFetchingMore, refetch } =
     useProgressiveQuestions({
@@ -130,21 +131,17 @@ export function QuickPlayFlow({
     );
   }
 
+  const isGameScreenActive = status === "success" && questions.length > 0;
+
   return (
     <>
       {status === "pending" && <QuestionCardSkeleton count={questionCount} />}
 
       {status === "error" && (
-        <div className="flex flex-col items-center gap-3">
-          <p className="text-destructive">
-            {error instanceof Error
-              ? error.message
-              : copy.trivia.genericErrorMessage}
-          </p>
-          <Button onClick={() => refetch()} variant="outline">
-            {copy.trivia.retryButton}
-          </Button>
-        </div>
+        <ErrorRetry
+          message={getErrorMessage(error, copy.trivia.genericErrorMessage)}
+          onRetry={() => refetch()}
+        />
       )}
 
       {status === "success" && questions.length === 0 && isFetchingMore && (
@@ -152,27 +149,21 @@ export function QuickPlayFlow({
       )}
 
       {status === "success" && questions.length === 0 && !isFetchingMore && (
-        <div className="flex flex-col items-center gap-3">
-          <p className="text-destructive">
-            {copy.trivia.noQuestionsForCategoriesMessage}
-          </p>
-          <Button onClick={() => setReady(false)} variant="outline">
-            {copy.trivia.retryButton}
-          </Button>
-        </div>
-      )}
-
-      {status === "success" && questions.length > 0 && (
-        <GameScreen
-          key={playKey}
-          questions={questions}
-          isFetchingMore={isFetchingMore}
-          requestedTotal={questionCount}
-          onPlayAgain={() => setPlayKey((key) => key + 1)}
+        <ErrorRetry
+          message={copy.trivia.noQuestionsForCategoriesMessage}
+          onRetry={() => setReady(false)}
         />
       )}
 
-      <NavRow />
+      {isGameScreenActive && (
+        <GameScreen
+          questions={questions}
+          isFetchingMore={isFetchingMore}
+          requestedTotal={questionCount}
+        />
+      )}
+
+      <NavRow onBackToModes={onBackToModes} />
     </>
   );
 }

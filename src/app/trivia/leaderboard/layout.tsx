@@ -1,7 +1,4 @@
-import {
-  BackToHomeButton,
-  ThemeToggleCorner,
-} from "@/src/components/trivia-nav-controls";
+import { ThemeToggleCorner } from "@/src/components/trivia-nav-controls";
 import { SignOutButton } from "../_components/sign-out-button";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -11,7 +8,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="flex w-full flex-col items-center gap-6 text-center">
         {children}
       </div>
-      <BackToHomeButton />
       <div className="hidden sm:block">
         <SignOutButton />
       </div>

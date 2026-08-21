@@ -4,12 +4,12 @@ import Link from "next/link";
 import { X } from "lucide-react";
 import { GameLogo } from "@/src/components/game-logo";
 import {
-  Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/src/components/ui/card";
+import { GlassCard } from "@/src/components/glass-card";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
@@ -66,7 +66,7 @@ export function AuthForm({
 
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-md">
-      <Card className="rounded-3xl border border-white/30 bg-card/60 shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
+      <GlassCard>
         <CardHeader className="flex flex-col items-center gap-3 text-center">
           <GameLogo className="h-10 w-20" />
           <CardTitle className="text-2xl">{title}</CardTitle>
@@ -170,7 +170,7 @@ export function AuthForm({
             </Link>
           </p>
         </CardFooter>
-      </Card>
+      </GlassCard>
     </form>
   );
 }

@@ -73,7 +73,6 @@ export const copy = {
   results: {
     heading: "Round complete!",
     scoreLabel: "You scored",
-    playAgainButton: "Play again",
     leaderboardButton: "Leaderboard",
     reactionGreat: "Nailed it! 🎉",
     reactionGood: "Nice round! 🙌",
@@ -88,6 +87,10 @@ export const copy = {
     savingButton: "Save",
     playAgainButton: "Play again",
     playNowButton: "Play now",
+    dailyViewLabel: "Daily",
+    allTimeViewLabel: "All-time",
+    noDailyRoundMessage: "No Daily round for this date.",
+    datePickerLabel: "Date",
   },
   themeToggle: {
     ariaLabel: "Toggle color theme",

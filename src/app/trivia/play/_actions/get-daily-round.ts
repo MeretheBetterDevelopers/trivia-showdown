@@ -3,27 +3,15 @@
 import { Prisma } from "@/src/generated/prisma/client";
 import { getRoundQuestions } from "./get-round-questions";
 import { DAILY_QUESTION_COUNT } from "@/src/lib/constants/game";
+import { getUTCDayWindow } from "@/src/lib/helpers/date-window";
 import { prisma } from "@/src/lib/prisma";
 import { Questions } from "@/src/types/game/question";
-
-// Today's UTC calendar day. A simplification for this first slice -
-// "today" doesn't follow each player's own timezone, so someone far
-// from UTC could see the round flip over at a locally odd hour.
-function getTodayWindow(): { opensAt: Date; closesAt: Date } {
-  const now = new Date();
-  const opensAt = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
-  );
-  const closesAt = new Date(opensAt);
-  closesAt.setUTCDate(closesAt.getUTCDate() + 1);
-  return { opensAt, closesAt };
-}
 
 export async function getDailyRound(): Promise<{
   roundId: string;
   questions: Questions[];
 }> {
-  const { opensAt, closesAt } = getTodayWindow();
+  const { opensAt, closesAt } = getUTCDayWindow();
 
   const existing = await prisma.round.findFirst({
     where: { mode: "DAILY", opensAt },

@@ -6,7 +6,8 @@ import {
   Users,
   Zap,
 } from "lucide-react";
-import { Card, CardContent } from "@/src/components/ui/card";
+import { CardContent } from "@/src/components/ui/card";
+import { GlassCard } from "@/src/components/glass-card";
 import { copy } from "@/src/lib/constants/copy";
 
 export type GameMode =
@@ -72,7 +73,7 @@ export function ModeSelectScreen({
   onSelectMode,
 }: Readonly<{ onSelectMode: (mode: GameMode) => void }>) {
   return (
-    <Card className="w-full max-w-2xl rounded-3xl border border-white/30 bg-card/60 text-center shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
+    <GlassCard className="text-center">
       <CardContent className="flex flex-col items-center gap-6 py-10">
         <div className="flex flex-col gap-1">
           <h2 className="font-heading text-4xl font-bold">
@@ -102,6 +103,6 @@ export function ModeSelectScreen({
           ))}
         </div>
       </CardContent>
-    </Card>
+    </GlassCard>
   );
 }

@@ -3,7 +3,8 @@
 import { clsx } from "clsx";
 import { copy } from "@/src/lib/constants/copy";
 import { Button } from "@/src/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/src/components/ui/card";
+import { CardContent, CardFooter } from "@/src/components/ui/card";
+import { GlassCard } from "@/src/components/glass-card";
 import { Questions } from "@/src/types/game/question";
 import ProgressIndicator from "./progress-indicator";
 import DifficultyPlate from "./difficulty-plate";
@@ -35,7 +36,7 @@ export function QuestionCard({
   const isTimedOut = isAnswered && selectedChoice === "";
 
   return (
-    <Card className="w-full max-w-2xl rounded-3xl border border-white/30 bg-card/60 shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
+    <GlassCard>
       <CardContent className="flex flex-col gap-4">
         <div className="flex items-center justify-between gap-4">
           <ProgressIndicator
@@ -95,15 +96,27 @@ export function QuestionCard({
         </div>
       </CardContent>
 
-      {isAnswered && (
-        <CardFooter className="justify-end">
-          <Button onClick={onNext} size="lg">
-            {isLastQuestion
-              ? copy.trivia.seeResultsButton
-              : copy.trivia.nextButton}
-          </Button>
-        </CardFooter>
-      )}
-    </Card>
+      {/* Always rendered (rather than only once answered) so the card's
+          height stays constant - the button just isn't interactive or
+          visible until then. Answering shouldn't shift anything below
+          the card, e.g. the nav row that follows it during gameplay. */}
+      <CardFooter className="justify-end">
+        <Button
+          onClick={onNext}
+          size="lg"
+          disabled={!isAnswered}
+          // transition-none: Button's base `transition-all` delays
+          // `visibility: hidden` until the transition duration elapses
+          // (browsers apply hidden at the *end* of the transition, but
+          // visible at the *start*), so becoming invisible on the next
+          // question would flash briefly instead of disappearing at once.
+          className={clsx(!isAnswered && "invisible", "transition-none")}
+        >
+          {isLastQuestion
+            ? copy.trivia.seeResultsButton
+            : copy.trivia.nextButton}
+        </Button>
+      </CardFooter>
+    </GlassCard>
   );
 }
