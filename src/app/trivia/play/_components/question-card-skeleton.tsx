@@ -2,13 +2,15 @@ import { Card, CardContent } from "@/src/components/ui/card";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Spinner } from "@/src/components/ui/spinner";
 
-export function QuestionCardSkeleton() {
+export function QuestionCardSkeleton({
+  count,
+}: Readonly<{ count: number }>) {
   return (
     <Card className="w-full max-w-2xl rounded-3xl border border-white/30 bg-card/60 shadow-xl backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10">
       <CardContent className="flex flex-col gap-4">
         <div className="flex items-center justify-between gap-4">
-          <div className="flex gap-1.5">
-            {Array.from({ length: 10 }).map((_, index) => (
+          <div className="flex flex-wrap gap-1.5">
+            {Array.from({ length: count }).map((_, index) => (
               <Skeleton key={index} className="size-2 rounded-full" />
             ))}
           </div>

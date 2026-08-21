@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { GameLogo } from "@/src/components/game-logo";
 import { copy } from "@/src/lib/constants/copy";
+import { pluralize } from "@/src/lib/helpers/pluralize";
 import { saveScore } from "../_actions/save-score";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent } from "@/src/components/ui/card";
@@ -19,10 +20,12 @@ function getReaction(score: number, total: number) {
 export function ResultsScreen({
   score,
   total,
+  requestedTotal,
   onPlayAgain,
 }: Readonly<{
   score: number;
   total: number;
+  requestedTotal?: number;
   onPlayAgain: () => void;
 }>) {
   const [error, setError] = useState<string | null>(null);
@@ -60,6 +63,15 @@ export function ResultsScreen({
         </p>
 
         <p className="text-xl font-medium">{getReaction(score, total)}</p>
+
+        {requestedTotal !== undefined && total < requestedTotal && (
+          <p className="text-sm text-muted-foreground">
+            {copy.results.shortRoundNote.replaceAll(
+              "{total}",
+              pluralize(total, "question"),
+            )}
+          </p>
+        )}
 
         {isPending && (
           <p className="text-sm text-muted-foreground">

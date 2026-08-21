@@ -31,12 +31,21 @@ export const copy = {
     nextButton: "Next question",
     seeResultsButton: "See results",
     readyHeading: "Ready?",
-    readyTagline: "10 questions, 15 seconds each. Let's go!",
+    readyTagline: "15 seconds per question. Let's go!",
     beginButton: "Begin",
     categoriesHeading: "Categories",
     categoriesHint: "Pick a few, or leave blank for anything.",
     noQuestionsForCategoriesMessage:
       "No questions found for the selected categories — try picking a few more.",
+    questionCountLabel: "How many questions?",
+    questionCountHint: "Between 1 and 50.",
+    shortfallDialogTitle: "Not enough questions",
+    shortfallDialogDescription:
+      "This only gives {available}, which doesn't fit your request of {requested}.",
+    playWithAvailableButton: "Play with {available}",
+    chooseMoreCategoriesButton: "Choose more categories",
+    difficultyHeading: "Difficulty",
+    anyDifficultyLabel: "Any",
   },
   appHeader: {
     backLabel: "Back to Trivia Showdown",
@@ -50,6 +59,8 @@ export const copy = {
     reactionGood: "Nice round! 🙌",
     reactionOkay: "Not bad - buuut maybe go again? 🤔",
     reactionTryAgain: "Rough one - try again! 😅",
+    shortRoundNote:
+      "Only {total} were available for this round's settings.",
   },
   leaderboard: {
     heading: "Leaderboard",
@@ -88,7 +99,7 @@ export const copy = {
     questionDeletedMessage: "Question deleted",
     questionDeleteErrorMessage: "Couldn't delete question. Please try again.",
     noQuestionsMessage: "No questions yet — create the first one above.",
-    noCategoryLabel: "No category",
+    noCategoryLabel: "Other",
     noIdFound: "No user id found",
     resetPasswordButton: "Reset password",
     resetPasswordConfirmMessage:
