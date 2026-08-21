@@ -4,6 +4,7 @@ import {
   ROUND_WINDOW,
   ScheduledRoundMode,
 } from "@/src/lib/helpers/round-window";
+import { LeaderboardEntryWithUser } from "@/src/types/game/leaderboard-entry";
 import EmptyLeaderboard from "./_components/empty-leaderboard";
 import LeaderboardDatePicker from "./_components/leaderboard-date-picker";
 import LeaderboardList from "./_components/leaderboard-list";
@@ -66,15 +67,13 @@ export default async function Page({
 
   const { entries: rows, hasRoundForDate } =
     view === "all-time"
-      ? {
-          entries: await prisma.leaderboardEntry.findMany({
-            include: { user: { select: { name: true, imageUrl: true } } },
-          }),
-          hasRoundForDate: true,
-        }
+      ? { entries: await getAllTimeEntries(), hasRoundForDate: true }
       : await getRoundEntries(VIEW_TO_MODE[view], date);
 
-  const entries = rows.sort((a, b) => b.score / b.total - a.score / a.total);
+  // Scoped views (daily/weekly/monthly) all share one total (the same
+  // round for everyone), so this is equivalent to sorting by score alone
+  // there - and for all-time, combined score is exactly what should rank.
+  const entries = rows.sort((a, b) => b.score - a.score);
 
   return (
     <>
@@ -133,6 +132,40 @@ export default async function Page({
       )}
     </>
   );
+}
+
+// All-time is a person's combined score across every round-based mode
+// they've played (Daily/Weekly/Monthly/Event/Room, whatever exists) -
+// grouped and summed per user. Quick Play rows (roundId null) are
+// deliberately excluded: Quick Play is personal practice, not a
+// leaderboard entry, even though it's still saved (for future badges).
+async function getAllTimeEntries(): Promise<LeaderboardEntryWithUser[]> {
+  const totals = await prisma.leaderboardEntry.groupBy({
+    by: ["userId"],
+    where: { roundId: { not: null } },
+    _sum: { score: true },
+  });
+  if (totals.length === 0) return [];
+
+  const users = await prisma.user.findMany({
+    where: { id: { in: totals.map((t) => t.userId) } },
+    select: { id: true, name: true, imageUrl: true },
+  });
+  const userById = new Map(users.map((user) => [user.id, user]));
+
+  return totals.flatMap((t) => {
+    const user = userById.get(t.userId);
+    if (!user) return [];
+    return [
+      {
+        id: t.userId,
+        score: t._sum.score ?? 0,
+        total: 0,
+        playedAt: new Date(),
+        user: { name: user.name, imageUrl: user.imageUrl },
+      },
+    ];
+  });
 }
 
 async function getRoundEntries(mode: ScheduledRoundMode, date: string) {
