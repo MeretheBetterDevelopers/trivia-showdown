@@ -8,7 +8,7 @@ function ProgressIndicator({
   total: number;
 }>) {
   return (
-    <div className="flex gap-1.5" aria-hidden>
+    <div className="flex flex-wrap gap-1.5" aria-hidden>
       {Array.from({ length: total }).map((_, index) => (
         <span
           key={index}
