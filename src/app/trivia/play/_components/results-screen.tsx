@@ -30,7 +30,7 @@ export function ResultsScreen({
   roundId?: string;
 }>) {
   const [error, setError] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const hasSavedRef = useRef(false);
 
   useEffect(() => {
@@ -71,12 +71,6 @@ export function ResultsScreen({
               "{total}",
               pluralize(total, "question"),
             )}
-          </p>
-        )}
-
-        {isPending && (
-          <p className="text-sm text-muted-foreground">
-            {copy.leaderboard.savingButton}
           </p>
         )}
 

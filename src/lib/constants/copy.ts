@@ -83,8 +83,6 @@ export const copy = {
   leaderboard: {
     heading: "Leaderboard",
     emptyMessage: "No scores yet — be the first to play!",
-    scoreSavedMessage: "Saved!",
-    savingButton: "Save",
     playAgainButton: "Play again",
     playNowButton: "Play now",
     dailyViewLabel: "Daily",
