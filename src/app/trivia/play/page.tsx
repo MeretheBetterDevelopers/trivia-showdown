@@ -14,7 +14,9 @@ import {
 } from "@/src/components/ui/alert-dialog";
 import { useProgressiveQuestions } from "./_hooks/use-progressive-questions";
 import { checkRoundAvailability } from "./_actions/get-round-questions";
+import { ComingSoonScreen } from "./_components/coming-soon-screen";
 import { GameScreen } from "./_components/game-screen";
+import { GameMode, ModeSelectScreen } from "./_components/mode-select-screen";
 import { QuestionCardSkeleton } from "./_components/question-card-skeleton";
 import { ReadyScreen, ReadyScreenSettings } from "./_components/ready-screen";
 import { QUESTION_COUNT } from "@/src/lib/constants/game";
@@ -22,7 +24,15 @@ import { copy } from "@/src/lib/constants/copy";
 import { pluralize } from "@/src/lib/helpers/pluralize";
 import { Difficulty } from "@/src/generated/prisma/enums";
 
+const COMING_SOON_MODE_LABELS: Record<Exclude<GameMode, "quick">, string> = {
+  daily: copy.trivia.dailyLabel,
+  weekly: copy.trivia.weeklyLabel,
+  monthly: copy.trivia.monthlyLabel,
+  room: copy.trivia.gameRoomLabel,
+};
+
 export default function Page() {
+  const [mode, setMode] = useState<GameMode | null>(null);
   const [ready, setReady] = useState(false);
   const [categoryNames, setCategoryNames] = useState<string[]>([]);
   const [difficulty, setDifficulty] = useState<Difficulty | undefined>(
@@ -69,6 +79,19 @@ export default function Page() {
       }
       beginRound(settings);
     });
+  }
+
+  if (mode === null) {
+    return <ModeSelectScreen onSelectMode={setMode} />;
+  }
+
+  if (mode !== "quick") {
+    return (
+      <ComingSoonScreen
+        modeLabel={COMING_SOON_MODE_LABELS[mode]}
+        onBack={() => setMode(null)}
+      />
+    );
   }
 
   if (!ready) {
